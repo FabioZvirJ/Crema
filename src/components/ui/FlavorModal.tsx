@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { X, Sparkles, ArrowRight } from 'lucide-react';
 import type { FlavorItem } from '@/domain/types';
 import { buildSafeWhatsAppUrl } from '@/security/safeUrl';
+import { FlavorPhoto } from './FlavorPhoto';
 import { SafeExternalLink } from './SafeExternalLink';
 
 interface FlavorModalProps {
@@ -52,11 +53,7 @@ export function FlavorModal({ flavor, onClose }: FlavorModalProps) {
 
         <div className="modal-flavor-header">
           <div className="modal-scoop-wrap">
-            <img
-              src={flavor.image}
-              alt={flavor.name}
-              className="modal-scoop-img"
-            />
+            <FlavorPhoto flavor={flavor} className="modal-scoop-img" />
           </div>
           <div className="modal-badges-row">
             {flavor.dietaryBadges.map((badge) => (
@@ -73,14 +70,16 @@ export function FlavorModal({ flavor, onClose }: FlavorModalProps) {
         </div>
 
         <div className="modal-flavor-body">
+          {!flavor.onMenu && (
+            <p className="modal-past-note">
+              Este sabor já passou pela vitrine. Os sabores sazonais voltam de
+              tempos em tempos, então vale perguntar se ele está disponível.
+            </p>
+          )}
+
           <div className="modal-info-block">
             <span className="modal-info-label">NOTAS DO LABORATÓRIO</span>
             <p className="modal-info-text">{flavor.story}</p>
-          </div>
-
-          <div className="modal-info-block">
-            <span className="modal-info-label">INGREDIENTES SELECIONADOS</span>
-            <p className="modal-info-text">{flavor.ingredientsText}</p>
           </div>
 
           <div className="modal-info-block">
@@ -91,7 +90,7 @@ export function FlavorModal({ flavor, onClose }: FlavorModalProps) {
 
         <div className="modal-flavor-footer">
           <SafeExternalLink href={whatsappHref} className="btn-coral w-full justify-center">
-            <span>PEDIR ESTE SABOR NO WHATSAPP</span>
+            <span>{flavor.onMenu ? 'PEDIR ESTE SABOR NO WHATSAPP' : 'PERGUNTAR SE ESTÁ DISPONÍVEL'}</span>
             <ArrowRight size={15} />
           </SafeExternalLink>
         </div>

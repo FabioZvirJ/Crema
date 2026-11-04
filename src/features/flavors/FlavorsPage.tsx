@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Plus } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { FLAVOR_CATEGORIES, FLAVORS_CATALOG } from '@/domain/flavors';
 import type { FlavorCategory, FlavorItem } from '@/domain/types';
 import { buildSafeWhatsAppUrl } from '@/security/safeUrl';
@@ -7,9 +7,9 @@ import { SubpageHero } from '@/components/layout/SubpageHero';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import {
   DiamondLatticePattern,
-  FlavorMotifGarnish,
   GelatoBowlIllustration,
 } from '@/components/visuals/BotanicalVectors';
+import { FlavorsCarousel } from './FlavorsCarousel';
 
 interface FlavorsPageProps {
   readonly onSelectFlavor: (flavor: FlavorItem) => void;
@@ -18,16 +18,25 @@ interface FlavorsPageProps {
 export function FlavorsPage({ onSelectFlavor }: FlavorsPageProps) {
   const [selectedCategory, setSelectedCategory] = useState<FlavorCategory>('todos');
 
+  // Current flavors first, then the ones that already left the vitrine.
+  const orderedFlavors = useMemo(
+    () => [
+      ...FLAVORS_CATALOG.filter((flavor) => flavor.onMenu),
+      ...FLAVORS_CATALOG.filter((flavor) => !flavor.onMenu),
+    ],
+    []
+  );
+
   const filteredFlavors = useMemo(() => {
     if (selectedCategory === 'todos') {
-      return FLAVORS_CATALOG;
+      return orderedFlavors;
     }
-    return FLAVORS_CATALOG.filter(
+    return orderedFlavors.filter(
       (flavor) =>
         flavor.category === selectedCategory ||
         flavor.secondaryCategories?.includes(selectedCategory)
     );
-  }, [selectedCategory]);
+  }, [orderedFlavors, selectedCategory]);
 
   const seasonalWhatsappHref = buildSafeWhatsAppUrl(
     'Olá, Crema Lab! Quais são as Criações Sazonais da Semana disponíveis hoje?'
@@ -72,44 +81,9 @@ export function FlavorsPage({ onSelectFlavor }: FlavorsPageProps) {
             })}
           </div>
 
-          {/* 3x2 Flavor Cards Grid */}
-          <div className="flavors-cards-grid">
-            {filteredFlavors.map((flavor) => (
-              <article key={flavor.id} className="flavor-card">
-                <div className="flavor-card-scoop-stage">
-                  <FlavorMotifGarnish motif={flavor.motif} />
+          {/* Six flavors per slide; a carousel when there are more */}
+          <FlavorsCarousel flavors={filteredFlavors} onSelectFlavor={onSelectFlavor} />
 
-                  <div className="flavor-card-scoop-wrap">
-                    <img
-                      src={flavor.image}
-                      alt={flavor.name}
-                      className="flavor-card-scoop-img"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => onSelectFlavor(flavor)}
-                    className="flavor-card-plus-btn"
-                    aria-label={`Ver detalhes de ${flavor.name}`}
-                  >
-                    <Plus size={14} strokeWidth={2.2} />
-                  </button>
-                </div>
-
-                <div
-                  className="flavor-card-surface"
-                  onClick={() => onSelectFlavor(flavor)}
-                >
-                  <h2 className="flavor-card-title">{flavor.name}</h2>
-                  <p className="flavor-card-desc">{flavor.description}</p>
-                  <p className="flavor-card-ingredients">
-                    {flavor.ingredientsText}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
