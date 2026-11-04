@@ -63,13 +63,13 @@ export function SubpageHero({
   return (
     <section className="subpage-seal-hero">
       <SubpageBackdrop variant="seal" className="subpage-seal-bg-img" />
+      <LeafSprig className="subpage-seal-leaf" />
+      <LeafSprig className="subpage-seal-leaf-2" />
       <BrandSeal className="subpage-seal-brand" />
       <p className="hero-script subpage-seal-script" aria-hidden="true">
-        Gelato. é
+        Gelato é
         <br />
-        pausa. é
-        <br />
-        vida.
+        pausa, é vida.
       </p>
 
       <div className="site-container subpage-seal-inner">

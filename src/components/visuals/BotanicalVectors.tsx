@@ -465,46 +465,40 @@ export function SubpageBackdrop({
 
   return (
     <svg
-      viewBox="0 0 1900 711"
+      viewBox="0 0 1000 374"
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
       className={className}
     >
       <defs>
-        <radialGradient id="ss-cream" cx="28%" cy="40%" r="80%">
-          <stop offset="0" stopColor="#f8f2ea" />
-          <stop offset="1" stopColor="#efe4d7" />
+        <radialGradient id="ss-cream" cx="26%" cy="40%" r="80%">
+          <stop offset="0" stopColor="#fbf4ec" />
+          <stop offset="1" stopColor="#f0e5d8" />
         </radialGradient>
         <linearGradient id="ss-beige" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#ecdcc8" />
-          <stop offset="1" stopColor="#d5b79a" />
+          <stop offset="1" stopColor="#d3b595" />
         </linearGradient>
-        <radialGradient id="ss-smoke" cx="50%" cy="0%" r="70%">
-          <stop offset="0" stopColor="#7a5a45" stopOpacity="0.28" />
+        <radialGradient id="ss-smoke" cx="60%" cy="0%" r="70%">
+          <stop offset="0" stopColor="#7a5a45" stopOpacity="0.3" />
           <stop offset="1" stopColor="#7a5a45" stopOpacity="0" />
         </radialGradient>
+        <radialGradient id="ss-wood" cx="45%" cy="40%" r="70%">
+          <stop offset="0" stopColor="#ecd3b2" />
+          <stop offset="1" stopColor="#c9a37a" />
+        </radialGradient>
       </defs>
-      <rect width="1900" height="711" fill="url(#ss-cream)" />
-      <path
-        d="M0 711V470C150 420 330 500 520 560C700 616 820 640 1010 598C1250 546 1390 300 1340 0H1650V711Z"
-        fill="#6a0a22"
-      />
-      <path d="M0 711V622C190 592 360 660 560 676C740 690 880 694 1040 711Z" fill="#b0553f" opacity="0.9" />
-      <path d="M1470 0H1900V711H1560C1540 520 1505 250 1470 0Z" fill="url(#ss-beige)" />
-      <rect x="1470" y="0" width="430" height="260" fill="url(#ss-smoke)" />
-      <g transform="rotate(12 1560 470)">
-        <ellipse cx="1560" cy="470" rx="150" ry="215" fill="#d9b995" />
-        <g fill="none" stroke="#b98d68" strokeWidth="2" opacity="0.55">
-          <ellipse cx="1560" cy="470" rx="120" ry="180" />
-          <ellipse cx="1560" cy="470" rx="90" ry="144" />
-          <ellipse cx="1560" cy="470" rx="60" ry="108" />
-          <ellipse cx="1560" cy="470" rx="32" ry="66" />
-        </g>
+      <rect width="1000" height="374" fill="url(#ss-cream)" />
+      <path d="M740 -20H1020V400H850C830 250 790 100 740 -20Z" fill="url(#ss-beige)" />
+      <rect x="740" y="0" width="280" height="150" fill="url(#ss-smoke)" />
+      <g transform="rotate(8 912 205) translate(906 205) scale(0.86) translate(-912 -205)">
+        <ellipse cx="912" cy="205" rx="96" ry="136" fill="url(#ss-wood)" />
+        <g fill="none" stroke="#b38558" strokeWidth="1.2" opacity="0.5"><ellipse cx="912" cy="205" rx="82" ry="120" /><ellipse cx="912" cy="205" rx="66" ry="98" /><ellipse cx="912" cy="205" rx="50" ry="76" /><ellipse cx="912" cy="205" rx="34" ry="52" /><ellipse cx="912" cy="205" rx="18" ry="28" /></g>
+        <path d="M850 120C880 160 870 210 892 250M935 100C915 150 940 200 925 260" stroke="#b38558" strokeWidth="0.9" fill="none" opacity="0.35" />
       </g>
-      <path
-        d="M1250 250C1330 232 1370 318 1316 394C1276 448 1262 470 1204 446C1134 418 1124 330 1170 286C1194 262 1222 254 1250 250Z"
-        fill="#b0553f"
-      />
+      <path d="M-20 330C90 318 200 338 330 356C470 374 640 372 860 360H1020V400H-20Z" fill="#a94a3a" />
+      <path d="M-20 262C70 248 150 262 240 288C340 318 450 336 560 326C650 318 700 262 716 170C726 100 722 30 712 -20H790C800 100 812 240 842 346C700 366 480 362 330 346C200 332 80 336 -20 340Z" fill="#6a0a22" />
+      <path d="M570 120C570 70 630 58 672 80C712 102 722 150 692 176C660 200 612 192 586 166C572 150 570 135 570 120Z" fill="#b0553f" />
     </svg>
   );
 }

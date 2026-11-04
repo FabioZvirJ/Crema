@@ -786,7 +786,7 @@ textarea {
 .subpage-seal-hero {
   position: relative;
   margin-top: -4.75rem;
-  aspect-ratio: 572 / 214;
+  aspect-ratio: 1000 / 374;
   min-height: 19.375rem;
   background-color: #f3ece3;
   overflow: hidden;
@@ -864,22 +864,53 @@ textarea {
   z-index: 2;
 }
 
+.subpage-seal-leaf,
+.subpage-seal-leaf-2 {
+  position: absolute;
+  height: auto;
+  color: #a98b70;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.subpage-seal-leaf {
+  right: 0.5%;
+  top: 44%;
+  width: 8%;
+  opacity: 0.75;
+  transform: scaleX(-1);
+}
+
+.subpage-seal-leaf-2 {
+  right: 7%;
+  top: 56%;
+  width: 5.5%;
+  opacity: 0.5;
+  transform: rotate(18deg);
+}
+
+.subpage-seal-brand circle:first-of-type {
+  fill: #f3e9d8;
+}
+
 .subpage-seal-brand {
   position: absolute;
-  left: 76%;
-  top: 28%;
-  width: 11.5%;
+  left: 77%;
+  top: 22%;
+  width: 9.5%;
   color: #7c6a58;
   pointer-events: none;
   z-index: 2;
 }
 
 .subpage-seal-script {
-  left: 86%;
-  top: 14%;
-  font-size: clamp(1rem, 1.9vw, 1.9rem);
-  color: #a8503c;
-  transform: rotate(-9deg);
+  left: 87%;
+  top: 13%;
+  font-family: 'Allura', var(--font-script);
+  font-size: clamp(1.1rem, 2.3vw, 2.4rem);
+  line-height: 1.15;
+  color: #8a3a2a;
+  transform: rotate(-8deg);
 }
 
 .sabores-hero-sprig {
@@ -1315,21 +1346,24 @@ textarea {
 
 .units-sprig-left {
   position: absolute;
-  left: -0.625rem;
-  top: 11.875rem;
-  width: 6.5625rem;
-  height: 11.875rem;
-  color: #9e8a74;
+  left: 0.5rem;
+  top: 12rem;
+  width: 6rem;
+  height: auto;
+  color: #a98b70;
+  opacity: 0.55;
   pointer-events: none;
 }
 
 .units-sprig-right {
   position: absolute;
-  right: -0.625rem;
-  bottom: 6.875rem;
-  width: 6.5625rem;
-  height: 11.875rem;
-  color: #9e8a74;
+  right: 0.5rem;
+  bottom: 7rem;
+  width: 6.5rem;
+  height: auto;
+  color: #a98b70;
+  opacity: 0.55;
+  transform: scaleX(-1);
   pointer-events: none;
 }
 
@@ -2659,6 +2693,8 @@ textarea {
   .sabores-hero-seal,
   .sabores-hero-script,
   .subpage-seal-brand,
+  .subpage-seal-leaf,
+  .subpage-seal-leaf-2,
   .subpage-seal-script {
     display: none;
   }

@@ -15,8 +15,7 @@ import type { UnitFeatureTag } from '@/domain/types';
 import { SubpageHero } from '@/components/layout/SubpageHero';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import {
-  BotanicalSprigLeft,
-  BotanicalSprigRight,
+  LeafSprig,
 } from '@/components/visuals/BotanicalVectors';
 import { CuritibaMap } from '@/components/visuals/CuritibaMap';
 
@@ -55,8 +54,8 @@ export function LocationsPage() {
         className="units-showcase-section"
         aria-labelledby="units-section-heading"
       >
-        <BotanicalSprigLeft className="units-sprig-left" />
-        <BotanicalSprigRight className="units-sprig-right" />
+        <LeafSprig className="units-sprig-left" />
+        <LeafSprig className="units-sprig-right" />
 
         <div className="site-container">
           <h2 id="units-section-heading" className="units-section-heading">
