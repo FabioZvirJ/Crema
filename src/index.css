@@ -890,31 +890,121 @@ textarea {
   z-index: 2;
 }
 
+.sabores-hero-ornament {
+  display: block;
+  width: 9rem;
+  height: auto;
+  margin: 1.1rem auto 0;
+  color: #a8503c;
+}
+
 .sabores-hero-sprig-left {
-  left: 1.5%;
-  top: 42%;
-  width: 10.5%;
+  left: 1%;
+  top: 32%;
+  width: 13%;
 }
 
 .sabores-hero-sprig-left-2 {
-  left: 12%;
-  top: 60%;
+  left: 14%;
+  top: 49%;
   width: 5.5%;
   transform: scaleX(-1);
 }
 
+.sabores-hero-sprig-left-3 {
+  left: 8%;
+  top: 50%;
+  width: 7%;
+  opacity: 0.55;
+  transform: rotate(-24deg);
+}
+
+.sabores-hero-sprig-right-2 {
+  right: 11%;
+  top: 53%;
+  width: 5%;
+  color: #d9a590;
+}
+
+.sabores-hero-sprig-right-3 {
+  right: 6%;
+  top: 52%;
+  width: 7%;
+  color: #d9a590;
+  opacity: 0.7;
+  transform: rotate(24deg) scaleX(-1);
+}
+
+.sabores-hero-sprig-bottom-left {
+  left: 27%;
+  top: 70%;
+  width: 6%;
+  color: #7a4a3a;
+  opacity: 0.6;
+  transform: rotate(-12deg);
+}
+
+.sabores-hero-sprig-bottom-right {
+  right: 25%;
+  top: 70%;
+  width: 6%;
+  color: #7a4a3a;
+  opacity: 0.6;
+  transform: rotate(14deg) scaleX(-1);
+}
+
+.sabores-hero-dots {
+  position: absolute;
+  width: 4.5%;
+  height: auto;
+  fill: #4a0a1a;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sabores-hero-dots-left {
+  left: 2%;
+  top: 70%;
+}
+
+.sabores-hero-dots-right {
+  right: 3%;
+  top: 68%;
+  fill: #a8503c;
+}
+
+.sabores-hero-spark {
+  position: absolute;
+  width: 1.1%;
+  height: auto;
+  fill: #b0553f;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sabores-hero-spark-1 {
+  left: 33%;
+  top: 40%;
+}
+
+.sabores-hero-spark-2 {
+  left: 66%;
+  top: 56%;
+  width: 0.8%;
+}
+
 .sabores-hero-sprig-right {
-  right: 2.5%;
-  top: 60%;
-  width: 6.5%;
-  color: #e0b3a0;
+  right: 1.5%;
+  top: 46%;
+  width: 8.5%;
+  color: #d9a590;
   transform: scaleX(-1);
 }
 
 .sabores-hero-seal {
   position: absolute;
-  left: 71%;
-  top: 37%;
+  left: 72%;
+  top: 36%;
   width: 6%;
   color: #a8503c;
   --seal-mono: #a8503c;
@@ -923,8 +1013,8 @@ textarea {
 }
 
 .sabores-hero-script {
-  left: 77.5%;
-  top: 41%;
+  left: 78.5%;
+  top: 40%;
   font-family: 'Allura', var(--font-script);
   font-size: clamp(1.4rem, 2.9vw, 3.1rem);
   line-height: 1.18;
@@ -944,7 +1034,7 @@ textarea {
 .sabores-hero-copy {
   position: absolute;
   left: 50%;
-  top: 39%;
+  top: 44%;
   width: 46%;
   transform: translateX(-50%);
   text-align: center;
