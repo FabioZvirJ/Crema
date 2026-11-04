@@ -1,6 +1,7 @@
 import {
   BerrySprig,
   OvalSeal,
+  ScriptSwoosh,
   LeafSprig,
   ScallopSeal,
   SubpageBackdrop,
@@ -64,7 +65,7 @@ export function SubpageHero({
     <section className="subpage-seal-hero">
       <SubpageBackdrop variant="seal" className="subpage-seal-bg-img" />
       <img
-        src="/assets/images/real/fachada-batel-juan.png"
+        src="/assets/images/real/interna-mahani.png"
         alt=""
         aria-hidden="true"
         className="subpage-seal-photo"
@@ -78,9 +79,10 @@ export function SubpageHero({
         pausa, é
         <br />
         vida.
+        <ScriptSwoosh className="subpage-seal-swoosh" />
       </p>
 
-      <div className="site-container subpage-seal-inner">
+      <div className="subpage-seal-inner">
         <div className="subpage-seal-copy">
           <h1 className="subpage-seal-title">{title}</h1>
           <p className="subpage-seal-subtitle">{subtitle}</p>

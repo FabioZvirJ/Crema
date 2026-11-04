@@ -465,33 +465,30 @@ export function SubpageBackdrop({
 
   return (
     <svg
-      viewBox="0 0 1000 374"
-      preserveAspectRatio="xMidYMid slice"
+      viewBox="0 0 1000 419"
+      preserveAspectRatio="xMidYMin slice"
       aria-hidden="true"
       className={className}
     >
       <defs>
-        <radialGradient id="ss-cream" cx="30%" cy="45%" r="80%">
-          <stop offset="0" stopColor="#fbf4ec" />
-          <stop offset="1" stopColor="#f1e6d9" />
-        </radialGradient>
-        <linearGradient id="ss-beige" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#efe0cc" />
-          <stop offset="1" stopColor="#dcc2a4" />
+        <linearGradient id="ss-panel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#ebdcc7" />
+          <stop offset="0.55" stopColor="#e2cdb2" />
+          <stop offset="1" stopColor="#d6b992" />
         </linearGradient>
-        <radialGradient id="ss-smoke" cx="70%" cy="0%" r="70%">
-          <stop offset="0" stopColor="#7a5a45" stopOpacity="0.25" />
-          <stop offset="1" stopColor="#7a5a45" stopOpacity="0" />
+        <radialGradient id="ss-glow" cx="78%" cy="30%" r="45%">
+          <stop offset="0" stopColor="#f7ecda" stopOpacity="0.8" />
+          <stop offset="1" stopColor="#f7ecda" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1000" height="374" fill="url(#ss-cream)" />
-      <path d="M770 -20H1020V400H700C730 300 765 120 770 -20Z" fill="url(#ss-beige)" />
-      <rect x="770" y="0" width="250" height="150" fill="url(#ss-smoke)" />
-      {/* terracotta strip peeking under the ribbon, bottom-left */}
-      <path d="M-20 318C100 318 210 340 340 392V420H-20Z" fill="#a94a3a" />
-      {/* one continuous burgundy ribbon: top-right, down and around under the title, ending as a hill on the left */}
-      <path d="M-20 246C60 240 130 254 190 292C250 328 330 342 430 328C520 314 560 240 585 150C600 90 630 30 690 -20H770C772 70 760 150 730 235C700 320 640 372 540 392C430 410 300 372 190 342C120 324 50 318 -20 322Z" fill="#6a0a22" />
-      <path d="M548 112C548 80 600 66 640 80C690 98 708 150 680 190C655 224 600 220 570 190C552 170 548 140 548 112Z" fill="#b0553f" />
+      {/* soft warm panel on the right, cut straight at the hero edge */}
+      <path d="M785 0H1000V374H626C640 330 646 270 684 186C730 130 762 96 776 52C781 36 784 18 785 0Z" fill="url(#ss-panel)" />
+      <path d="M785 0H1000V374H626C640 330 646 270 684 186C730 130 762 96 776 52C781 36 784 18 785 0Z" fill="url(#ss-glow)" />
+      {/* terracotta strip under the ribbon, bottom-left, spilling past the hero edge */}
+      <path d="M-20 352C60 354 150 364 240 380C200 402 160 414 120 412C70 410 30 392 -20 384Z" fill="#a94a3a" />
+      {/* one burgundy ribbon: from the top-right, down and across under the title, ending as a hill on the left */}
+      <path d="M-20 198C10 198 30 203 41 207C60 215 70 228 76 240C84 262 88 276 96 288C106 302 120 315 171 328C230 338 300 340 400 336C460 332 500 312 541 285C585 255 612 215 650 160C684 110 700 60 712 40C718 22 722 8 724 -20H785C783 20 778 40 775 52C760 90 745 120 690 180C662 215 652 265 645 322C640 350 632 366 585 392C540 408 500 406 437 402C380 398 320 396 287 377C250 362 160 352 100 352C60 350 20 346 -20 345Z" fill="#6a0a22" />
+      <path d="M575 140C570 105 610 82 650 88C690 94 712 120 706 155C700 190 668 208 638 204C600 200 580 175 575 140Z" fill="#b0553f" />
     </svg>
   );
 }
@@ -559,6 +556,16 @@ export function OvalSeal({ className = '' }: { readonly className?: string }) {
       >
         CL
       </text>
+    </svg>
+  );
+}
+
+/** Hand-drawn underline swoosh used under the script tagline. */
+export function ScriptSwoosh({ className = '' }: { readonly className?: string }) {
+  return (
+    <svg viewBox="0 0 160 24" fill="none" aria-hidden="true" className={className}>
+      <path d="M4 18C40 10 90 4 154 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M20 21C60 14 100 11 128 12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.7" />
     </svg>
   );
 }
