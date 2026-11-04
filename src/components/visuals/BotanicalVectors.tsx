@@ -471,27 +471,27 @@ export function SubpageBackdrop({
       className={className}
     >
       <defs>
-        <radialGradient id="ss-cream" cx="26%" cy="40%" r="80%">
+        <radialGradient id="ss-cream" cx="30%" cy="45%" r="80%">
           <stop offset="0" stopColor="#fbf4ec" />
-          <stop offset="1" stopColor="#f0e5d8" />
+          <stop offset="1" stopColor="#f1e6d9" />
         </radialGradient>
         <linearGradient id="ss-beige" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#efe0cc" />
-          <stop offset="1" stopColor="#d9bd9f" />
+          <stop offset="1" stopColor="#dcc2a4" />
         </linearGradient>
-        <radialGradient id="ss-smoke" cx="60%" cy="0%" r="70%">
-          <stop offset="0" stopColor="#7a5a45" stopOpacity="0.28" />
+        <radialGradient id="ss-smoke" cx="70%" cy="0%" r="70%">
+          <stop offset="0" stopColor="#7a5a45" stopOpacity="0.25" />
           <stop offset="1" stopColor="#7a5a45" stopOpacity="0" />
         </radialGradient>
       </defs>
       <rect width="1000" height="374" fill="url(#ss-cream)" />
-      <path d="M690 -20H1020V400H760C730 300 708 130 690 -20Z" fill="url(#ss-beige)" />
-      <rect x="690" y="0" width="330" height="160" fill="url(#ss-smoke)" />
-      <path d="M-20 218C60 206 130 220 200 244C270 268 350 290 440 312C520 330 540 366 560 400H-20Z" fill="#6a0a22" />
-      <path d="M-20 332C90 320 180 338 290 354C340 362 460 366 640 368C820 370 940 364 1020 358V400H-20Z" fill="#a94a3a" />
-      <path d="M572 -20H670C678 60 670 122 642 172C624 202 596 216 560 214C576 160 582 80 572 -20Z" fill="#6a0a22" />
-      <path d="M552 118C552 78 596 62 628 78C660 94 668 138 644 164C620 188 580 184 562 158C554 146 552 132 552 118Z" fill="#b0553f" />
-      <path d="M-20 374C180 358 380 386 640 368C820 356 940 374 1020 364V400H-20Z" fill="#f4ede4" />
+      <path d="M770 -20H1020V400H700C730 300 765 120 770 -20Z" fill="url(#ss-beige)" />
+      <rect x="770" y="0" width="250" height="150" fill="url(#ss-smoke)" />
+      {/* terracotta strip peeking under the ribbon, bottom-left */}
+      <path d="M-20 318C100 318 210 340 340 392V420H-20Z" fill="#a94a3a" />
+      {/* one continuous burgundy ribbon: top-right, down and around under the title, ending as a hill on the left */}
+      <path d="M-20 246C60 240 130 254 190 292C250 328 330 342 430 328C520 314 560 240 585 150C600 90 630 30 690 -20H770C772 70 760 150 730 235C700 320 640 372 540 392C430 410 300 372 190 342C120 324 50 318 -20 322Z" fill="#6a0a22" />
+      <path d="M548 112C548 80 600 66 640 80C690 98 708 150 680 190C655 224 600 220 570 190C552 170 548 140 548 112Z" fill="#b0553f" />
     </svg>
   );
 }
@@ -532,6 +532,33 @@ export function BerrySprig({ className = '' }: { readonly className?: string }) 
       </g>
       <path d="M46.8 231.0L90.5 212.1 M57.1 188.2L31.1 156.5 M67.3 142.1L98.4 127.4 M78.8 93.1L61.7 71.1 M93.2 41.4L113.1 33.8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
       <g stroke="currentColor" strokeWidth="1.8"><circle cx="110" cy="24" r="8" /><circle cx="124" cy="58" r="7" /><circle cx="84" cy="70" r="6" /><circle cx="112" cy="98" r="6" /></g>
+    </svg>
+  );
+}
+
+/** Vertical oval seal: text ring and a tall CL monogram. */
+export function OvalSeal({ className = '' }: { readonly className?: string }) {
+  return (
+    <svg viewBox="0 0 120 160" aria-hidden="true" className={className}>
+      <defs>
+        <path id="oval-ring" d="M60 80m-50 0a50 70 0 1 1 100 0a50 70 0 1 1 -100 0" />
+      </defs>
+      <ellipse cx="60" cy="80" rx="57" ry="77" fill="#f0e2cb" stroke="#d3b58f" strokeWidth="0.8" />
+      <ellipse cx="60" cy="80" rx="53" ry="73" fill="none" stroke="#b9996f" strokeWidth="0.5" />
+      <text fontSize="6.2" letterSpacing="2.2" fill="#6b5a44" fontFamily="var(--font-sans)">
+        <textPath href="#oval-ring">CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS · </textPath>
+      </text>
+      <text
+        x="60"
+        y="104"
+        textAnchor="middle"
+        fontFamily="var(--font-serif)"
+        fontSize="78"
+        letterSpacing="-14"
+        fill="#3f4a2e"
+      >
+        CL
+      </text>
     </svg>
   );
 }

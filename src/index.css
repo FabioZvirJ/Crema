@@ -808,7 +808,7 @@ textarea {
 .subpage-seal-inner {
   position: relative;
   z-index: 5;
-  padding-top: 1.5rem;
+  padding-top: 3rem;
 }
 
 .subpage-seal-copy {
@@ -866,66 +866,60 @@ textarea {
 
 .subpage-seal-leaf,
 .subpage-seal-leaf-2 {
-  right: 7.5%;
-  top: 66%;
-  width: 5.5%;
-  opacity: 0.55;
-  transform: rotate(16deg);
+  position: absolute;
+  height: auto;
+  color: #8c6d54;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .subpage-seal-leaf {
-  right: 0.5%;
+  right: 0;
   top: 52%;
-  width: 8%;
-  opacity: 0.8;
+  width: 9.5%;
+  opacity: 0.85;
   transform: scaleX(-1);
 }
 
 .subpage-seal-leaf-2 {
-  right: 7%;
-  top: 56%;
+  right: 8%;
+  top: 74%;
   width: 5.5%;
-  opacity: 0.5;
+  opacity: 0.55;
   transform: rotate(18deg);
 }
 
 .subpage-seal-photo {
   position: absolute;
-  left: 80%;
-  top: 36%;
-  width: 15%;
-  aspect-ratio: 0.8;
+  left: 66%;
+  top: 59%;
+  width: 36%;
+  height: 41%;
   object-fit: cover;
-  object-position: 50% 38%;
-  border-radius: 50%;
-  border: 0.35rem solid #f6ecdd;
-  box-shadow: 0 14px 28px rgba(60, 28, 18, 0.25);
+  object-position: 50% 42%;
+  border-radius: 46% 0 0 0 / 80% 0 0 0;
   pointer-events: none;
-  z-index: 2;
-}
-
-.subpage-seal-brand circle:first-of-type {
-  fill: #f3e9d8;
+  z-index: 1;
 }
 
 .subpage-seal-brand {
   position: absolute;
-  left: 68%;
-  top: 27%;
-  width: 8%;
-  color: #7c6a58;
+  left: 60.5%;
+  top: 38%;
+  width: 12%;
   pointer-events: none;
   z-index: 3;
+  filter: drop-shadow(0 8px 14px rgba(60, 28, 18, 0.22));
 }
 
 .subpage-seal-script {
-  left: 80%;
-  top: 17%;
+  left: 78%;
+  top: 28%;
   font-family: 'Allura', var(--font-script);
-  font-size: clamp(1.1rem, 2.1vw, 2.2rem);
-  line-height: 1.12;
+  font-size: clamp(1.2rem, 2.5vw, 2.6rem);
+  line-height: 1.1;
   color: #8a3a2a;
-  transform: rotate(-6deg);
+  transform: rotate(-9deg);
 }
 
 .sabores-hero-sprig {

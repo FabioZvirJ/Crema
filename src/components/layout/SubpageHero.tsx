@@ -1,6 +1,6 @@
 import {
   BerrySprig,
-  BrandSeal,
+  OvalSeal,
   LeafSprig,
   ScallopSeal,
   SubpageBackdrop,
@@ -71,11 +71,13 @@ export function SubpageHero({
       />
       <LeafSprig className="subpage-seal-leaf" />
       <LeafSprig className="subpage-seal-leaf-2" />
-      <BrandSeal className="subpage-seal-brand" />
+      <OvalSeal className="subpage-seal-brand" />
       <p className="hero-script subpage-seal-script" aria-hidden="true">
         Gelato é
         <br />
-        pausa, é vida.
+        pausa, é
+        <br />
+        vida.
       </p>
 
       <div className="site-container subpage-seal-inner">
