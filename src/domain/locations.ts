@@ -17,7 +17,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     mapsUrl:
       'https://www.google.com/maps/search/?api=1&query=Rua+Deputado+Antonio+Baby+18+Batel+Curitiba+PR',
     mapPinCode: 'B',
-    mapCoords: { x: 43, y: 27 },
+    coords: { lat: -25.4452, lng: -49.2934 },
   },
   {
     id: 'barigui',
@@ -33,7 +33,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     mapsUrl:
       'https://www.google.com/maps/search/?api=1&query=ParkShoppingBarigui+Curitiba+PR',
     mapPinCode: 'C',
-    mapCoords: { x: 56, y: 39 },
+    coords: { lat: -25.4361, lng: -49.3166 },
   },
   {
     id: 'mueller',
@@ -51,7 +51,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     mapsUrl:
       'https://www.google.com/maps/search/?api=1&query=Shopping+Mueller+Curitiba+PR',
     mapPinCode: 'M',
-    mapCoords: { x: 45, y: 63 },
+    coords: { lat: -25.4233, lng: -49.2705 },
   },
 ]);
 

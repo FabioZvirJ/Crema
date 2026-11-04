@@ -49,7 +49,7 @@ export interface LocationUnit {
   readonly tags: ReadonlyArray<UnitFeatureTag>;
   readonly mapsUrl: string;
   readonly mapPinCode: 'B' | 'C' | 'M';
-  readonly mapCoords: { readonly x: number; readonly y: number };
+  readonly coords: { readonly lat: number; readonly lng: number };
 }
 
 export interface HeroSlide {
