@@ -6,6 +6,7 @@ import {
   Heart,
   Star,
   Copy,
+  Plus,
 } from 'lucide-react';
 import { AppLink } from '@/app/router';
 import { BRAND_CONFIG } from '@/config/brand';
@@ -13,6 +14,14 @@ import { HERO_SLIDES, INSTAGRAM_FEED, VALUE_PROPOSITIONS } from '@/domain/conten
 import { FLAVORS_CATALOG } from '@/domain/flavors';
 import type { FlavorItem, ValueProposition } from '@/domain/types';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
+import {
+  BotanicalSprigRight,
+  BrandSeal,
+  DiamondLatticePattern,
+  FlavorMotifGarnish,
+  HeroBackdrop,
+  WaveBackdrop,
+} from '@/components/visuals/BotanicalVectors';
 
 interface HomePageProps {
   readonly onSelectFlavor: (flavor: FlavorItem) => void;
@@ -31,11 +40,42 @@ function ValuePropIcon({ icon }: { readonly icon: ValueProposition['icon'] }) {
   }
 }
 
-const HOME_SCOOP_HOTSPOTS = Object.freeze([
-  { id: 'pistacchio', left: '13.5%', top: '63.5%' },
-  { id: 'cioccolato-fondente', left: '38%', top: '36.5%' },
-  { id: 'frutti-di-bosco', left: '59.5%', top: '69%' },
-  { id: 'limone-siciliano', left: '81.5%', top: '39%' },
+const HOME_FEATURED_PHOTOS = Object.freeze([
+  {
+    image: '/assets/images/real/gelato-juan.png',
+    alt: 'Copinho de gelato de Pistacchio com crocante de pistache',
+    flavorId: 'pistacchio',
+    motif: 'pistachio',
+    left: '12%',
+    top: '62%',
+    position: '50% 58%',
+  },
+  {
+    image: '/assets/images/real/novos-sabores-1.png',
+    alt: 'Colherada de gelato de avelã com pedaços crocantes',
+    flavorId: 'nocciolotto',
+    motif: 'cacao',
+    left: '36%',
+    top: '32%',
+    position: '45% 40%',
+  },
+  {
+    image: '/assets/images/real/novos-sabores-2.png',
+    alt: 'Copinho de gelato cremoso com farofinha crocante',
+    flavorId: 'cuca-doce-de-leite',
+    motif: 'amarena',
+    left: '60%',
+    top: '70%',
+    position: '50% 50%',
+  },
+  {
+    image: '/assets/images/real/pistacchio-creminio.jpg',
+    alt: 'Casquinha artesanal de Pistacchio segurada na mão',
+    motif: 'pistachio',
+    left: '84%',
+    top: '36%',
+    position: '50% 40%',
+  },
 ] as const);
 
 export function HomePage({ onSelectFlavor }: HomePageProps) {
@@ -50,11 +90,21 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
     <div className="home-page">
       {/* 1. HERO SECTION */}
       <section className="home-hero" aria-label="Destaque Principal">
+        <HeroBackdrop className="home-hero-backdrop" />
         <img
-          src="/assets/images/hero-bg-clean.png"
-          alt="Casquinha artesanal Crema Lab com gelatos de Pistacchio e Stracciatella"
-          className="home-hero-full-bg"
+          src="/assets/images/real/pistacchio-creminio.jpg"
+          alt="Casquinha artesanal Crema Lab de Pistacchio segurada na mão"
+          className="home-hero-photo"
         />
+        <p className="home-hero-script" aria-hidden="true">
+          Gelato. é
+          <br />
+          pausa. é
+          <br />
+          vida.
+        </p>
+        <BrandSeal className="home-hero-seal" />
+        <BotanicalSprigRight className="home-hero-sprig" />
 
         <div className="site-container home-hero-inner">
           <div className="home-hero-copy">
@@ -106,14 +156,22 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
 
       {/* 3. SOBRE A CREMA LAB SECTION */}
       <section className="home-about-section" aria-labelledby="home-about-heading">
-        <img
-          src="/assets/images/home-about-bg-clean.png"
-          alt="Chef e economista Harlen Brandão degustando gelato artesanal no laboratório da Crema Lab"
-          className="home-about-full-bg"
-        />
+        <WaveBackdrop variant="about" className="home-about-full-bg" />
 
         <div className="site-container home-about-inner">
-          <div className="home-about-spacer" aria-hidden="true" />
+          <div className="home-about-photos">
+            <img
+              src="/assets/images/chef-harlen.png"
+              alt="Chef e economista Harlen Brandão degustando gelato artesanal no laboratório da Crema Lab"
+              className="home-about-chef-img"
+            />
+            <img
+              src="/assets/images/real/fachada-batel-juan.png"
+              alt="Fachada da Crema Lab no Batel, em Curitiba"
+              className="home-about-inset-img"
+              loading="lazy"
+            />
+          </div>
 
           <div className="home-about-copy-col">
             <span className="eyebrow-tag eyebrow-light">SOBRE A CREMA LAB</span>
@@ -149,6 +207,7 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
         className="home-featured-flavors"
         aria-labelledby="home-flavors-heading"
       >
+        <DiamondLatticePattern className="home-flavors-lattice" />
         <div className="site-container home-flavors-inner">
           <div className="home-flavors-copy">
             <span className="eyebrow-tag">SABORES EM DESTAQUE</span>
@@ -166,27 +225,55 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
           </div>
 
           <div className="home-scoops-stage">
-            <img
-              src="/assets/images/home-flavors-cluster.png"
-              alt="Sabores em destaque da Crema Lab: Pistacchio, Cioccolato Fondente, Frutti di Bosco e Limone Siciliano"
-              className="home-scoops-cluster-img"
-            />
+            {HOME_FEATURED_PHOTOS.map((photo) => {
+              const flavor =
+                'flavorId' in photo
+                  ? FLAVORS_CATALOG.find((f) => f.id === photo.flavorId)
+                  : undefined;
+              const content = (
+                <>
+                  <img
+                    src={photo.image}
+                    alt={photo.alt}
+                    className="home-scoop-photo"
+                    style={{ objectPosition: photo.position }}
+                    loading="lazy"
+                  />
+                  <span className="home-scoop-plus" aria-hidden="true">
+                    <Plus size={12} strokeWidth={2.2} />
+                  </span>
+                </>
+              );
 
-            {HOME_SCOOP_HOTSPOTS.map((spot) => {
-              const flavor = FLAVORS_CATALOG.find((f) => f.id === spot.id);
-              if (!flavor) return null;
               return (
-                <button
-                  key={spot.id}
-                  type="button"
-                  style={{ left: spot.left, top: spot.top }}
-                  onClick={() => onSelectFlavor(flavor)}
-                  className="home-scoop-hotspot"
-                  aria-label={`Ver ingredientes e história do sabor ${flavor.name}`}
-                  title={flavor.name}
+                <div
+                  key={photo.image}
+                  className="home-scoop-item"
+                  style={{ left: photo.left, top: photo.top }}
                 >
-                  <span className="sr-only">{flavor.name}</span>
-                </button>
+                  <div className="home-scoop-garnish" aria-hidden="true">
+                    <FlavorMotifGarnish motif={photo.motif} />
+                  </div>
+                  {flavor ? (
+                    <button
+                      type="button"
+                      onClick={() => onSelectFlavor(flavor)}
+                      className="home-scoop-hotspot"
+                      aria-label={`Ver ingredientes e história do sabor ${flavor.name}`}
+                      title={flavor.name}
+                    >
+                      {content}
+                    </button>
+                  ) : (
+                    <AppLink
+                      to="/sabores"
+                      className="home-scoop-hotspot"
+                      aria-label="Ver todos os sabores da Crema Lab"
+                    >
+                      {content}
+                    </AppLink>
+                  )}
+                </div>
               );
             })}
           </div>

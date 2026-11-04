@@ -69,11 +69,23 @@ export function LocationsPage() {
                 <span className="unit-top-kicker">{unit.headerLabel}</span>
 
                 <div className="unit-arch-frame">
-                  <img
-                    src={unit.image}
-                    alt={`Fachada da ${unit.name} — Crema Lab Curitiba`}
-                    className="unit-arch-img"
-                  />
+                  {unit.image ? (
+                    <img
+                      src={unit.image}
+                      alt={`Fachada da ${unit.name} — Crema Lab Curitiba`}
+                      className="unit-arch-img"
+                      style={unit.imagePosition ? { objectPosition: unit.imagePosition } : undefined}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="unit-arch-placeholder">
+                      <img
+                        src="/assets/images/real/logo-crema-preto.png"
+                        alt="Crema Lab"
+                        className="unit-arch-placeholder-logo"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="unit-card-body">

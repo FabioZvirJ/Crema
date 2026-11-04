@@ -24,6 +24,7 @@ import {
   BotanicalSprigLeft,
   DiamondLatticePattern,
   InstagramIcon,
+  WaveBackdrop,
 } from '@/components/visuals/BotanicalVectors';
 
 const INQUIRY_TABS: ReadonlyArray<{
@@ -431,14 +432,17 @@ export function ContactPage() {
         className="contact-events-wave-section"
         aria-labelledby="contact-events-heading"
       >
-        <img
-          src="/assets/images/contact-events-bg-clean.png"
-          alt="Carrinho de gelato artesanal da Crema Lab servindo convidados em evento"
-          className="contact-events-full-bg"
-        />
+        <WaveBackdrop variant="events" className="contact-events-full-bg" />
 
         <div className="site-container contact-events-inner">
-          <div className="contact-events-spacer" aria-hidden="true" />
+          <div className="contact-cart-arch">
+            <img
+              src="/assets/images/real/carretino-eventos-3.jpg"
+              alt="Carrinho de gelato artesanal da Crema Lab em frente à loja, usado em eventos"
+              className="contact-cart-img"
+              loading="lazy"
+            />
+          </div>
 
           <div className="contact-events-copy-col">
             <span className="eyebrow-tag eyebrow-coral">CREMA LAB EM EVENTOS</span>
