@@ -1,0 +1,1381 @@
+import { useMemo, useState } from 'react';
+import {
+  ArrowRight,
+  Beaker,
+  Check,
+  FileText,
+  FlaskConical,
+  MapPin,
+  Plus,
+  RotateCcw,
+  Sparkles,
+  ThermometerSnowflake,
+  Trash2,
+  X,
+} from 'lucide-react';
+import { SubpageHero } from '@/components/layout/SubpageHero';
+import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
+import { FLAVORS_CATALOG } from '@/domain/flavors';
+import { CURITIBA_UNITS } from '@/domain/locations';
+import type { FlavorCategory, FlavorItem } from '@/domain/types';
+import { SECURITY_LIMITS } from '@/config/security';
+import { sanitizeLiveInput, sanitizePlainText } from '@/security/sanitizer';
+import { buildSafeWhatsAppUrl } from '@/security/safeUrl';
+
+export type VesselId =
+  | 'casquinha-artesanal'
+  | 'casquinha-premium'
+  | 'copinho-lab'
+  | 'pote-termico';
+
+export interface LabVesselOption {
+  readonly id: VesselId;
+  readonly code: string;
+  readonly name: string;
+  readonly subtitle: string;
+  readonly description: string;
+  readonly maxScoops: number;
+  readonly volumeLabel: string;
+  readonly thermalSpec: string;
+  readonly badge: string;
+}
+
+export const LAB_VESSELS: ReadonlyArray<LabVesselOption> = Object.freeze([
+  {
+    id: 'casquinha-artesanal',
+    code: 'CONO-01',
+    name: 'Casquinha Artesanal',
+    subtitle: 'Cestinha crocante assada na loja',
+    description:
+      'Massa leve com toque de baunilha natural, assada diariamente na bancada para crocância máxima.',
+    maxScoops: 2,
+    volumeLabel: '140 ml',
+    thermalSpec: 'Consumo Imediato · Crocância 95%',
+    badge: 'Clássico da Loja',
+  },
+  {
+    id: 'casquinha-premium',
+    code: 'CONO-PR',
+    name: 'Casquinha Premium Belga',
+    subtitle: 'Borda banhada em chocolate + pistache',
+    description:
+      'Casquinha artesanal com borda selada em chocolate belga 70% e granella de pistache tostado.',
+    maxScoops: 2,
+    volumeLabel: '165 ml',
+    thermalSpec: 'Borda Selada · Contraste Quente/Frio',
+    badge: 'Assinatura Lab',
+  },
+  {
+    id: 'copinho-lab',
+    code: 'CUP-LAB',
+    name: 'Copinho de Ensaio',
+    subtitle: 'Degustação na bancada com biscoito',
+    description:
+      'Ideal para testar até 3 extrações puras sem interferência, finalizado com biscoito da casa.',
+    maxScoops: 3,
+    volumeLabel: '210 ml',
+    thermalSpec: 'Estabilidade Alta · Até 3 Camadas',
+    badge: 'Mais Versátil',
+  },
+  {
+    id: 'pote-termico',
+    code: 'THERM-500',
+    name: 'Cápsula Térmica (Viagem)',
+    subtitle: 'Isolamento criogênico 500g / 1kg',
+    description:
+      'Embalagem selada de dupla parede para levar suas extrações favoritas para casa sem perder textura.',
+    maxScoops: 3,
+    volumeLabel: '500 g',
+    thermalSpec: 'Isolamento 45 min · Viagem & Delivery',
+    badge: 'Para Viagem',
+  },
+]);
+
+export type CatalystId =
+  | 'farofinha-pistache'
+  | 'gianduia-quente'
+  | 'reducao-amarena'
+  | 'crumble-speculoos'
+  | 'flor-de-sal'
+  | 'puro';
+
+export interface LabCatalystOption {
+  readonly id: CatalystId;
+  readonly symbol: string;
+  readonly name: string;
+  readonly description: string;
+  readonly color: string;
+  readonly isVegan: boolean;
+  readonly crunchBoost: number;
+  readonly sweetnessBoost: number;
+}
+
+export const LAB_CATALYSTS: ReadonlyArray<LabCatalystOption> = Object.freeze([
+  {
+    id: 'farofinha-pistache',
+    symbol: '+Cr[Pi]',
+    name: 'Farofinha de Pistache Tostado',
+    description: 'Grãos de pistache levemente tostados que ampliam as notas amanteigadas.',
+    color: '#8ba870',
+    isVegan: true,
+    crunchBoost: 24,
+    sweetnessBoost: 6,
+  },
+  {
+    id: 'gianduia-quente',
+    symbol: '+Gi[70]',
+    name: 'Infusão de Gianduia Belga',
+    description: 'Fio aveludado de cacau e pasta pura de avelã que cristaliza em contato com o gelato.',
+    color: '#4e2a1e',
+    isVegan: false,
+    crunchBoost: 14,
+    sweetnessBoost: 18,
+  },
+  {
+    id: 'reducao-amarena',
+    symbol: '+Am[It]',
+    name: 'Redução de Amarena Silvestre',
+    description: 'Calda densa de cerejas italianas com acidez vibrante e perfume amendoado.',
+    color: '#7a1228',
+    isVegan: true,
+    crunchBoost: 8,
+    sweetnessBoost: 14,
+  },
+  {
+    id: 'crumble-speculoos',
+    symbol: '+Sp[Cr]',
+    name: 'Crocante de Speculoos',
+    description: 'Fragmentos de biscoito caramelizado com canela, noz-moscada e cravo.',
+    color: '#b8733e',
+    isVegan: true,
+    crunchBoost: 26,
+    sweetnessBoost: 12,
+  },
+  {
+    id: 'flor-de-sal',
+    symbol: '+NaCl',
+    name: 'Cristais de Flor de Sal',
+    description: 'Microcristais marinhos que ativam os receptores de cacau, caramelo e frutas.',
+    color: '#d8cfc2',
+    isVegan: true,
+    crunchBoost: 12,
+    sweetnessBoost: -6,
+  },
+  {
+    id: 'puro',
+    symbol: 'H₂O·0',
+    name: 'Extração Pura (Sem Catalisador)',
+    description: 'Apenas o gelato em estado puro, como sai da produtora vertical.',
+    color: '#9c8b7a',
+    isVegan: true,
+    crunchBoost: 0,
+    sweetnessBoost: 0,
+  },
+]);
+
+interface FlavorLabMeta {
+  readonly symbol: string;
+  readonly atomicNum: string;
+  readonly cremosidade: number;
+  readonly dulcor: number;
+  readonly frescor: number;
+  readonly brix: string;
+  readonly ph: string;
+}
+
+const FLAVOR_LAB_META: Readonly<Record<string, FlavorLabMeta>> = Object.freeze({
+  pistacchio: {
+    symbol: 'Pi',
+    atomicNum: '01',
+    cremosidade: 86,
+    dulcor: 66,
+    frescor: 58,
+    brix: '21°Bx',
+    ph: '6.4',
+  },
+  cioccolato: {
+    symbol: 'Ci',
+    atomicNum: '02',
+    cremosidade: 94,
+    dulcor: 72,
+    frescor: 38,
+    brix: '23°Bx',
+    ph: '6.2',
+  },
+  'frutas-vermelhas': {
+    symbol: 'Fv',
+    atomicNum: '03',
+    cremosidade: 62,
+    dulcor: 60,
+    frescor: 95,
+    brix: '19°Bx',
+    ph: '3.8',
+  },
+  avocado: {
+    symbol: 'Av',
+    atomicNum: '04',
+    cremosidade: 92,
+    dulcor: 58,
+    frescor: 70,
+    brix: '18°Bx',
+    ph: '6.5',
+  },
+  nocciolotto: {
+    symbol: 'No',
+    atomicNum: '05',
+    cremosidade: 95,
+    dulcor: 76,
+    frescor: 34,
+    brix: '24°Bx',
+    ph: '6.3',
+  },
+  'cuca-doce-de-leite': {
+    symbol: 'Cd',
+    atomicNum: '06',
+    cremosidade: 92,
+    dulcor: 88,
+    frescor: 32,
+    brix: '26°Bx',
+    ph: '6.4',
+  },
+  'fior-di-menta-cioccolato': {
+    symbol: 'Fm',
+    atomicNum: '07',
+    cremosidade: 84,
+    dulcor: 68,
+    frescor: 88,
+    brix: '21°Bx',
+    ph: '6.3',
+  },
+  mandarino: {
+    symbol: 'Ma',
+    atomicNum: '08',
+    cremosidade: 58,
+    dulcor: 52,
+    frescor: 96,
+    brix: '16°Bx',
+    ph: '3.9',
+  },
+  'manha-viva': {
+    symbol: 'Mv',
+    atomicNum: '09',
+    cremosidade: 68,
+    dulcor: 56,
+    frescor: 92,
+    brix: '17°Bx',
+    ph: '4.4',
+  },
+  limonello: {
+    symbol: 'Li',
+    atomicNum: '10',
+    cremosidade: 56,
+    dulcor: 62,
+    frescor: 98,
+    brix: '20°Bx',
+    ph: '3.5',
+  },
+  'batidinha-maracuja': {
+    symbol: 'Bm',
+    atomicNum: '11',
+    cremosidade: 76,
+    dulcor: 74,
+    frescor: 86,
+    brix: '22°Bx',
+    ph: '4.2',
+  },
+  'uva-terci': {
+    symbol: 'Ut',
+    atomicNum: '12',
+    cremosidade: 60,
+    dulcor: 70,
+    frescor: 89,
+    brix: '20°Bx',
+    ph: '3.9',
+  },
+  'mango-lab': {
+    symbol: 'Mg',
+    atomicNum: '13',
+    cremosidade: 72,
+    dulcor: 68,
+    frescor: 90,
+    brix: '19°Bx',
+    ph: '4.5',
+  },
+  'acerola-lemongrass': {
+    symbol: 'Ac',
+    atomicNum: '14',
+    cremosidade: 58,
+    dulcor: 54,
+    frescor: 97,
+    brix: '17°Bx',
+    ph: '3.6',
+  },
+  'caffe-della-casa': {
+    symbol: 'Cf',
+    atomicNum: '15',
+    cremosidade: 85,
+    dulcor: 70,
+    frescor: 48,
+    brix: '22°Bx',
+    ph: '5.8',
+  },
+  'zucca-caramellata': {
+    symbol: 'Zc',
+    atomicNum: '16',
+    cremosidade: 89,
+    dulcor: 80,
+    frescor: 42,
+    brix: '24°Bx',
+    ph: '6.1',
+  },
+  'foresta-nera': {
+    symbol: 'Fn',
+    atomicNum: '17',
+    cremosidade: 90,
+    dulcor: 82,
+    frescor: 60,
+    brix: '25°Bx',
+    ph: '5.9',
+  },
+});
+
+interface CuratedFormulaPreset {
+  readonly id: string;
+  readonly code: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly vesselId: VesselId;
+  readonly flavorIds: ReadonlyArray<string>;
+  readonly catalystId: CatalystId;
+}
+
+const CURATED_PRESETS: ReadonlyArray<CuratedFormulaPreset> = Object.freeze([
+  {
+    id: 'triade-siciliana',
+    code: 'EXP-01',
+    title: 'Dueto Siciliano & Pistache',
+    subtitle: 'Casquinha Premium + Pistacchio + Mandarino + Farofinha',
+    vesselId: 'casquinha-premium',
+    flavorIds: ['pistacchio', 'mandarino'],
+    catalystId: 'farofinha-pistache',
+  },
+  {
+    id: 'contraste-rubi',
+    code: 'EXP-02',
+    title: 'Contraste Cacau & Rubi',
+    subtitle: 'Casquinha Artesanal + Cioccolato + Frutas Vermelhas + Gianduia',
+    vesselId: 'casquinha-artesanal',
+    flavorIds: ['cioccolato', 'frutas-vermelhas'],
+    catalystId: 'gianduia-quente',
+  },
+  {
+    id: 'botanica-vegana',
+    code: 'EXP-03',
+    title: 'Tríade Botânica (100% Plant-Based)',
+    subtitle: 'Copinho de Ensaio + Pistacchio + Acerola + Manhã Viva + Flor de Sal',
+    vesselId: 'copinho-lab',
+    flavorIds: ['pistacchio', 'acerola-lemongrass', 'manha-viva'],
+    catalystId: 'flor-de-sal',
+  },
+]);
+
+function getFlavorMeta(flavorId: string): FlavorLabMeta {
+  return (
+    FLAVOR_LAB_META[flavorId] ?? {
+      symbol: 'Gl',
+      atomicNum: '00',
+      cremosidade: 80,
+      dulcor: 70,
+      frescor: 70,
+      brix: '20°Bx',
+      ph: '6.0',
+    }
+  );
+}
+
+/** Renders the vector laboratory vessel below the real gelato scoops inside the chamber. */
+function ChamberVesselGraphic({ vesselId }: { readonly vesselId: VesselId }) {
+  if (vesselId === 'casquinha-artesanal') {
+    return (
+      <svg
+        viewBox="0 0 220 190"
+        className="lab-chamber-vessel-svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="waffle-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#dfaa6c" />
+            <stop offset="55%" stopColor="#c68642" />
+            <stop offset="100%" stopColor="#9c6228" />
+          </linearGradient>
+        </defs>
+        {/* Scalloped waffle rim */}
+        <path
+          d="M44 18C62 28 86 22 110 26C134 22 158 28 176 18L116 178C113 185 107 185 104 178Z"
+          fill="url(#waffle-grad)"
+          stroke="#7d4918"
+          strokeWidth="2"
+        />
+        <ellipse
+          cx="110"
+          cy="18"
+          rx="66"
+          ry="11"
+          fill="#e7b97e"
+          stroke="#8a521d"
+          strokeWidth="1.8"
+        />
+        {/* Waffle lattice lines */}
+        <g stroke="#8a521d" strokeWidth="1.2" opacity="0.55">
+          <line x1="60" y1="26" x2="122" y2="148" />
+          <line x1="82" y1="27" x2="134" y2="120" />
+          <line x1="106" y1="28" x2="146" y2="94" />
+          <line x1="130" y1="27" x2="158" y2="68" />
+          <line x1="160" y1="26" x2="98" y2="148" />
+          <line x1="138" y1="27" x2="86" y2="120" />
+          <line x1="114" y1="28" x2="74" y2="94" />
+          <line x1="90" y1="27" x2="62" y2="68" />
+        </g>
+      </svg>
+    );
+  }
+
+  if (vesselId === 'casquinha-premium') {
+    return (
+      <svg
+        viewBox="0 0 220 190"
+        className="lab-chamber-vessel-svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="waffle-prem" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#dfaa6c" />
+            <stop offset="55%" stopColor="#c68642" />
+            <stop offset="100%" stopColor="#9c6228" />
+          </linearGradient>
+          <linearGradient id="choc-dip" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#4b2518" />
+            <stop offset="100%" stopColor="#2a1109" />
+          </linearGradient>
+        </defs>
+        {/* Cone body */}
+        <path
+          d="M44 18L116 178C113 185 107 185 104 178L176 18Z"
+          fill="url(#waffle-prem)"
+          stroke="#7d4918"
+          strokeWidth="2"
+        />
+        {/* Waffle lines on lower half */}
+        <g stroke="#8a521d" strokeWidth="1.2" opacity="0.55">
+          <line x1="72" y1="68" x2="120" y2="154" />
+          <line x1="92" y1="68" x2="132" y2="128" />
+          <line x1="148" y1="68" x2="100" y2="154" />
+          <line x1="128" y1="68" x2="88" y2="128" />
+        </g>
+        {/* Belgian chocolate dipped rim */}
+        <path
+          d="M44 18H176L156 72C146 66 138 78 128 70C118 62 112 78 100 70C88 62 80 76 66 68Z"
+          fill="url(#choc-dip)"
+          stroke="#230d06"
+          strokeWidth="1.5"
+        />
+        <ellipse
+          cx="110"
+          cy="18"
+          rx="66"
+          ry="11"
+          fill="#3b1b10"
+          stroke="#230d06"
+          strokeWidth="1.6"
+        />
+        {/* Roasted pistachio & hazelnut granella on the chocolate rim */}
+        <g fill="#9db876" opacity="0.95">
+          <circle cx="68" cy="36" r="3" />
+          <circle cx="84" cy="48" r="2.5" />
+          <circle cx="102" cy="34" r="3.2" />
+          <circle cx="118" cy="52" r="2.8" />
+          <circle cx="136" cy="38" r="3" />
+          <circle cx="150" cy="46" r="2.4" />
+        </g>
+        <g fill="#dfb57b" opacity="0.9">
+          <circle cx="76" cy="42" r="2.2" />
+          <circle cx="94" cy="44" r="2.6" />
+          <circle cx="112" cy="40" r="2.2" />
+          <circle cx="128" cy="46" r="2.5" />
+          <circle cx="144" cy="34" r="2.2" />
+        </g>
+      </svg>
+    );
+  }
+
+  if (vesselId === 'copinho-lab') {
+    return (
+      <svg
+        viewBox="0 0 220 155"
+        className="lab-chamber-vessel-svg lab-chamber-vessel-cup"
+        aria-hidden="true"
+      >
+        {/* Lab cup body */}
+        <path
+          d="M38 20H182L164 128C162 138 152 145 140 145H80C68 145 58 138 56 128Z"
+          fill="#f7efe3"
+          stroke="#b0553f"
+          strokeWidth="2"
+        />
+        {/* Terracotta double band */}
+        <path d="M44 54H176L173 72H47Z" fill="#b0553f" opacity="0.18" />
+        <ellipse
+          cx="110"
+          cy="20"
+          rx="74"
+          ry="10"
+          fill="#efe1ce"
+          stroke="#b0553f"
+          strokeWidth="2"
+        />
+        {/* CL monogram badge on cup */}
+        <circle
+          cx="110"
+          cy="86"
+          r="24"
+          fill="#fbf6ee"
+          stroke="#b0553f"
+          strokeWidth="1.4"
+        />
+        <text
+          x="110"
+          y="93"
+          textAnchor="middle"
+          fontFamily="var(--font-serif)"
+          fontSize="20"
+          fontWeight="600"
+          fill="#5c0a1e"
+        >
+          CL
+        </text>
+        {/* Graduated volume ticks on the side of the cup */}
+        <g stroke="#8a6d56" strokeWidth="1.2">
+          <line x1="152" y1="44" x2="164" y2="44" />
+          <line x1="150" y1="68" x2="160" y2="68" />
+          <line x1="148" y1="92" x2="158" y2="92" />
+          <line x1="146" y1="116" x2="154" y2="116" />
+        </g>
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      viewBox="0 0 220 165"
+      className="lab-chamber-vessel-svg lab-chamber-vessel-cup"
+      aria-hidden="true"
+    >
+      {/* Thermal capsule container */}
+      <path
+        d="M32 22H188L174 136C172 146 164 152 152 152H68C56 152 48 146 46 136Z"
+        fill="#5c0a1e"
+        stroke="#3a0612"
+        strokeWidth="2"
+      />
+      {/* Insulated cream label wrap */}
+      <path d="M39 58H181L176 112H44Z" fill="#f4ede4" />
+      <ellipse
+        cx="110"
+        cy="22"
+        rx="78"
+        ry="10"
+        fill="#e6d0b5"
+        stroke="#3a0612"
+        strokeWidth="2"
+      />
+      <text
+        x="110"
+        y="83"
+        textAnchor="middle"
+        fontFamily="var(--font-serif)"
+        fontSize="16"
+        fontWeight="600"
+        fill="#5c0a1e"
+      >
+        crema lab
+      </text>
+      <text
+        x="110"
+        y="99"
+        textAnchor="middle"
+        fontFamily="var(--font-sans)"
+        fontSize="7.5"
+        fontWeight="700"
+        letterSpacing="2"
+        fill="#b0553f"
+      >
+        CÁPSULA TÉRMICA · -14°C
+      </text>
+    </svg>
+  );
+}
+
+export function LabPage() {
+  const [vesselId, setVesselId] = useState<VesselId>('casquinha-premium');
+  const [selectedFlavorIds, setSelectedFlavorIds] = useState<string[]>([
+    'pistacchio',
+    'frutas-vermelhas',
+  ]);
+  const [catalystId, setCatalystId] = useState<CatalystId>('farofinha-pistache');
+  const [categoryFilter, setCategoryFilter] = useState<FlavorCategory>('todos');
+  const [selectedUnitId, setSelectedUnitId] = useState<string>('batel');
+  const [formulaCustomName, setFormulaCustomName] = useState<string>('');
+  const [ticketModalOpen, setTicketModalOpen] = useState<boolean>(false);
+
+  const currentVessel = useMemo(
+    () => LAB_VESSELS.find((v) => v.id === vesselId) ?? LAB_VESSELS[0]!,
+    [vesselId]
+  );
+
+  const currentCatalyst = useMemo(
+    () => LAB_CATALYSTS.find((c) => c.id === catalystId) ?? LAB_CATALYSTS[0]!,
+    [catalystId]
+  );
+
+  const selectedUnit = useMemo(
+    () => CURITIBA_UNITS.find((u) => u.id === selectedUnitId) ?? CURITIBA_UNITS[0]!,
+    [selectedUnitId]
+  );
+
+  const selectedFlavorItems = useMemo(
+    () =>
+      selectedFlavorIds
+        .map((id) => FLAVORS_CATALOG.find((item) => item.id === id))
+        .filter((item): item is FlavorItem => Boolean(item)),
+    [selectedFlavorIds]
+  );
+
+  const filteredReagents = useMemo(() => {
+    if (categoryFilter === 'todos') {
+      return FLAVORS_CATALOG;
+    }
+    return FLAVORS_CATALOG.filter(
+      (item) =>
+        item.category === categoryFilter ||
+        item.secondaryCategories?.includes(categoryFilter)
+    );
+  }, [categoryFilter]);
+
+  const handleSelectVessel = (nextVessel: LabVesselOption) => {
+    setVesselId(nextVessel.id);
+    setSelectedFlavorIds((prev) => prev.slice(0, nextVessel.maxScoops));
+  };
+
+  const handleAddOrToggleFlavor = (flavorId: string) => {
+    setSelectedFlavorIds((prev) => {
+      if (prev.includes(flavorId)) {
+        if (prev.length === 1) return prev; // Keep at least 1 extraction on the workbench
+        return prev.filter((id) => id !== flavorId);
+      }
+      if (prev.length < currentVessel.maxScoops) {
+        return [...prev, flavorId];
+      }
+      // Replace the top layer when already at max capacity
+      return [...prev.slice(0, prev.length - 1), flavorId];
+    });
+  };
+
+  const handleRemoveLayerAt = (index: number) => {
+    setSelectedFlavorIds((prev) => {
+      if (prev.length <= 1) return prev;
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const handleApplyPreset = (preset: CuratedFormulaPreset) => {
+    setVesselId(preset.vesselId);
+    setSelectedFlavorIds([...preset.flavorIds]);
+    setCatalystId(preset.catalystId);
+    setFormulaCustomName(preset.title);
+  };
+
+  const handleSurpriseFormula = () => {
+    const randomVessel =
+      LAB_VESSELS[Math.floor(Math.random() * LAB_VESSELS.length)] ?? LAB_VESSELS[0]!;
+    const shuffledFlavors = [...FLAVORS_CATALOG].sort(() => Math.random() - 0.5);
+    const pickedFlavors = shuffledFlavors
+      .slice(0, randomVessel.maxScoops)
+      .map((f) => f.id);
+    const randomCatalyst =
+      LAB_CATALYSTS[Math.floor(Math.random() * LAB_CATALYSTS.length)] ??
+      LAB_CATALYSTS[0]!;
+
+    setVesselId(randomVessel.id);
+    setSelectedFlavorIds(pickedFlavors);
+    setCatalystId(randomCatalyst.id);
+    setFormulaCustomName('Alquimia Surpresa da Chef');
+  };
+
+  const handleResetWorkbench = () => {
+    setVesselId('casquinha-premium');
+    setSelectedFlavorIds(['pistacchio', 'frutas-vermelhas']);
+    setCatalystId('farofinha-pistache');
+    setFormulaCustomName('');
+  };
+
+  // Compute live laboratory telemetry & formula code
+  const telemetry = useMemo(() => {
+    const metas = selectedFlavorItems.map((f) => getFlavorMeta(f.id));
+    const count = metas.length || 1;
+
+    const avgCremosidade = Math.round(
+      metas.reduce((acc, m) => acc + m.cremosidade, 0) / count
+    );
+    const rawDulcor =
+      Math.round(metas.reduce((acc, m) => acc + m.dulcor, 0) / count) +
+      Math.round(currentCatalyst.sweetnessBoost * 0.4);
+    const avgDulcor = Math.max(25, Math.min(98, rawDulcor));
+    const avgFrescor = Math.round(
+      metas.reduce((acc, m) => acc + m.frescor, 0) / count
+    );
+    const baseCrunch =
+      vesselId === 'casquinha-premium'
+        ? 82
+        : vesselId === 'casquinha-artesanal'
+          ? 74
+          : 42;
+    const texturaContraste = Math.min(98, baseCrunch + currentCatalyst.crunchBoost);
+
+    const symbolsChain = metas.map((m) => m.symbol).join('·');
+    const numericHash =
+      selectedFlavorItems.reduce((acc, item, idx) => acc + item.id.length * (idx + 17), 104) +
+      currentVessel.maxScoops * 31;
+    const formulaCode = `CL-${symbolsChain || 'GL'}-${numericHash}`;
+
+    const allSorbets = selectedFlavorItems.every((f) => f.category === 'sorbets');
+    const isPlantBased =
+      allSorbets &&
+      currentCatalyst.isVegan &&
+      vesselId !== 'casquinha-premium';
+
+    let chefNote = '';
+    if (selectedFlavorItems.length === 1) {
+      const f = selectedFlavorItems[0]!;
+      chefNote = `Extração monocromática de ${f.name}: ideal para apreciar a pureza dos ingredientes naturais. ${f.pairingNote ?? ''}`;
+    } else if (avgFrescor >= 75 && avgCremosidade >= 75) {
+      chefNote =
+        'Equilíbrio Clássico de Bancada: o contraste entre a base cremosa e a acidez viva da fruta limpa o paladar a cada colherada.';
+    } else if (avgCremosidade >= 85) {
+      chefNote =
+        'Alquimia Aveludada de Alta Densidade: combinação rica em pastas nobres e cacau/castanhas. Harmoniza perfeitamente com um espresso tirado na hora.';
+    } else {
+      chefNote =
+        'Perfil Botânico & Refrescante: extrações leves de frutas frescas com baixo dulçor e alta vivacidade aromática.';
+    }
+
+    return {
+      cremosidade: avgCremosidade,
+      dulcor: avgDulcor,
+      frescor: avgFrescor,
+      texturaContraste,
+      formulaCode,
+      isPlantBased,
+      chefNote,
+    };
+  }, [selectedFlavorItems, currentCatalyst, vesselId, currentVessel.maxScoops]);
+
+  const cleanFormulaTitle =
+    sanitizePlainText(formulaCustomName, { maxLength: 60 }) ||
+    `Fórmula ${telemetry.formulaCode}`;
+
+  const whatsappMessage = [
+    `Olá, Crema Lab! Criei uma fórmula no Laboratório do site:`,
+    `• Código de Bancada: #${telemetry.formulaCode}`,
+    `• Nome da Criação: ${cleanFormulaTitle}`,
+    `• Recipiente: ${currentVessel.name} (${currentVessel.code})`,
+    `• Extrações (${selectedFlavorItems.length}/${currentVessel.maxScoops}): ${selectedFlavorItems.map((f) => f.name).join(' + ')}`,
+    `• Catalisador / Finalização: ${currentCatalyst.name}`,
+    `• Unidade escolhida: ${selectedUnit.name}`,
+  ].join('\n');
+
+  const whatsappHref = buildSafeWhatsAppUrl(whatsappMessage);
+
+  return (
+    <div className="lab-page">
+      <SubpageHero
+        title="Laboratório Crema"
+        subtitle="Nossa bancada experimental: escolha o recipiente, combine extrações puras na câmara fria e crie sua fórmula autoral."
+        variant="lab"
+      />
+
+      <section className="lab-workbench-section">
+        <div className="site-container">
+          {/* Top Laboratory Protocol & Presets Bar */}
+          <div className="lab-protocol-bar">
+            <div className="lab-protocol-meta">
+              <span className="lab-protocol-badge">
+                <FlaskConical size={14} />
+                <span>PROTOCOLO #{telemetry.formulaCode}</span>
+              </span>
+              <span className="lab-protocol-stat">
+                <ThermometerSnowflake size={14} />
+                <span>CÂMARA: -14.2°C</span>
+              </span>
+              <span className="lab-protocol-stat">
+                <Beaker size={14} />
+                <span>
+                  CAPACIDADE: {selectedFlavorItems.length}/{currentVessel.maxScoops} EXTRAÇÕES
+                </span>
+              </span>
+            </div>
+
+            <div className="lab-protocol-actions">
+              <button
+                type="button"
+                onClick={handleSurpriseFormula}
+                className="lab-btn-surprise"
+              >
+                <Sparkles size={14} />
+                <span>FÓRMULA SURPRESA DA CHEF</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleResetWorkbench}
+                className="lab-btn-reset"
+                aria-label="Reiniciar bancada"
+              >
+                <RotateCcw size={13} />
+                <span>LIMPAR BANCADA</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Curated Formulas Strip */}
+          <div className="lab-presets-strip" aria-label="Fórmulas assinadas pela Chef">
+            <span className="lab-presets-label">FÓRMULAS DE REFERÊNCIA:</span>
+            <div className="lab-presets-list">
+              {CURATED_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => handleApplyPreset(preset)}
+                  className="lab-preset-chip"
+                >
+                  <span className="lab-preset-code">{preset.code}</span>
+                  <span className="lab-preset-title">{preset.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Main 2-Column Laboratory Workbench */}
+          <div className="lab-workbench-grid">
+            {/* LEFT COLUMN: 4 Interactive Formulation Stations */}
+            <div className="lab-stations-col">
+              {/* STATION 01: VESSEL / BASE */}
+              <article className="lab-station-card">
+                <header className="lab-station-header">
+                  <div>
+                    <span className="lab-station-step">ESTAÇÃO 01 · RECIPIENTE DE ENSAIO</span>
+                    <h2 className="lab-station-title">Escolha a Base da Fórmula</h2>
+                  </div>
+                  <span className="lab-station-spec">{currentVessel.volumeLabel}</span>
+                </header>
+
+                <div className="lab-vessel-grid">
+                  {LAB_VESSELS.map((vessel) => {
+                    const isSelected = vessel.id === vesselId;
+                    return (
+                      <button
+                        key={vessel.id}
+                        type="button"
+                        onClick={() => handleSelectVessel(vessel)}
+                        className={`lab-vessel-card ${isSelected ? 'is-active' : ''}`}
+                        aria-pressed={isSelected}
+                      >
+                        <div className="lab-vessel-card-top">
+                          <span className="lab-vessel-code">{vessel.code}</span>
+                          <span className="lab-vessel-badge">{vessel.badge}</span>
+                        </div>
+                        <h3 className="lab-vessel-name">{vessel.name}</h3>
+                        <p className="lab-vessel-sub">{vessel.subtitle}</p>
+                        <p className="lab-vessel-desc">{vessel.description}</p>
+                        <div className="lab-vessel-footer">
+                          <span>Até {vessel.maxScoops} extrações</span>
+                          <span>•</span>
+                          <span>{vessel.volumeLabel}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+
+              {/* STATION 02: PERIODIC TABLE OF FLAVOR REAGENTS */}
+              <article className="lab-station-card">
+                <header className="lab-station-header">
+                  <div>
+                    <span className="lab-station-step">
+                      ESTAÇÃO 02 · TABELA PERIÓDICA DE EXTRAÇÕES ({selectedFlavorItems.length}/
+                      {currentVessel.maxScoops})
+                    </span>
+                    <h2 className="lab-station-title">Selecione os Reagentes de Sabor</h2>
+                  </div>
+
+                  <div className="lab-reagent-filters" role="tablist" aria-label="Filtrar reagentes">
+                    {(
+                      [
+                        ['todos', 'TODOS'],
+                        ['gelatos', 'BASE LEITE'],
+                        ['sorbets', 'BASE ÁGUA / FRUTA'],
+                        ['especiais', 'AUTORAIS LAB'],
+                      ] as const
+                    ).map(([catId, label]) => (
+                      <button
+                        key={catId}
+                        type="button"
+                        role="tab"
+                        aria-selected={categoryFilter === catId}
+                        onClick={() => setCategoryFilter(catId)}
+                        className={`lab-filter-pill ${categoryFilter === catId ? 'is-active' : ''}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </header>
+
+                <div className="lab-periodic-grid">
+                  {filteredReagents.map((flavor) => {
+                    const meta = getFlavorMeta(flavor.id);
+                    const layerIndex = selectedFlavorIds.indexOf(flavor.id);
+                    const isSelected = layerIndex !== -1;
+
+                    return (
+                      <button
+                        key={flavor.id}
+                        type="button"
+                        onClick={() => handleAddOrToggleFlavor(flavor.id)}
+                        className={`lab-element-card ${isSelected ? 'is-selected' : ''}`}
+                        aria-pressed={isSelected}
+                      >
+                        <div className="lab-element-top">
+                          <span className="lab-element-num">{meta.atomicNum}</span>
+                          <span className="lab-element-brix">{meta.brix}</span>
+                        </div>
+
+                        <div className="lab-element-visual">
+                          <span className="lab-element-symbol">{meta.symbol}</span>
+                          {flavor.image && (
+                            <img
+                              src={flavor.image}
+                              alt=""
+                              loading="lazy"
+                              className="lab-element-scoop-img"
+                            />
+                          )}
+                        </div>
+
+                        <div className="lab-element-info">
+                          <span className="lab-element-name">{flavor.name}</span>
+                          <span className="lab-element-cat">
+                            {flavor.category === 'sorbets' ? 'Sorbet · Base Água' : 'Gelato · Base Leite'}
+                          </span>
+                        </div>
+
+                        <div className="lab-element-status">
+                          {isSelected ? (
+                            <span className="lab-element-layer-tag">
+                              <Check size={11} /> CAMADA 0{layerIndex + 1}
+                            </span>
+                          ) : (
+                            <span className="lab-element-add-tag">
+                              <Plus size={11} /> ADICIONAR
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+
+              {/* STATION 03: CATALYSTS & TOPPINGS */}
+              <article className="lab-station-card">
+                <header className="lab-station-header">
+                  <div>
+                    <span className="lab-station-step">
+                      ESTAÇÃO 03 · CATALISADORES SENSORIAIS (FINALIZAÇÃO)
+                    </span>
+                    <h2 className="lab-station-title">Adicione um Catalisador de Textura</h2>
+                  </div>
+                  <span className="lab-station-spec">{currentCatalyst.symbol}</span>
+                </header>
+
+                <div className="lab-catalyst-grid">
+                  {LAB_CATALYSTS.map((catalyst) => {
+                    const isSelected = catalyst.id === catalystId;
+                    return (
+                      <button
+                        key={catalyst.id}
+                        type="button"
+                        onClick={() => setCatalystId(catalyst.id)}
+                        className={`lab-catalyst-card ${isSelected ? 'is-active' : ''}`}
+                        aria-pressed={isSelected}
+                      >
+                        <div className="lab-catalyst-top">
+                          <span
+                            className="lab-catalyst-swatch"
+                            style={{ backgroundColor: catalyst.color }}
+                          />
+                          <span className="lab-catalyst-symbol">{catalyst.symbol}</span>
+                          {catalyst.isVegan && (
+                            <span className="lab-catalyst-vegan">VEGAN</span>
+                          )}
+                        </div>
+                        <h3 className="lab-catalyst-name">{catalyst.name}</h3>
+                        <p className="lab-catalyst-desc">{catalyst.description}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+
+              {/* STATION 04: BATCH IDENTIFICATION & UNIT */}
+              <article className="lab-station-card">
+                <header className="lab-station-header">
+                  <div>
+                    <span className="lab-station-step">
+                      ESTAÇÃO 04 · REGISTRO DE LOTE & UNIDADE DE EXPEDIÇÃO
+                    </span>
+                    <h2 className="lab-station-title">Assine sua Fórmula</h2>
+                  </div>
+                </header>
+
+                <div className="lab-batch-form">
+                  <div className="lab-batch-field">
+                    <label htmlFor="lab-formula-name" className="lab-batch-label">
+                      NOME DA SUA CRIAÇÃO AUTORAL (OPCIONAL)
+                    </label>
+                    <input
+                      id="lab-formula-name"
+                      type="text"
+                      placeholder="Ex.: Alquimia de Outono no Batel"
+                      value={formulaCustomName}
+                      maxLength={60}
+                      onChange={(e) =>
+                        setFormulaCustomName(
+                          sanitizeLiveInput(e.target.value, {
+                            maxLength: Math.min(60, SECURITY_LIMITS.MAX_NAME_LENGTH),
+                          })
+                        )
+                      }
+                      className="lab-batch-input"
+                    />
+                  </div>
+
+                  <div className="lab-batch-field">
+                    <span className="lab-batch-label">
+                      UNIDADE PARA EXPERIÊNCIA NA LOJA OU RETIRADA
+                    </span>
+                    <div className="lab-unit-selector">
+                      {CURITIBA_UNITS.map((unit) => {
+                        const active = unit.id === selectedUnitId;
+                        return (
+                          <button
+                            key={unit.id}
+                            type="button"
+                            onClick={() => setSelectedUnitId(unit.id)}
+                            className={`lab-unit-btn ${active ? 'is-active' : ''}`}
+                          >
+                            <MapPin size={14} />
+                            <div>
+                              <div className="lab-unit-btn-name">{unit.name}</div>
+                              <div className="lab-unit-btn-sub">{unit.headerLabel}</div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            {/* RIGHT COLUMN (STICKY): CRYOGENIC CHAMBER & TELEMETRY REPORT */}
+            <aside className="lab-chamber-col" aria-label="Câmara de visualização e laudo técnico">
+              <div className="lab-chamber-panel">
+                {/* Chamber Header */}
+                <div className="lab-chamber-topbar">
+                  <div>
+                    <span className="lab-chamber-eyebrow">CÂMARA DE ENSAIO CRIOGÊNICO</span>
+                    <h3 className="lab-chamber-formula-id">#{telemetry.formulaCode}</h3>
+                  </div>
+                  <div className="lab-chamber-status-pill">
+                    <span className="lab-status-led" />
+                    <span>ESTÁVEL · -14.2°C</span>
+                  </div>
+                </div>
+
+                {/* Visual Glass Chamber with Graduated Scale */}
+                <div className="lab-chamber-viewport">
+                  {/* Left graduated cylinder ruler */}
+                  <div className="lab-chamber-scale" aria-hidden="true">
+                    <span>250ml</span>
+                    <span>200ml</span>
+                    <span>150ml</span>
+                    <span>100ml</span>
+                    <span>50ml</span>
+                    <span>0ml</span>
+                  </div>
+
+                  {/* Center Live Stack: Catalyst + Real Scoops + Vessel */}
+                  <div className="lab-chamber-stage">
+                    {/* Catalyst particles floating on top */}
+                    {catalystId !== 'puro' && (
+                      <div className="lab-chamber-catalyst-badge">
+                        <span
+                          className="lab-chamber-catalyst-dot"
+                          style={{ backgroundColor: currentCatalyst.color }}
+                        />
+                        <span>{currentCatalyst.symbol} · {currentCatalyst.name}</span>
+                      </div>
+                    )}
+
+                    <div className="lab-chamber-stack">
+                      {/* Stacked real gelato scoops (top to bottom) */}
+                      <div className="lab-chamber-scoops">
+                        {[...selectedFlavorItems].reverse().map((flavor, revIdx) => {
+                          const actualIndex = selectedFlavorItems.length - 1 - revIdx;
+                          const meta = getFlavorMeta(flavor.id);
+                          return (
+                            <div
+                              key={`${flavor.id}-${actualIndex}`}
+                              className={`lab-scoop-layer lab-scoop-pos-${actualIndex}`}
+                            >
+                              {flavor.image ? (
+                                <img
+                                  src={flavor.image}
+                                  alt={flavor.name}
+                                  className="lab-scoop-layer-img"
+                                />
+                              ) : (
+                                <div className="lab-scoop-fallback">{meta.symbol}</div>
+                              )}
+                              <div className="lab-scoop-callout">
+                                <span className="lab-scoop-callout-code">
+                                  [{meta.symbol}] C0{actualIndex + 1}
+                                </span>
+                                <span className="lab-scoop-callout-name">{flavor.name}</span>
+                                {selectedFlavorItems.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveLayerAt(actualIndex)}
+                                    className="lab-scoop-remove-btn"
+                                    aria-label={`Remover camada ${flavor.name}`}
+                                  >
+                                    <Trash2 size={11} />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Vessel SVG directly underneath */}
+                      <ChamberVesselGraphic vesselId={vesselId} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sensory Telemetry Bars */}
+                <div className="lab-telemetry-box">
+                  <div className="lab-telemetry-header">
+                    <span>TELEMETRIA SENSORIAL DA AMOSTRA</span>
+                    <span>OVERRUN 22%</span>
+                  </div>
+
+                  <div className="lab-meter-list">
+                    <div className="lab-meter-row">
+                      <div className="lab-meter-labels">
+                        <span>Índice de Cremosidade (Emulsão)</span>
+                        <strong>{telemetry.cremosidade}%</strong>
+                      </div>
+                      <div className="lab-meter-track">
+                        <div
+                          className="lab-meter-fill lab-meter-fill-burgundy"
+                          style={{ width: `${telemetry.cremosidade}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="lab-meter-row">
+                      <div className="lab-meter-labels">
+                        <span>Equilíbrio de Dulçor (°Brix)</span>
+                        <strong>{telemetry.dulcor}%</strong>
+                      </div>
+                      <div className="lab-meter-track">
+                        <div
+                          className="lab-meter-fill lab-meter-fill-terracotta"
+                          style={{ width: `${telemetry.dulcor}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="lab-meter-row">
+                      <div className="lab-meter-labels">
+                        <span>Frescor Botânico & Acidez</span>
+                        <strong>{telemetry.frescor}%</strong>
+                      </div>
+                      <div className="lab-meter-track">
+                        <div
+                          className="lab-meter-fill lab-meter-fill-olive"
+                          style={{ width: `${telemetry.frescor}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="lab-meter-row">
+                      <div className="lab-meter-labels">
+                        <span>Contraste de Textura & Crocância</span>
+                        <strong>{telemetry.texturaContraste}%</strong>
+                      </div>
+                      <div className="lab-meter-track">
+                        <div
+                          className="lab-meter-fill lab-meter-fill-gold"
+                          style={{ width: `${telemetry.texturaContraste}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chef's Technical Analysis Card */}
+                <div className="lab-chef-report">
+                  <div className="lab-chef-report-header">
+                    <span className="lab-chef-report-tag">LAUDO TÉCNICO · CHEF HARLEN</span>
+                    {telemetry.isPlantBased && (
+                      <span className="lab-Report-vegan-pill">100% PLANT-BASED</span>
+                    )}
+                  </div>
+                  <p className="lab-chef-report-text">{telemetry.chefNote}</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="lab-chamber-actions">
+                  <SafeExternalLink
+                    href={whatsappHref}
+                    className="btn-coral lab-whatsapp-cta"
+                  >
+                    <span>PEDIR ESTA FÓRMULA NO WHATSAPP</span>
+                    <ArrowRight size={15} />
+                  </SafeExternalLink>
+
+                  <button
+                    type="button"
+                    onClick={() => setTicketModalOpen(true)}
+                    className="lab-ticket-btn"
+                  >
+                    <FileText size={14} />
+                    <span>EMITIR LAUDO DE BALCÃO (RECEITUÁRIO)</span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* Printable / Counter Prescription Ticket Modal */}
+      {ticketModalOpen && (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="lab-ticket-modal-title"
+          onClick={() => setTicketModalOpen(false)}
+        >
+          <div
+            className="lab-ticket-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="modal-close-btn"
+              onClick={() => setTicketModalOpen(false)}
+              aria-label="Fechar laudo de bancada"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="lab-ticket-paper">
+              <div className="lab-ticket-header">
+                <span className="lab-ticket-brand">CREMA LAB · LABORATÓRIO DE GELATO</span>
+                <h2 id="lab-ticket-modal-title" className="lab-ticket-title">
+                  {cleanFormulaTitle}
+                </h2>
+                <span className="lab-ticket-code">
+                  PROTOCOLO DE BANCADA #{telemetry.formulaCode}
+                </span>
+              </div>
+
+              <div className="lab-ticket-divider" />
+
+              <dl className="lab-ticket-specs">
+                <div className="lab-ticket-row">
+                  <dt>RECIPIENTE (BASE)</dt>
+                  <dd>
+                    {currentVessel.name} ({currentVessel.code})
+                  </dd>
+                </div>
+                <div className="lab-ticket-row">
+                  <dt>EXTRAÇÕES SELECIONADAS</dt>
+                  <dd>
+                    {selectedFlavorItems
+                      .map((f, idx) => `0${idx + 1}. ${f.name} [${getFlavorMeta(f.id).symbol}]`)
+                      .join(' · ')}
+                  </dd>
+                </div>
+                <div className="lab-ticket-row">
+                  <dt>CATALISADOR / TOPPING</dt>
+                  <dd>
+                    {currentCatalyst.name} ({currentCatalyst.symbol})
+                  </dd>
+                </div>
+                <div className="lab-ticket-row">
+                  <dt>TELEMETRIA</dt>
+                  <dd>
+                    Cremosidade {telemetry.cremosidade}% · Dulçor {telemetry.dulcor}% · Frescor{' '}
+                    {telemetry.frescor}%
+                  </dd>
+                </div>
+                <div className="lab-ticket-row">
+                  <dt>UNIDADE DE EXPEDIÇÃO</dt>
+                  <dd>{selectedUnit.name} — Curitiba/PR</dd>
+                </div>
+              </dl>
+
+              <div className="lab-ticket-divider" />
+
+              <p className="lab-ticket-note">
+                Apresente este receituário no balcão da unidade {selectedUnit.name} ou envie
+                diretamente pelo WhatsApp para consultar disponibilidade das extrações do dia.
+              </p>
+
+              <div className="lab-ticket-barcode" aria-hidden="true">
+                <div className="lab-barcode-bars" />
+                <span>*{telemetry.formulaCode}-CURITIBA*</span>
+              </div>
+
+              <div className="lab-ticket-actions">
+                <SafeExternalLink
+                  href={whatsappHref}
+                  className="btn-coral w-full justify-center"
+                >
+                  <span>ENVIAR LAUDO NO WHATSAPP</span>
+                  <ArrowRight size={14} />
+                </SafeExternalLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -66,6 +66,7 @@ describe('Crema Lab — Security Hardening Suite', () => {
     expect(normalizeSafeRoute('https://attacker.com')).toBe('/');
     expect(normalizeSafeRoute('/../../etc/passwd')).toBe('/');
     expect(normalizeSafeRoute('/sabores?filter=gelatos')).toBe('/sabores');
+    expect(normalizeSafeRoute('/LAB')).toBe('/lab');
     expect(normalizeSafeRoute('/UNIDADES')).toBe('/unidades');
     expect(normalizeSafeRoute('/contato')).toBe('/contato');
   });
@@ -185,6 +186,36 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
 
     expect(
       screen.getByRole('heading', { name: /Peça seu Gelato Artesanal/i })
+    ).toBeInTheDocument();
+  });
+
+  it('renders the interactive Laboratório Crema (/lab) workbench and issues a prescription ticket', () => {
+    render(<App initialRoute="/lab" />);
+
+    expect(
+      screen.getByRole('heading', { name: /Laboratório Crema/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Escolha a Base da Fórmula/i })
+    ).toBeInTheDocument();
+
+    // Switch vessel to Copinho de Ensaio (allows up to 3 extractions)
+    const copinhoBtn = screen.getByRole('button', { name: /Copinho de Ensaio/i });
+    fireEvent.click(copinhoBtn);
+
+    // Add a 3rd flavor reagent (NOCCIOLOTTO)
+    const nocciolottoReagent = screen.getByRole('button', { name: /NOCCIOLOTTO/i });
+    fireEvent.click(nocciolottoReagent);
+
+    // Open the Lab Prescription Ticket modal
+    const ticketBtn = screen.getByRole('button', {
+      name: /EMITIR LAUDO DE BALCÃO/i,
+    });
+    fireEvent.click(ticketBtn);
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(
+      screen.getByText(/CREMA LAB · LABORATÓRIO DE GELATO/i)
     ).toBeInTheDocument();
   });
 });

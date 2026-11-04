@@ -7,24 +7,24 @@ import React, {
   useState,
 } from 'react';
 
-export type AppRoute = '/' | '/sabores' | '/unidades' | '/contato' | '/sobre' | '/blog';
+export type AppRoute = '/' | '/sabores' | '/lab' | '/unidades' | '/contato' | '/sobre';
 
 const ALLOWED_ROUTES: ReadonlySet<AppRoute> = new Set<AppRoute>([
   '/',
   '/sabores',
+  '/lab',
   '/unidades',
   '/contato',
   '/sobre',
-  '/blog',
 ]);
 
 const ROUTE_TITLES: Readonly<Record<AppRoute, string>> = Object.freeze({
   '/': 'crema lab | Gelato • Café • Experiências — Curitiba',
   '/sabores': 'Nossos Sabores | crema lab — Gelato Artesanal',
+  '/lab': 'Laboratório de Criação | crema lab — Alquimia do Gelato',
   '/unidades': 'Nossas Unidades em Curitiba | crema lab',
   '/contato': 'Fale Conosco & Eventos | crema lab',
   '/sobre': 'Sobre a Crema Lab | Uma história de paixão, arte e sabor',
-  '/blog': 'Journal & Novidades | crema lab',
 });
 
 /**

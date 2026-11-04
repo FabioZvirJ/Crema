@@ -55,14 +55,14 @@ export function Footer() {
           <AppLink to="/sabores" className="footer-nav-link">
             Sabores
           </AppLink>
+          <AppLink to="/lab" className="footer-nav-link">
+            Lab
+          </AppLink>
           <AppLink to="/sobre" className="footer-nav-link">
             Sobre
           </AppLink>
           <AppLink to="/unidades" className="footer-nav-link">
             Unidades
-          </AppLink>
-          <AppLink to="/blog" className="footer-nav-link">
-            Blog
           </AppLink>
           <AppLink to="/contato" className="footer-nav-link">
             Contato
