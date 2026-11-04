@@ -7,7 +7,8 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     name: 'Unidade Batel',
     address: 'Rua Deputado Antônio Baby, 18 - Batel, Curitiba - PR',
     hoursPrimary: 'Terça a Sábado das 11h às 22h |',
-    image: '/assets/images/unit-batel.png',
+    image: '/assets/images/real/fachada-batel-juan.png',
+    imagePosition: '50% 40%',
     tags: [
       { icon: 'store', label: 'Loja de Rua' },
       { icon: 'home', label: 'Espaço Acolhedor' },
@@ -25,7 +26,6 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     address: 'Rua Prof. Pedro Viriato Parigot de Souza, 600 - Mossunguê, Curitiba - PR',
     hoursPrimary: 'Segunda a Sábado das 10h às 22h |',
     hoursSecondary: 'Domingo das 12h às 20h',
-    image: '/assets/images/unit-barigui.png',
     tags: [
       { icon: 'bag', label: 'Shopping L3' },
       { icon: 'gelato', label: 'Gelatos e Cafés' },
@@ -41,7 +41,8 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     name: 'Shopping Mueller',
     address: 'Av. Cândido de Abreu, 127 - Centro Cívico (Piso L2), Curitiba - PR',
     hoursPrimary: 'Diariamente, das 10h às 22h',
-    image: '/assets/images/unit-mueller.png',
+    image: '/assets/images/real/loja-mueller.jpg',
+    imagePosition: '50% 50%',
     tags: [
       { icon: 'pin', label: 'Novo Endereço' },
       { icon: 'building', label: 'Piso L2' },

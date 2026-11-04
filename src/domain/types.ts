@@ -20,9 +20,12 @@ export interface FlavorItem {
   readonly ingredientsText: string;
   readonly category: Exclude<FlavorCategory, 'todos'>;
   readonly secondaryCategories?: ReadonlyArray<Exclude<FlavorCategory, 'todos'>>;
-  readonly image: string;
-  readonly homeImage?: string;
+  readonly image?: string;
+  readonly imagePosition?: string;
+  readonly placeholderTone?: readonly [string, string];
   readonly motif: BotanicalMotif;
+  /** True when the flavor is in the vitrine right now (per recent press). */
+  readonly onMenu: boolean;
   readonly featuredOnHome?: boolean;
   readonly dietaryBadges: ReadonlyArray<string>;
   readonly pairingNote: string;
@@ -41,7 +44,8 @@ export interface LocationUnit {
   readonly address: string;
   readonly hoursPrimary: string;
   readonly hoursSecondary?: string;
-  readonly image: string;
+  readonly image?: string;
+  readonly imagePosition?: string;
   readonly tags: ReadonlyArray<UnitFeatureTag>;
   readonly mapsUrl: string;
   readonly mapPinCode: 'B' | 'C' | 'M';

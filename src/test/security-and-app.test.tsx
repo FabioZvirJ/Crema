@@ -129,13 +129,13 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
       screen.getByRole('heading', { name: /Nossos Sabores/i })
     ).toBeInTheDocument();
     expect(screen.getByText('PISTACCHIO')).toBeInTheDocument();
-    expect(screen.getByText('FIOR DI LATTE COM AMARENA')).toBeInTheDocument();
+    expect(screen.getByText('CAFFÈ DELLA CASA')).toBeInTheDocument();
 
     // Filter by SORBETS
     const sorbetsTab = screen.getByRole('tab', { name: /SORBETS/i });
     fireEvent.click(sorbetsTab);
-    expect(screen.getByText('LIMONE SICILIANO')).toBeInTheDocument();
-    expect(screen.getByText('FRUTTI DI BOSCO')).toBeInTheDocument();
+    expect(screen.getByText('ACEROLA AL LEMONGRASS')).toBeInTheDocument();
+    expect(screen.getByText('FRUTAS VERMELHAS')).toBeInTheDocument();
 
     // Navigate to Unidades
     const unidadesLinks = screen.getAllByRole('link', { name: /^unidades$/i });

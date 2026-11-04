@@ -107,12 +107,6 @@ export const INSTAGRAM_FEED: ReadonlyArray<InstagramItem> = Object.freeze([
     alt: 'Casquinha artesanal Crema Lab de Pistacchio segurada na mão',
     caption: 'Pistacchio tostado autoral: o grande clássico do nosso laboratório.',
   },
-  {
-    id: 'ig-6',
-    image: '/assets/images/real/gelato-juan.png',
-    alt: 'Copinho artesanal Crema Lab de Pistacchio com farofinha crocante',
-    caption: 'Feito todos os dias em pequenos lotes com ingredientes reais.',
-  },
 ]);
 
 export const EVENT_FAQ_CARDS: ReadonlyArray<EventFaqCard> = Object.freeze([
@@ -145,7 +139,7 @@ export const BLOG_ARTICLES: ReadonlyArray<BlogArticle> = Object.freeze([
       'Descubra como o balanceamento rigoroso de açúcares, fibras e gorduras naturais cria uma textura aveludada e menos congelada que o sorvete tradicional.',
     readTime: '4 min de leitura',
     date: 'Outubro 2025',
-    image: '/assets/images/chef-harlen.png',
+    image: '/assets/images/real/novos-sabores-1.png',
   },
   {
     id: 'pistache-tostado',
@@ -155,7 +149,7 @@ export const BLOG_ARTICLES: ReadonlyArray<BlogArticle> = Object.freeze([
       'Sem corantes nem aromatizantes sintéticos: a cor suave e o sabor profundo do nosso Pistacchio vêm exclusivamente da semente nobre.',
     readTime: '3 min de leitura',
     date: 'Outubro 2025',
-    image: '/assets/images/flavor-pistacchio.png',
+    image: '/assets/images/real/pistacchio-creminio.jpg',
   },
   {
     id: 'gelato-e-cafe',
@@ -165,7 +159,7 @@ export const BLOG_ARTICLES: ReadonlyArray<BlogArticle> = Object.freeze([
       'O contraste térmico entre um espresso extraído na hora e uma bola de Fior di Latte ou Doce de Leite transforma a pausa da tarde.',
     readTime: '3 min de leitura',
     date: 'Setembro 2025',
-    image: '/assets/images/exp-coffee-donut.png',
+    image: '/assets/images/real/cafe-juan.png',
   },
 ]);
 
