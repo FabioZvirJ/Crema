@@ -431,64 +431,115 @@ export function BrandSeal({ className = '' }: { readonly className?: string }) {
 }
 
 /**
- * Vector hero backdrops for the inner pages (replaces the old raster banners).
- * `sabores`: layered burgundy/terracotta waves on cream.
- * `seal`: burgundy swoosh, terracotta blob and wood-slice oval on a warm beige panel.
+ * Vector hero backdrops for the inner pages — each page has its own unique artwork
+ * and every hero fills the whole first screen (stretched with preserveAspectRatio="none"):
+ * - `sabores`: continuous burgundy/terracotta/sand wave ribbons on cream (top and bottom).
+ * - `seal` (Unidades): burgundy S-ribbon, terracotta crescent and a warm sand panel.
+ * - `sobre`: sand, terracotta and burgundy wave dome cradling the portrait.
+ * - `contato`: warm terracotta & burgundy double-wave cradle on cream.
  */
 export function SubpageBackdrop({
   variant,
   className = '',
 }: {
-  readonly variant: 'sabores' | 'seal';
+  readonly variant: 'sabores' | 'seal' | 'sobre' | 'contato' | 'lab';
   readonly className?: string;
 }) {
+  if (variant === 'lab') {
+    return (
+      <svg viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true" className={className}>
+        <defs>
+          <pattern id="lab-hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#cfb89b" strokeWidth="0.45" opacity="0.45" />
+            <circle cx="40" cy="40" r="0.9" fill="#b0553f" opacity="0.35" />
+          </pattern>
+        </defs>
+        <rect width="1000" height="380" fill="#f4ede4" />
+        <rect width="1000" height="380" fill="url(#lab-hero-grid)" />
+        {/* Top wave ribbons */}
+        <path d="M-20 42C140 68 310 72 480 50C650 28 810 30 1020 58V96C810 70 650 66 480 88C310 110 140 104 -20 78Z" fill="#e6d0b5" />
+        <path d="M-20 54C140 80 310 84 480 62C650 40 810 42 1020 70V92C810 64 650 62 480 84C310 106 140 102 -20 76Z" fill="#b0553f" />
+        <path d="M-20 68C140 94 310 98 480 76C650 54 810 56 1020 84V102C810 74 650 72 480 94C310 116 140 112 -20 86Z" fill="#5c0a1e" />
+        {/* Bottom laboratory wave cradle */}
+        <path d="M-20 228C110 250 240 288 390 304C520 318 660 310 790 286C890 268 965 244 1020 226V342C910 356 780 364 640 366C460 368 220 362 -20 340Z" fill="#e6d0b5" />
+        <path d="M-20 254C110 274 240 306 390 320C520 332 660 324 790 302C890 286 965 264 1020 248V326C910 342 780 352 640 356C460 360 220 354 -20 324Z" fill="#b0553f" />
+        <path d="M-20 280C115 298 245 322 395 334C525 344 660 338 790 318C890 302 965 282 1020 268V308C910 328 780 344 640 352C460 360 220 352 -20 312Z" fill="#5c0a1e" />
+      </svg>
+    );
+  }
+
   if (variant === 'sabores') {
     return (
-      <svg
-        viewBox="0 0 1000 526"
-        preserveAspectRatio="xMidYMid slice"
-        aria-hidden="true"
-        className={className}
-      >
-        <rect width="1000" height="526" fill="#f3eee3" />
-        {/* Soft, continuous layers: every shape runs past the edges or tucks under its neighbor. */}
-        <path d="M-20 70C150 92 280 92 420 72C560 52 680 44 800 62C890 76 960 88 1020 84V126C960 130 880 118 780 100C660 84 540 90 400 108C260 126 140 118 -20 92Z" fill="#b0553f" />
-        <path d="M-20 92C140 118 260 126 400 108C540 90 660 84 780 100C880 114 960 126 1020 122V150C960 154 880 142 780 128C660 112 540 118 400 136C260 154 140 146 -20 120Z" fill="#4a0a1a" />
-        <path d="M820 70C900 56 960 24 990 -20H1020V104C960 110 880 96 820 70Z" fill="#a24a36" />
-        <path d="M-20 462C120 488 260 492 400 476C540 460 640 452 780 466C880 476 960 488 1020 486V560H-20Z" fill="#b0553f" />
-        <path d="M-20 428C120 456 260 462 400 446C540 430 650 422 780 436C880 446 960 458 1020 456V490C960 492 880 480 780 470C650 456 540 462 400 480C260 496 120 490 -20 462Z" fill="#4a0a1a" />
-        <path d="M700 560C760 516 850 492 930 458C970 440 1000 420 1020 396V560Z" fill="#b65a40" />
-        <path d="M800 560C860 528 940 510 1020 496V560Z" fill="#8a3426" />
+      <svg viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true" className={className}>
+        <rect width="1000" height="380" fill="#f4ede4" />
+        <path d="M-20 58C150 82 290 84 440 66C590 48 720 42 850 58C925 68 975 76 1020 74V118C970 120 910 110 830 98C705 80 575 86 430 104C285 122 150 116 -20 90Z" fill="#e6d0b5" />
+        <path d="M-20 44C150 68 290 70 440 52C590 34 720 28 850 44C925 54 975 62 1020 60V88C975 90 920 82 840 70C710 52 580 58 435 76C290 94 150 88 -20 64Z" fill="#b0553f" />
+        <path d="M-20 62C150 86 290 88 435 70C580 52 710 46 840 64C920 76 975 84 1020 82V104C975 106 915 98 835 86C705 68 575 74 430 92C285 110 150 104 -20 80Z" fill="#5c0a1e" />
+        <path d="M-20 215C85 232 195 278 325 298C425 312 575 312 675 298C805 278 915 232 1020 215V334C915 350 805 360 685 364C575 368 425 368 315 364C195 360 85 350 -20 334Z" fill="#e6d0b5" />
+        <path d="M-20 245C85 262 195 298 325 314C425 326 575 326 675 314C805 298 915 262 1020 245V316C915 332 805 346 685 354C575 360 425 360 315 354C195 346 85 332 -20 316Z" fill="#b0553f" />
+        <path d="M-20 274C90 290 200 318 330 330C425 340 575 340 670 330C800 318 910 290 1020 274V304C910 322 800 342 680 356C575 366 425 366 320 356C200 342 90 322 -20 304Z" fill="#5c0a1e" />
+      </svg>
+    );
+  }
+
+  if (variant === 'sobre') {
+    return (
+      <svg viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true" className={className}>
+        <rect width="1000" height="360" fill="#f4ede4" />
+        <path d="M-20 0H380C340 44 260 64 170 82C85 98 20 126 -20 162Z" fill="#ebe0d0" />
+        <path d="M-20 174C28 134 102 104 192 86C282 68 360 44 405 0" fill="none" stroke="#dfd0bc" strokeWidth="1.2" />
+        <path d="M460 326C505 215 585 118 710 92C825 68 935 88 1020 124V316C945 330 855 328 755 312C655 296 555 304 460 326Z" fill="#e6d0b5" />
+        <path d="M-20 228C65 238 155 272 265 296C385 322 475 298 545 218C610 144 695 104 795 112C885 120 960 156 1020 196V312C955 328 875 330 785 314C680 296 580 302 475 326C355 352 215 348 85 324C35 314 -2 304 -20 296Z" fill="#b0553f" />
+        <path d="M-20 262C75 272 175 304 295 320C425 338 515 308 585 224C645 152 725 124 815 138C895 150 965 188 1020 228V292C955 312 875 318 780 306C675 292 575 304 465 332C345 360 195 352 65 322C20 312 -5 302 -20 294Z" fill="#5c0a1e" />
+        <circle cx="552" cy="148" r="36" fill="#b0553f" opacity="0.88" />
+      </svg>
+    );
+  }
+
+  if (variant === 'contato') {
+    return (
+      <svg viewBox="0 0 1000 350" preserveAspectRatio="none" aria-hidden="true" className={className}>
+        <defs>
+          <linearGradient id="ct-panel" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0" stopColor="#efe0cc" />
+            <stop offset="0.55" stopColor="#e5cfb4" />
+            <stop offset="1" stopColor="#d8bc9a" />
+          </linearGradient>
+        </defs>
+        <rect width="1000" height="350" fill="#f4ede4" />
+        <path d="M-20 0H420C375 42 290 58 190 74C95 90 25 118 -20 152Z" fill="#ebe0d0" />
+        <path d="M-20 162C35 126 115 98 210 80C305 62 385 42 440 0" fill="none" stroke="#dfd0bc" strokeWidth="1.2" />
+        <path d="M750 -10H1020V304C955 318 875 314 785 300C695 286 585 296 440 328C585 280 710 175 750 -10Z" fill="url(#ct-panel)" />
+        <path d="M800 -10H1020V242C935 254 855 232 795 182C755 148 762 70 800 -10Z" fill="#f4e6d4" opacity="0.55" />
+        <path d="M460 310C595 278 725 276 840 294C915 306 970 302 1020 286V318C965 332 900 334 820 320C715 302 595 306 480 318Z" fill="#b0553f" />
+        <path d="M-20 238C120 276 285 288 445 250C565 222 632 146 678 -10H755C720 162 645 264 495 304C325 348 145 336 -20 298Z" fill="#b0553f" />
+        <path d="M-20 270C135 306 310 314 475 272C610 238 685 142 725 -10H795C760 166 675 278 515 320C340 364 150 348 -20 312Z" fill="#5c0a1e" />
       </svg>
     );
   }
 
   return (
-    <svg
-      viewBox="0 0 1000 419"
-      preserveAspectRatio="xMidYMin slice"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg viewBox="0 0 1000 340" preserveAspectRatio="none" aria-hidden="true" className={className}>
       <defs>
-        <linearGradient id="ss-panel" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ebdcc7" />
-          <stop offset="0.55" stopColor="#e2cdb2" />
-          <stop offset="1" stopColor="#d6b992" />
+        <linearGradient id="ss-panel" x1="0" y1="0" x2="0.25" y2="1">
+          <stop offset="0" stopColor="#efe0cc" />
+          <stop offset="0.55" stopColor="#e5cfb4" />
+          <stop offset="1" stopColor="#d7ba96" />
         </linearGradient>
-        <radialGradient id="ss-glow" cx="78%" cy="30%" r="45%">
-          <stop offset="0" stopColor="#f7ecda" stopOpacity="0.8" />
-          <stop offset="1" stopColor="#f7ecda" stopOpacity="0" />
+        <radialGradient id="ss-glow" cx="80%" cy="28%" r="44%">
+          <stop offset="0" stopColor="#fbf0e1" stopOpacity="0.85" />
+          <stop offset="1" stopColor="#fbf0e1" stopOpacity="0" />
         </radialGradient>
       </defs>
-      {/* soft warm panel on the right, cut straight at the hero edge */}
-      <path d="M785 0H1000V374H626C640 330 646 270 684 186C730 130 762 96 776 52C781 36 784 18 785 0Z" fill="url(#ss-panel)" />
-      <path d="M785 0H1000V374H626C640 330 646 270 684 186C730 130 762 96 776 52C781 36 784 18 785 0Z" fill="url(#ss-glow)" />
-      {/* terracotta strip under the ribbon, bottom-left, spilling past the hero edge */}
-      <path d="M-20 352C60 354 150 364 240 380C200 402 160 414 120 412C70 410 30 392 -20 384Z" fill="#a94a3a" />
-      {/* one burgundy ribbon: from the top-right, down and across under the title, ending as a hill on the left */}
-      <path d="M-20 198C10 198 30 203 41 207C60 215 70 228 76 240C84 262 88 276 96 288C106 302 120 315 171 328C230 338 300 340 400 336C460 332 500 312 541 285C585 255 612 215 650 160C684 110 700 60 712 40C718 22 722 8 724 -20H785C783 20 778 40 775 52C760 90 745 120 690 180C662 215 652 265 645 322C640 350 632 366 585 392C540 408 500 406 437 402C380 398 320 396 287 377C250 362 160 352 100 352C60 350 20 346 -20 345Z" fill="#6a0a22" />
-      <path d="M575 140C570 105 610 82 650 88C690 94 712 120 706 155C700 190 668 208 638 204C600 200 580 175 575 140Z" fill="#b0553f" />
+      <rect width="1000" height="340" fill="#f4ede4" />
+      <path d="M-20 0H460C410 46 320 64 215 80C115 96 35 124 -20 162Z" fill="#ebe0d0" />
+      <path d="M-20 172C42 132 128 104 232 86C332 68 418 44 480 0" fill="none" stroke="#dfd0bc" strokeWidth="1.3" />
+      <path d="M750 -10H1020V296C955 312 875 310 785 298C705 288 615 296 490 322C585 245 680 130 750 -10Z" fill="url(#ss-panel)" />
+      <path d="M750 -10H1020V296C955 312 875 310 785 298C705 288 615 296 490 322C585 245 680 130 750 -10Z" fill="url(#ss-glow)" />
+      <path d="M490 302C605 272 725 270 835 288C910 300 970 296 1020 278V312C965 328 900 330 820 316C725 300 620 304 510 324Z" fill="#b0553f" />
+      <path d="M-20 255C55 262 155 278 265 298C205 330 135 338 72 335C28 333 -2 322 -20 312Z" fill="#b0553f" />
+      <path d="M558 114C554 78 590 56 630 62C670 68 694 96 686 132C678 166 644 184 610 178C576 172 561 146 558 114Z" fill="#b0553f" />
+      <path d="M-20 172C32 172 68 198 98 236C132 278 205 292 345 288C468 284 548 242 616 154C668 86 702 32 718 -12H782C770 42 738 106 688 174C648 228 620 276 592 310C572 334 512 338 405 330C315 322 252 304 175 294C108 286 42 284 -20 284Z" fill="#63091f" />
     </svg>
   );
 }
@@ -533,24 +584,24 @@ export function BerrySprig({ className = '' }: { readonly className?: string }) 
   );
 }
 
-/** Vertical oval seal: text ring and a tall CL monogram. */
+/** Vertical oval seal: text ring and classic interlocked CL monogram. */
 export function OvalSeal({ className = '' }: { readonly className?: string }) {
   return (
-    <svg viewBox="0 0 120 160" aria-hidden="true" className={className}>
+    <svg viewBox="0 0 128 156" aria-hidden="true" className={className}>
       <defs>
-        <path id="oval-ring" d="M60 80m-47 0a47 67 0 1 1 94 0a47 67 0 1 1 -94 0" />
+        <path id="oval-ring" d="M64 78m-49 0a49 63 0 1 1 98 0a49 63 0 1 1 -98 0" />
       </defs>
-      <ellipse cx="60" cy="80" rx="57" ry="77" fill="#f0e2cb" stroke="#d3b58f" strokeWidth="0.8" />
-      <ellipse cx="60" cy="80" rx="53" ry="73" fill="none" stroke="#b9996f" strokeWidth="0.5" />
-      <ellipse cx="60" cy="80" rx="39" ry="58" fill="none" stroke="#c9ab82" strokeWidth="0.4" />
-      <text fontSize="5.6" fill="#6b5a44" fontFamily="var(--font-sans)">
-        <textPath href="#oval-ring" textLength="300" lengthAdjust="spacing">
+      <ellipse cx="64" cy="78" rx="60" ry="74" fill="#f2e4ce" stroke="#d5b892" strokeWidth="1" />
+      <ellipse cx="64" cy="78" rx="55.5" ry="69.5" fill="none" stroke="#bfa078" strokeWidth="0.6" />
+      <ellipse cx="64" cy="78" rx="41" ry="54" fill="none" stroke="#ceb28c" strokeWidth="0.5" />
+      <text fontSize="5.5" letterSpacing="1.8" fill="#63513b" fontFamily="var(--font-sans)">
+        <textPath href="#oval-ring" textLength="308" lengthAdjust="spacing">
           CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS ·
         </textPath>
       </text>
-      <g fontFamily="var(--font-serif)" fill="#3f4a2e" textAnchor="middle">
-        <text x="45" y="92" fontSize="58">C</text>
-        <text x="72" y="108" fontSize="58">L</text>
+      <g fontFamily="var(--font-serif)" fill="#3b462b" textAnchor="middle">
+        <text x="56" y="88" fontSize="54" fontWeight="500">C</text>
+        <text x="72" y="104" fontSize="54" fontWeight="500">L</text>
       </g>
     </svg>
   );
@@ -562,6 +613,102 @@ export function ScriptSwoosh({ className = '' }: { readonly className?: string }
     <svg viewBox="0 0 160 24" fill="none" aria-hidden="true" className={className}>
       <path d="M4 18C40 10 90 4 154 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
       <path d="M20 21C60 14 100 11 128 12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.7" />
+    </svg>
+  );
+}
+
+/** Delicate line-art outline of Italy (with Brescia marker) for the Sobre page. */
+export function ItalyMapOutline({ className = '' }: { readonly className?: string }) {
+  return (
+    <svg viewBox="0 0 140 190" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M22 24C34 14 52 12 68 18C80 22 92 18 100 28C96 38 84 42 78 50C82 64 96 78 108 92C120 106 130 118 134 130C128 136 120 130 114 124C108 132 114 146 106 158C98 166 90 160 92 148C88 136 78 122 68 108C56 92 48 76 42 62C30 56 18 46 16 34C15 28 18 26 22 24Z"
+        stroke="currentColor"
+        strokeWidth="1.15"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Sicily & Sardinia */}
+      <path
+        d="M66 164C76 162 86 166 88 174C80 178 70 176 64 170C63 167 64 165 66 164Z"
+        stroke="currentColor"
+        strokeWidth="1.1"
+      />
+      <path
+        d="M26 106C32 104 36 112 34 124C30 130 24 128 22 118C22 112 24 108 26 106Z"
+        stroke="currentColor"
+        strokeWidth="1.1"
+      />
+      {/* Brescia pin dot in Northern Italy */}
+      <circle cx="54" cy="34" r="3" fill="#b0553f" />
+      <circle cx="54" cy="34" r="6.5" stroke="#b0553f" strokeWidth="0.9" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+/** Ornamental ceramic & terrazzo mosaic tile illustration for Capítulo 1 on the Sobre page. */
+export function MosaicTileIllustration({ className = '' }: { readonly className?: string }) {
+  return (
+    <svg viewBox="0 0 120 120" fill="none" aria-hidden="true" className={className}>
+      <rect width="120" height="120" rx="10" fill="#f7efe2" stroke="#d9c3a8" strokeWidth="1.2" />
+      <rect x="8" y="8" width="104" height="104" rx="6" stroke="#b0553f" strokeWidth="0.9" opacity="0.55" />
+      {/* Corner terracotta petals */}
+      <path d="M8 32C22 32 32 22 32 8" stroke="#6a0a22" strokeWidth="1.2" />
+      <path d="M88 8C88 22 98 32 112 32" stroke="#6a0a22" strokeWidth="1.2" />
+      <path d="M8 88C22 88 32 98 32 112" stroke="#6a0a22" strokeWidth="1.2" />
+      <path d="M88 112C88 98 98 88 112 88" stroke="#6a0a22" strokeWidth="1.2" />
+      {/* Center floral rosette */}
+      <g transform="translate(60 60)">
+        <path d="M0 -30C8 -18 8 -6 0 0C-8 -6 -8 -18 0 -30Z" fill="#b0553f" />
+        <path d="M0 30C8 18 8 6 0 0C-8 6 -8 18 0 30Z" fill="#b0553f" />
+        <path d="M-30 0C-18 -8 -6 -8 0 0C-6 8 -18 8 -30 0Z" fill="#b0553f" />
+        <path d="M30 0C18 -8 6 -8 0 0C6 8 18 8 30 0Z" fill="#b0553f" />
+        <path d="M-21 -21C-10 -18 -4 -10 0 0C-10 -4 -18 -10 -21 -21Z" fill="#d4956a" />
+        <path d="M21 -21C10 -18 4 -10 0 0C10 -4 18 -10 21 -21Z" fill="#d4956a" />
+        <path d="M-21 21C-10 18 -4 10 0 0C-10 4 -18 10 -21 21Z" fill="#d4956a" />
+        <path d="M21 21C10 18 4 10 0 0C10 4 18 10 21 21Z" fill="#d4956a" />
+        <circle r="7" fill="#5c0a1e" />
+        <circle r="3" fill="#f7efe2" />
+      </g>
+    </svg>
+  );
+}
+
+/** Fine-line laboratory glassware & botanical extraction vector for the Lab hero. */
+export function LabGlasswareIllustration({ className = '' }: { readonly className?: string }) {
+  return (
+    <svg viewBox="0 0 220 240" fill="none" aria-hidden="true" className={className}>
+      {/* Molecular hexagon ring */}
+      <g stroke="currentColor" strokeWidth="1.2" opacity="0.65">
+        <polygon points="48,38 68,26 88,38 88,62 68,74 48,62" />
+        <polygon points="54,41 68,33 82,41 82,59 68,67 54,59" strokeDasharray="2 2" />
+        <line x1="88" y1="38" x2="106" y2="28" />
+        <circle cx="110" cy="26" r="4" />
+        <line x1="48" y1="62" x2="32" y2="72" />
+        <circle cx="28" cy="74" r="3.5" />
+      </g>
+      {/* Erlenmeyer conical flask */}
+      <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M92 66H128" />
+        <path d="M98 66V102L62 178C57 188 64 200 76 200H144C156 200 163 188 158 178L122 102V66" />
+        {/* Liquid meniscus wave inside flask */}
+        <path
+          d="M74 156C88 150 102 162 114 156C126 150 136 154 146 156L156 177C159 184 154 193 144 193H76C66 193 61 184 64 177Z"
+          fill="currentColor"
+          fillOpacity="0.12"
+        />
+        {/* Measurement graduation ticks */}
+        <line x1="126" y1="130" x2="134" y2="130" />
+        <line x1="132" y1="145" x2="142" y2="145" />
+        <line x1="138" y1="160" x2="148" y2="160" />
+        <line x1="144" y1="175" x2="152" y2="175" />
+        {/* Floating bubbles & botanical leaf inside flask */}
+        <circle cx="96" cy="172" r="3.5" />
+        <circle cx="112" cy="164" r="2.5" />
+        <circle cx="106" cy="140" r="2" />
+        <circle cx="114" cy="84" r="2.2" />
+        <circle cx="106" cy="52" r="3" />
+      </g>
     </svg>
   );
 }

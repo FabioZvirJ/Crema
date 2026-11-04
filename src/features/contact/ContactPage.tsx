@@ -113,7 +113,7 @@ export function ContactPage() {
   return (
     <div className="contact-page">
       <SubpageHero
-        variant="seal-right"
+        variant="contato"
         title="Fale Conosco"
         subtitle="Dúvidas, sugestões ou o carrinho da Crema Lab no seu evento especial."
       />
