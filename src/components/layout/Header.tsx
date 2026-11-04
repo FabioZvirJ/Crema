@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { AppLink, useRouter, type AppRoute } from '@/app/router';
 import { BRAND_CONFIG } from '@/config/brand';
@@ -11,19 +11,57 @@ interface HeaderProps {
 
 const NAV_ITEMS: ReadonlyArray<{ readonly label: string; readonly to: AppRoute }> =
   Object.freeze([
+    { label: 'home', to: '/' },
     { label: 'sabores', to: '/sabores' },
+    { label: 'lab', to: '/lab' },
     { label: 'sobre', to: '/sobre' },
     { label: 'unidades', to: '/unidades' },
-    { label: 'blog', to: '/blog' },
     { label: 'contato', to: '/contato' },
   ]);
 
 export function Header({ onOpenOrderModal }: HeaderProps) {
   const { currentRoute } = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      const delta = y - lastScrollY.current;
+      setScrolled(y > 12);
+      if (y < 80) {
+        setHidden(false);
+      } else if (delta > 6) {
+        setHidden(true);
+      } else if (delta < -6) {
+        setHidden(false);
+      }
+      if (Math.abs(delta) > 6) lastScrollY.current = y;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const isHidden = hidden && !mobileMenuOpen;
 
   return (
-    <header className="site-header">
+    <header
+      className={`site-header ${scrolled ? 'is-scrolled' : ''} ${isHidden ? 'is-hidden' : ''}`}
+    >
       <div className="site-container header-inner">
         <AppLink
           to="/"
@@ -31,8 +69,53 @@ export function Header({ onOpenOrderModal }: HeaderProps) {
           aria-label="Crema Lab — Página Inicial"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <span className="brand-logo-main">{BRAND_CONFIG.name}</span>
-          <span className="brand-logo-sub">{BRAND_CONFIG.tagline}</span>
+          <span className="header-logo-badge" aria-hidden="true">
+            <svg viewBox="0 0 44 44" className="header-logo-badge-svg">
+              <circle
+                cx="22"
+                cy="22"
+                r="20"
+                fill="#f6ecdd"
+                stroke="#cfb18c"
+                strokeWidth="1"
+              />
+              <circle
+                cx="22"
+                cy="22"
+                r="17"
+                fill="none"
+                stroke="#b0553f"
+                strokeWidth="0.7"
+                strokeDasharray="1.5 2.2"
+              />
+              <text
+                x="19.5"
+                y="26"
+                textAnchor="middle"
+                fontFamily="var(--font-serif)"
+                fontSize="16"
+                fontWeight="600"
+                fill="#5c0a1e"
+              >
+                C
+              </text>
+              <text
+                x="25.5"
+                y="30"
+                textAnchor="middle"
+                fontFamily="var(--font-serif)"
+                fontSize="16"
+                fontWeight="600"
+                fill="#3b462b"
+              >
+                L
+              </text>
+            </svg>
+          </span>
+          <span className="brand-logo-text">
+            <span className="brand-logo-main">{BRAND_CONFIG.name}</span>
+            <span className="brand-logo-sub">{BRAND_CONFIG.tagline}</span>
+          </span>
         </AppLink>
 
         <nav className="header-nav" aria-label="Navegação Principal">
@@ -45,7 +128,19 @@ export function Header({ onOpenOrderModal }: HeaderProps) {
                 className={`header-nav-link ${isActive ? 'active' : ''}`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                {item.label}
+                {isActive && (
+                  <svg
+                    viewBox="0 0 12 12"
+                    aria-hidden="true"
+                    className="header-nav-spark"
+                  >
+                    <path
+                      d="M6 0L7.3 4.7L12 6L7.3 7.3L6 12L4.7 7.3L0 6L4.7 4.7Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                )}
+                <span>{item.label}</span>
               </AppLink>
             );
           })}
@@ -84,13 +179,6 @@ export function Header({ onOpenOrderModal }: HeaderProps) {
       {mobileMenuOpen && (
         <div className="mobile-nav-drawer">
           <nav className="mobile-nav-list" aria-label="Menu Mobile">
-            <AppLink
-              to="/"
-              className={`mobile-nav-item ${currentRoute === '/' ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              início
-            </AppLink>
             {NAV_ITEMS.map((item) => (
               <AppLink
                 key={item.to}
