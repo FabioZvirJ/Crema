@@ -538,24 +538,20 @@ export function OvalSeal({ className = '' }: { readonly className?: string }) {
   return (
     <svg viewBox="0 0 120 160" aria-hidden="true" className={className}>
       <defs>
-        <path id="oval-ring" d="M60 80m-50 0a50 70 0 1 1 100 0a50 70 0 1 1 -100 0" />
+        <path id="oval-ring" d="M60 80m-47 0a47 67 0 1 1 94 0a47 67 0 1 1 -94 0" />
       </defs>
       <ellipse cx="60" cy="80" rx="57" ry="77" fill="#f0e2cb" stroke="#d3b58f" strokeWidth="0.8" />
       <ellipse cx="60" cy="80" rx="53" ry="73" fill="none" stroke="#b9996f" strokeWidth="0.5" />
-      <text fontSize="6.2" letterSpacing="2.2" fill="#6b5a44" fontFamily="var(--font-sans)">
-        <textPath href="#oval-ring">CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS · </textPath>
+      <ellipse cx="60" cy="80" rx="39" ry="58" fill="none" stroke="#c9ab82" strokeWidth="0.4" />
+      <text fontSize="5.6" fill="#6b5a44" fontFamily="var(--font-sans)">
+        <textPath href="#oval-ring" textLength="300" lengthAdjust="spacing">
+          CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS ·
+        </textPath>
       </text>
-      <text
-        x="60"
-        y="104"
-        textAnchor="middle"
-        fontFamily="var(--font-serif)"
-        fontSize="78"
-        letterSpacing="-14"
-        fill="#3f4a2e"
-      >
-        CL
-      </text>
+      <g fontFamily="var(--font-serif)" fill="#3f4a2e" textAnchor="middle">
+        <text x="45" y="92" fontSize="58">C</text>
+        <text x="72" y="108" fontSize="58">L</text>
+      </g>
     </svg>
   );
 }
