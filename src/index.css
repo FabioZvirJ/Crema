@@ -891,43 +891,45 @@ textarea {
 }
 
 .sabores-hero-sprig-left {
-  left: 1%;
+  left: 1.5%;
   top: 42%;
-  width: 11.5%;
+  width: 10.5%;
 }
 
 .sabores-hero-sprig-left-2 {
-  left: 13.5%;
-  top: 58%;
-  width: 6.5%;
+  left: 12%;
+  top: 60%;
+  width: 5.5%;
+  transform: scaleX(-1);
 }
 
 .sabores-hero-sprig-right {
-  right: 1%;
-  top: 40%;
-  width: 9.5%;
-  color: #d9a590;
+  right: 2.5%;
+  top: 60%;
+  width: 6.5%;
+  color: #e0b3a0;
   transform: scaleX(-1);
 }
 
 .sabores-hero-seal {
   position: absolute;
-  left: 59.5%;
-  top: 38%;
-  width: 7.8%;
+  left: 71%;
+  top: 37%;
+  width: 6%;
   color: #a8503c;
+  --seal-mono: #a8503c;
   pointer-events: none;
   z-index: 2;
 }
 
 .sabores-hero-script {
-  left: 68%;
-  top: 45%;
+  left: 77.5%;
+  top: 41%;
   font-family: 'Allura', var(--font-script);
-  font-size: clamp(1.6rem, 3.9vw, 4.2rem);
+  font-size: clamp(1.4rem, 2.9vw, 3.1rem);
   line-height: 1.18;
   color: #2a1814;
-  transform: rotate(-5deg);
+  transform: rotate(-4deg);
 }
 
 .sabores-hero .sabores-hero-inner {
@@ -941,15 +943,16 @@ textarea {
 
 .sabores-hero-copy {
   position: absolute;
-  left: 21%;
-  top: 48%;
-  width: 40%;
-  text-align: left;
+  left: 50%;
+  top: 39%;
+  width: 46%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .sabores-hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 5.2vw, 5.6rem);
+  font-size: clamp(2.1rem, 4.8vw, 5.2rem);
   font-weight: 500;
   line-height: 1.04;
   white-space: nowrap;
@@ -957,9 +960,12 @@ textarea {
 }
 
 .sabores-hero-subtitle {
-  font-size: clamp(0.95rem, 1.5vw, 1.55rem);
-  line-height: 1.4;
-  max-width: 36rem;
+  text-wrap: balance;
+  font-size: clamp(0.95rem, 1.35vw, 1.4rem);
+  line-height: 1.45;
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
   color: var(--text-primary);
   margin-top: 0.4rem;
 }
