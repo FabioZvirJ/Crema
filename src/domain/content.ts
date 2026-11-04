@@ -1,5 +1,4 @@
 import type {
-  BlogArticle,
   EventFaqCard,
   HeroSlide,
   InstagramItem,
@@ -127,39 +126,6 @@ export const EVENT_FAQ_CARDS: ReadonlyArray<EventFaqCard> = Object.freeze([
     title: 'Opções sem lactose / veganas',
     description:
       'Opções sem lactose / veganas. Nossos sorbets de frutas e chocolate 70% são livres de laticínios e feitos com fruta pura.',
-  },
-]);
-
-export const BLOG_ARTICLES: ReadonlyArray<BlogArticle> = Object.freeze([
-  {
-    id: 'brescia-curitiba',
-    category: 'TRAJETÓRIA & TÉCNICA',
-    title: 'De Brescia a Curitiba: a ciência e a poesia do verdadeiro gelato italiano',
-    excerpt:
-      'Descubra como o balanceamento rigoroso de açúcares, fibras e gorduras naturais cria uma textura aveludada e menos congelada que o sorvete tradicional.',
-    readTime: '4 min de leitura',
-    date: 'Outubro 2025',
-    image: '/assets/images/real/novos-sabores-1.png',
-  },
-  {
-    id: 'pistache-tostado',
-    category: 'INGREDIENTES REAIS',
-    title: 'Por que tostamos e moemos ingredientes reais em pequenos lotes?',
-    excerpt:
-      'Sem corantes nem aromatizantes sintéticos: a cor suave e o sabor profundo do nosso Pistacchio vêm exclusivamente da semente nobre.',
-    readTime: '3 min de leitura',
-    date: 'Outubro 2025',
-    image: '/assets/images/real/pistacchio-creminio.jpg',
-  },
-  {
-    id: 'gelato-e-cafe',
-    category: 'EXPERIÊNCIAS',
-    title: 'A arte do Affogato: quando o café especial encontra o gelato artesanal',
-    excerpt:
-      'O contraste térmico entre um espresso extraído na hora e uma bola de Fior di Latte ou Doce de Leite transforma a pausa da tarde.',
-    readTime: '3 min de leitura',
-    date: 'Setembro 2025',
-    image: '/assets/images/real/cafe-juan.png',
   },
 ]);
 

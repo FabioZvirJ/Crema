@@ -26,6 +26,8 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     address: 'Rua Prof. Pedro Viriato Parigot de Souza, 600 - Mossunguê, Curitiba - PR',
     hoursPrimary: 'Segunda a Sábado das 10h às 22h |',
     hoursSecondary: 'Domingo das 12h às 20h',
+    image: '/assets/images/real/interna-mahani.png',
+    imagePosition: '50% 65%',
     tags: [
       { icon: 'bag', label: 'Shopping L3' },
       { icon: 'gelato', label: 'Gelatos e Cafés' },

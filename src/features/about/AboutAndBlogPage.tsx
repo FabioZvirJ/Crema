@@ -1,118 +1,253 @@
-import { ArrowRight, BookOpen, Award, Sparkles } from 'lucide-react';
+import { ArrowRight, FlaskConical, Leaf, Sparkles } from 'lucide-react';
 import { AppLink } from '@/app/router';
-import { BLOG_ARTICLES } from '@/domain/content';
 import { SubpageHero } from '@/components/layout/SubpageHero';
+import {
+  ItalyMapOutline,
+  LeafSprig,
+  MosaicTileIllustration,
+  ScallopSeal,
+} from '@/components/visuals/BotanicalVectors';
 
 export function AboutPage() {
   return (
     <div className="about-page">
       <SubpageHero
-        variant="seal-right"
-        title="Nossa Trajetória"
-        subtitle="Da economia ao laboratório de sabores: a busca pelo verdadeiro gelato purista em Curitiba."
+        variant="sobre"
+        title="Nossa História"
+        subtitle="Da paixão à ciência do gelato natural"
       />
 
-      <section className="about-story-section">
-        <div className="site-container about-story-grid">
-          <div className="about-portrait-frame">
-            <img
-              src="/assets/images/chef-harlen.png"
-              alt="Chef Harlen Brandão no laboratório da Crema Lab"
-              className="about-portrait-img"
-            />
-          </div>
-
-          <div className="about-story-copy">
-            <span className="eyebrow-tag">A ESSÊNCIA CREMA LAB</span>
-            <h2 className="about-story-heading">
-              Uma história de paixão, arte e rigor técnico
+      {/* CAPÍTULO 1 — A TRANSIÇÃO */}
+      <section className="about-chapter-section" aria-labelledby="chapter-1-heading">
+        <div className="site-container about-chapter-grid">
+          <div className="about-chapter-copy">
+            <span className="eyebrow-tag">CAPÍTULO 1 - A TRANSIÇÃO</span>
+            <h2 id="chapter-1-heading" className="about-story-heading">
+              Da Economia ao
+              <br />
+              Laboratório de Sabores
             </h2>
             <p className="about-story-p">
-              Após uma imersão profunda em Brescia, no norte da Itália, a
-              economista e chef Harlen Brandão trouxe a Curitiba a filosofia do
-              gelato purista: receitas formuladas do zero, sem bases prontas,
-              gorduras hidrogenadas ou aromatizantes sintéticos.
+              A economista Harlen Brandão trocou o ambiente corporativo e os
+              números pela alquimia dos sabores, movida pela busca por propósito
+              e autenticidade.
             </p>
             <p className="about-story-p">
-              No nosso laboratório, cada ingrediente dita a receita. Do pistache
-              tostado ao limão siciliano espremido no dia, respeitamos a
-              sazonalidade e produzimos em pequenos lotes diários para garantir
-              textura cremosa, temperatura ideal no paladar e sabor autêntico.
+              Motivada pelo desejo de criar algo vivo e verdadeiro, levou o rigor
+              analítico da economia para o balanceamento de receitas — cuidado
+              presente em cada detalhe, até no icônico piso em mosaico da loja.
             </p>
+          </div>
 
-            <div className="about-pillars-mini">
-              <div className="about-pillar-box">
-                <Award size={18} />
-                <div>
-                  <strong>Escola Italiana (Brescia)</strong>
-                  <span>Balanceamento técnico do zero</span>
-                </div>
+          <div className="about-collage-stage" aria-hidden="true">
+            {/* Formulation sheet card */}
+            <div className="about-collage-notebook">
+              <div className="about-notebook-header">
+                <span>BALANCIAMENTO TÉCNICO · LAB</span>
+                <span>LOTE #01</span>
               </div>
-              <div className="about-pillar-box">
-                <Sparkles size={18} />
-                <div>
-                  <strong>Rótulo Limpo</strong>
-                  <span>100% livre de pastas artificiais</span>
+              <div className="about-notebook-rows">
+                <div className="about-notebook-row">
+                  <span>Latte Fresco Integral</span>
+                  <span>62.4%</span>
+                </div>
+                <div className="about-notebook-row">
+                  <span>Pistacchio Puro Tostado</span>
+                  <span>11.8%</span>
+                </div>
+                <div className="about-notebook-row">
+                  <span>Zucchero &amp; Fibra Vegetal</span>
+                  <span>16.2%</span>
+                </div>
+                <div className="about-notebook-row">
+                  <span>Panna Fresca</span>
+                  <span>9.6%</span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <AppLink to="/sabores" className="btn-coral">
-                <span>EXPLORAR SABORES</span>
-                <ArrowRight size={14} />
-              </AppLink>
-              <AppLink to="/unidades" className="btn-terracotta">
-                <span>VISITAR UNIDADES</span>
-                <ArrowRight size={14} />
-              </AppLink>
+            {/* Terrazzo backdrop card */}
+            <div className="about-collage-terrazzo">
+              <img
+                src="/assets/images/real/salao-juan.png"
+                alt=""
+                className="about-collage-terrazzo-img"
+              />
+            </div>
+
+            {/* Ornamental tile & leaf */}
+            <LeafSprig className="about-collage-sprig" />
+            <MosaicTileIllustration className="about-collage-tile" />
+
+            {/* Chef Harlen in lab photo */}
+            <div className="about-collage-photo">
+              <img
+                src="/assets/images/chef-harlen.png"
+                alt="Chef Harlen Brandão formulando gelato artesanal"
+                className="about-collage-photo-img"
+              />
             </div>
           </div>
         </div>
       </section>
-    </div>
-  );
-}
 
-export function BlogPage() {
-  return (
-    <div className="blog-page">
-      <SubpageHero
-        variant="seal-right"
-        title="Journal do Lab"
-        subtitle="Histórias sobre ingredientes reais, cultura do gelato italiano, cafés especiais e bastidores."
-      />
+      {/* CAPÍTULO 2 — A IMERSÃO NA ITÁLIA */}
+      <section className="about-chapter-section about-chapter-alt" aria-labelledby="chapter-2-heading">
+        <div className="site-container about-chapter-grid about-chapter-grid-reverse">
+          <div className="about-brescia-visual">
+            <div className="about-brescia-photo-frame">
+              <img
+                src="/assets/images/chef-harlen.png"
+                alt="Chef Harlen Brandão degustando gelato artesanal no laboratório"
+                className="about-brescia-photo-img"
+              />
+            </div>
+            <ItalyMapOutline className="about-italy-map" />
+          </div>
 
-      <section className="blog-list-section">
-        <div className="site-container">
-          <div className="blog-cards-grid">
-            {BLOG_ARTICLES.map((article) => (
-              <article key={article.id} className="blog-card">
-                <div className="blog-card-thumb">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="blog-card-img"
-                  />
+          <div className="about-chapter-copy">
+            <span className="eyebrow-tag">CAPÍTULO 2 - A IMERSÃO NA ITÁLIA</span>
+            <h2 id="chapter-2-heading" className="about-story-heading">
+              A Jornada em Brescia
+            </h2>
+            <p className="about-story-p">
+              Em sua viagem de especialização a Brescia, no norte da Itália,
+              Harlen mergulhou na escola purista para aprender a arte do
+              verdadeiro gelato artesanal formulado do zero.
+            </p>
+            <p className="about-story-p">
+              Sem bases prontas, gorduras hidrogenadas ou aromatizantes
+              sintéticos, cada receita nasce da matéria-prima viva — respeitando
+              a textura cremosa, a temperatura ideal no paladar e o sabor real de
+              cada ingrediente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CAPÍTULO 3 — O NASCIMENTO DA CREMA LAB */}
+      <section className="about-chapter-section" aria-labelledby="chapter-3-heading">
+        <div className="site-container about-chapter-grid">
+          <div className="about-chapter-copy">
+            <span className="eyebrow-tag">CAPÍTULO 3 - O NASCIMENTO DA CREMA LAB</span>
+            <h2 id="chapter-3-heading" className="about-story-heading">
+              A Ciência e o Afeto
+              <br />
+              em Curitiba
+            </h2>
+            <p className="about-story-p">
+              Assim nasceu a Crema Lab em Curitiba: um espaço que une rigor
+              técnico italiano, hospitalidade e afeto para se tornar um refúgio
+              acolhedor na cidade.
+            </p>
+            <p className="about-story-p">
+              Hoje, em nossos três endereços em Curitiba, produzimos diariamente
+              em pequenos lotes gelatos autorais, sorbets veganos e cafés
+              especiais pensados para transformar cada pausa em memória.
+            </p>
+          </div>
+
+          <div className="about-curitiba-arch-wrap">
+            <div className="about-curitiba-arch">
+              <img
+                src="/assets/images/real/loja-mueller.jpg"
+                alt="Loja da Crema Lab em Curitiba com vitrine italiana e arquitetura em arcos"
+                className="about-curitiba-arch-img"
+                loading="lazy"
+              />
+            </div>
+            <ScallopSeal className="about-curitiba-seal" />
+          </div>
+        </div>
+      </section>
+
+      {/* FILOSOFIA DO LAB & CTA BLOB */}
+      <section className="about-philosophy-section" aria-labelledby="philosophy-heading">
+        <div className="site-container about-philosophy-grid">
+          <div className="about-philosophy-left">
+            <span className="eyebrow-tag">FILOSOFIA DO LAB</span>
+            <h2 id="philosophy-heading" className="about-story-heading">
+              Gelato Purista Sem Atalhos
+            </h2>
+
+            <div className="about-philosophy-pillars">
+              <div className="about-philosophy-item">
+                <div className="about-philosophy-icon">
+                  <Sparkles size={22} strokeWidth={1.5} />
                 </div>
-                <div className="blog-card-body">
-                  <div className="blog-card-meta">
-                    <span>{article.category}</span>
-                    <span>•</span>
-                    <span>{article.readTime}</span>
-                  </div>
-                  <h2 className="blog-card-title">{article.title}</h2>
-                  <p className="blog-card-excerpt">{article.excerpt}</p>
-                  <div className="mt-4">
-                    <AppLink to="/sabores" className="blog-read-link">
-                      <BookOpen size={13} />
-                      <span>Experimentar no Lab</span>
-                      <ArrowRight size={12} />
-                    </AppLink>
-                  </div>
+                <h3 className="about-philosophy-item-title">
+                  0% Aditivos
+                  <br />
+                  Artificiais
+                </h3>
+                <p className="about-philosophy-item-desc">
+                  Ingredientes 100% naturais e rótulo limpo.
+                </p>
+              </div>
+
+              <div className="about-philosophy-item">
+                <div className="about-philosophy-icon">
+                  <FlaskConical size={22} strokeWidth={1.5} />
                 </div>
-              </article>
-            ))}
+                <h3 className="about-philosophy-item-title">
+                  Processo
+                  <br />
+                  Lento
+                </h3>
+                <p className="about-philosophy-item-desc">
+                  Feito diariamente em pequenos lotes no lab.
+                </p>
+              </div>
+
+              <div className="about-philosophy-item">
+                <div className="about-philosophy-icon">
+                  <Leaf size={22} strokeWidth={1.5} />
+                </div>
+                <h3 className="about-philosophy-item-title">
+                  Alma
+                  <br />
+                  Brasileira
+                </h3>
+                <p className="about-philosophy-item-desc">
+                  Sabores autorais com ingredientes locais.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="about-cta-blob-card">
+            <svg
+              viewBox="0 0 520 300"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              className="about-cta-blob-bg"
+            >
+              <path
+                d="M360 15C445 0 520 35 520 120V300H320C360 220 310 90 360 15Z"
+                fill="#a94f3b"
+              />
+              <path
+                d="M175 18C275 -12 375 38 455 82C510 112 520 165 520 230L465 300H75C15 245 -18 165 25 98C62 40 110 38 175 18Z"
+                fill="#4f0917"
+              />
+              <path
+                d="M385 300C415 245 468 215 520 205V300Z"
+                fill="#a94f3b"
+              />
+            </svg>
+            <div className="about-cta-blob-content">
+              <h3 className="about-cta-blob-title">
+                Quer viver essa
+                <br />
+                experiência de perto?
+              </h3>
+              <div className="mt-4">
+                <AppLink to="/sabores" className="btn-coral">
+                  <span>CONHEÇA NOSSOS SABORES</span>
+                  <ArrowRight size={14} />
+                </AppLink>
+              </div>
+            </div>
           </div>
         </div>
       </section>

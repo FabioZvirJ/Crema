@@ -82,13 +82,3 @@ export interface EventFaqCard {
   readonly description: string;
 }
 
-export interface BlogArticle {
-  readonly id: string;
-  readonly category: string;
-  readonly title: string;
-  readonly excerpt: string;
-  readonly readTime: string;
-  readonly date: string;
-  readonly image: string;
-}
-
