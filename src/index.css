@@ -892,7 +892,7 @@ textarea {
 
 .sabores-hero-sprig-left {
   left: 1%;
-  top: 40%;
+  top: 42%;
   width: 11.5%;
 }
 
@@ -904,7 +904,7 @@ textarea {
 
 .sabores-hero-sprig-right {
   right: 1%;
-  top: 36%;
+  top: 40%;
   width: 9.5%;
   color: #d9a590;
   transform: scaleX(-1);
@@ -913,7 +913,7 @@ textarea {
 .sabores-hero-seal {
   position: absolute;
   left: 59.5%;
-  top: 35.5%;
+  top: 38%;
   width: 7.8%;
   color: #a8503c;
   pointer-events: none;
@@ -922,7 +922,7 @@ textarea {
 
 .sabores-hero-script {
   left: 68%;
-  top: 42%;
+  top: 45%;
   font-family: 'Allura', var(--font-script);
   font-size: clamp(1.6rem, 3.9vw, 4.2rem);
   line-height: 1.18;
@@ -942,7 +942,7 @@ textarea {
 .sabores-hero-copy {
   position: absolute;
   left: 21%;
-  top: 44%;
+  top: 48%;
   width: 40%;
   text-align: left;
 }
