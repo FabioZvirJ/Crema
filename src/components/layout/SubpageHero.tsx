@@ -63,6 +63,12 @@ export function SubpageHero({
   return (
     <section className="subpage-seal-hero">
       <SubpageBackdrop variant="seal" className="subpage-seal-bg-img" />
+      <img
+        src="/assets/images/real/fachada-batel-juan.png"
+        alt=""
+        aria-hidden="true"
+        className="subpage-seal-photo"
+      />
       <LeafSprig className="subpage-seal-leaf" />
       <LeafSprig className="subpage-seal-leaf-2" />
       <BrandSeal className="subpage-seal-brand" />

@@ -789,7 +789,7 @@ textarea {
   aspect-ratio: 1000 / 374;
   min-height: 19.375rem;
   background-color: #f3ece3;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   align-items: center;
 }
@@ -866,18 +866,18 @@ textarea {
 
 .subpage-seal-leaf,
 .subpage-seal-leaf-2 {
-  position: absolute;
-  height: auto;
-  color: #a98b70;
-  pointer-events: none;
-  z-index: 2;
+  right: 7.5%;
+  top: 66%;
+  width: 5.5%;
+  opacity: 0.55;
+  transform: rotate(16deg);
 }
 
 .subpage-seal-leaf {
   right: 0.5%;
-  top: 44%;
+  top: 52%;
   width: 8%;
-  opacity: 0.75;
+  opacity: 0.8;
   transform: scaleX(-1);
 }
 
@@ -889,28 +889,43 @@ textarea {
   transform: rotate(18deg);
 }
 
+.subpage-seal-photo {
+  position: absolute;
+  left: 80%;
+  top: 36%;
+  width: 15%;
+  aspect-ratio: 0.8;
+  object-fit: cover;
+  object-position: 50% 38%;
+  border-radius: 50%;
+  border: 0.35rem solid #f6ecdd;
+  box-shadow: 0 14px 28px rgba(60, 28, 18, 0.25);
+  pointer-events: none;
+  z-index: 2;
+}
+
 .subpage-seal-brand circle:first-of-type {
   fill: #f3e9d8;
 }
 
 .subpage-seal-brand {
   position: absolute;
-  left: 77%;
-  top: 22%;
-  width: 9.5%;
+  left: 68%;
+  top: 27%;
+  width: 8%;
   color: #7c6a58;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .subpage-seal-script {
-  left: 87%;
-  top: 13%;
+  left: 80%;
+  top: 17%;
   font-family: 'Allura', var(--font-script);
-  font-size: clamp(1.1rem, 2.3vw, 2.4rem);
-  line-height: 1.15;
+  font-size: clamp(1.1rem, 2.1vw, 2.2rem);
+  line-height: 1.12;
   color: #8a3a2a;
-  transform: rotate(-8deg);
+  transform: rotate(-6deg);
 }
 
 .sabores-hero-sprig {
@@ -1539,13 +1554,58 @@ textarea {
   overflow: hidden;
 }
 
-.curitiba-map-img {
+.curitiba-map-canvas {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 21rem;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: #efe5d7;
+  z-index: 0;
 }
 
-.map-pin-hotspot {
+/* Tint the neutral map tiles toward the cream / terracotta palette */
+.curitiba-map-canvas .leaflet-tile-pane {
+  filter: sepia(0.6) saturate(0.85) hue-rotate(-12deg) contrast(0.92) brightness(1.05);
+}
+
+.crema-pin-wrap {
+  background: none;
+  border: 0;
+}
+
+.crema-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #b0553f;
+  box-shadow: 0 6px 12px rgba(40, 12, 8, 0.35);
+  border: 2px solid #fbf3e8;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.crema-pin > span {
+  transform: rotate(45deg);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.crema-pin-wrap.is-selected .crema-pin {
+  background: #6a0a22;
+  transform: rotate(-45deg) scale(1.18);
+}
+
+.curitiba-map-canvas .leaflet-control-attribution {
+  font-size: 0.6rem;
+  background: rgba(251, 243, 232, 0.85);
+}
+
+.map-pin-hotspot-unused {
   position: absolute;
   width: 2.125rem;
   height: 2.125rem;
@@ -1557,8 +1617,8 @@ textarea {
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.map-pin-hotspot.selected,
-.map-pin-hotspot:hover {
+.map-pin-hotspot-unused.selected,
+.map-pin-hotspot-unused:hover {
   border-color: var(--accent-coral);
   transform: translate(-50%, -50%) scale(1.18);
 }
@@ -2693,6 +2753,7 @@ textarea {
   .sabores-hero-seal,
   .sabores-hero-script,
   .subpage-seal-brand,
+  .subpage-seal-photo,
   .subpage-seal-leaf,
   .subpage-seal-leaf-2,
   .subpage-seal-script {
