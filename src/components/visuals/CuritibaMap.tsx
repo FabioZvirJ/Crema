@@ -47,9 +47,15 @@ export function CuritibaMap() {
         map.fitBounds(bounds, { padding: [48, 48] });
 
         CURITIBA_UNITS.forEach((unit) => {
+          const pinOuter = document.createElement('span');
+          pinOuter.className = 'crema-pin';
+          const pinInner = document.createElement('span');
+          pinInner.textContent = unit.mapPinCode;
+          pinOuter.appendChild(pinInner);
+
           const icon = L.divIcon({
             className: 'crema-pin-wrap',
-            html: `<span class="crema-pin"><span>${unit.mapPinCode}</span></span>`,
+            html: pinOuter,
             iconSize: [38, 46],
             iconAnchor: [19, 44],
           });

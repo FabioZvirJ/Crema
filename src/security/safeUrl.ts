@@ -2,9 +2,12 @@ import { ALLOWED_EXTERNAL_HOSTS, ALLOWED_PROTOCOLS } from '@/config/security';
 import { BRAND_CONFIG } from '@/config/brand';
 import { sanitizePlainText } from './sanitizer';
 
+const URL_CONTROL_CHARS_REGEX = /[\u0000-\u001F\u007F]/;
+
 /**
  * Validates that a URL is safe to navigate to or render in an `href`.
- * Blocks `javascript:`, `data:`, `vbscript:`, protocol-relative `//`, and unapproved external hosts.
+ * Blocks `javascript:`, `data:`, `vbscript:`, protocol-relative `//`, control characters,
+ * embedded credentials, non-standard ports, and unapproved external hosts.
  */
 export function isSafeExternalUrl(rawUrl: string): boolean {
   if (!rawUrl || typeof rawUrl !== 'string') {
@@ -12,7 +15,21 @@ export function isSafeExternalUrl(rawUrl: string): boolean {
   }
 
   const trimmed = rawUrl.trim();
-  if (trimmed.startsWith('//') || trimmed.startsWith('\\')) {
+  if (
+    !trimmed ||
+    trimmed.startsWith('//') ||
+    trimmed.startsWith('\\') ||
+    URL_CONTROL_CHARS_REGEX.test(trimmed)
+  ) {
+    return false;
+  }
+
+  try {
+    const decoded = decodeURIComponent(trimmed);
+    if (URL_CONTROL_CHARS_REGEX.test(decoded)) {
+      return false;
+    }
+  } catch {
     return false;
   }
 
@@ -22,8 +39,25 @@ export function isSafeExternalUrl(rawUrl: string): boolean {
       return false;
     }
 
-    if (parsed.protocol === 'mailto:' || parsed.protocol === 'tel:') {
-      return parsed.pathname.length > 0 && !/[<>'"`]/.test(trimmed);
+    if (parsed.protocol === 'mailto:') {
+      return (
+        parsed.search === '' &&
+        parsed.pathname.length > 0 &&
+        !/[<>'"`?&=]/.test(trimmed) &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(parsed.pathname)
+      );
+    }
+
+    if (parsed.protocol === 'tel:') {
+      return (
+        parsed.search === '' &&
+        !/[<>'"`]/.test(trimmed) &&
+        /^\+?[0-9\-().\s]{6,24}$/.test(parsed.pathname)
+      );
+    }
+
+    if (parsed.username !== '' || parsed.password !== '' || parsed.port !== '') {
+      return false;
     }
 
     return ALLOWED_EXTERNAL_HOSTS.has(parsed.hostname.toLowerCase());

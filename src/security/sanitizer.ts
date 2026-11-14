@@ -11,6 +11,7 @@
 const CONTROL_CHARS_REGEX = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g;
 const BIDI_OVERRIDE_REGEX = /[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g;
 const HTML_TAGS_REGEX = /<[^>]*>?/g;
+const CLOSED_HTML_TAGS_REGEX = /<[^>]*>/g;
 const DANGEROUS_PROTOCOL_REGEX = /\b(?:javascript|vbscript|data)\s*:/gi;
 
 const FORBIDDEN_OBJECT_KEYS: ReadonlySet<string> = new Set([
@@ -18,6 +19,17 @@ const FORBIDDEN_OBJECT_KEYS: ReadonlySet<string> = new Set([
   'constructor',
   'prototype',
 ]);
+
+/** The shared strip pass: normalization, control/bidi characters, HTML tags and URI schemes. */
+function stripUnsafeContent(input: string, liveMode = false): string {
+  return input
+    .normalize('NFC')
+    .replace(CONTROL_CHARS_REGEX, '')
+    .replace(BIDI_OVERRIDE_REGEX, '')
+    .replace(liveMode ? CLOSED_HTML_TAGS_REGEX : HTML_TAGS_REGEX, '')
+    .replace(/[<>]/g, '')
+    .replace(DANGEROUS_PROTOCOL_REGEX, '');
+}
 
 /**
  * Sanitizes plain-text input while optionally preserving newlines for multi-line messages.
@@ -32,13 +44,7 @@ export function sanitizePlainText(
 
   const { maxLength = 1000, preserveNewlines = false } = options;
 
-  let cleaned = rawInput
-    .normalize('NFC')
-    .replace(CONTROL_CHARS_REGEX, '')
-    .replace(BIDI_OVERRIDE_REGEX, '')
-    .replace(HTML_TAGS_REGEX, '')
-    .replace(/[<>]/g, '')
-    .replace(DANGEROUS_PROTOCOL_REGEX, '');
+  let cleaned = stripUnsafeContent(rawInput);
 
   if (!preserveNewlines) {
     cleaned = cleaned.replace(/[\r\n]+/g, ' ').replace(/\s{2,}/g, ' ');
@@ -58,13 +64,7 @@ export function sanitizeLiveInput(
 ): string {
   const { maxLength = 1000, preserveNewlines = false } = options;
 
-  let cleaned = rawInput
-    .normalize('NFC')
-    .replace(CONTROL_CHARS_REGEX, '')
-    .replace(BIDI_OVERRIDE_REGEX, '')
-    .replace(HTML_TAGS_REGEX, '')
-    .replace(/[<>]/g, '')
-    .replace(DANGEROUS_PROTOCOL_REGEX, '');
+  let cleaned = stripUnsafeContent(rawInput, true);
 
   if (!preserveNewlines) {
     cleaned = cleaned.replace(/[\r\n]+/g, ' ');
