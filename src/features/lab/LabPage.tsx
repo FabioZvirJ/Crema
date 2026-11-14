@@ -10,7 +10,6 @@ import {
   RotateCcw,
   Sparkles,
   ThermometerSnowflake,
-  Trash2,
   X,
 } from 'lucide-react';
 import { SubpageHero } from '@/components/layout/SubpageHero';
@@ -21,6 +20,8 @@ import type { FlavorCategory, FlavorItem } from '@/domain/types';
 import { SECURITY_LIMITS } from '@/config/security';
 import { sanitizeLiveInput, sanitizePlainText } from '@/security/sanitizer';
 import { buildSafeWhatsAppUrl } from '@/security/safeUrl';
+import { GelatoStage } from './GelatoStage';
+import { MiniScoop } from './MiniScoop';
 
 export type VesselId =
   | 'casquinha-artesanal'
@@ -393,228 +394,6 @@ function getFlavorMeta(flavorId: string): FlavorLabMeta {
   );
 }
 
-/** Renders the vector laboratory vessel below the real gelato scoops inside the chamber. */
-function ChamberVesselGraphic({ vesselId }: { readonly vesselId: VesselId }) {
-  if (vesselId === 'casquinha-artesanal') {
-    return (
-      <svg
-        viewBox="0 0 220 190"
-        className="lab-chamber-vessel-svg"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="waffle-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#dfaa6c" />
-            <stop offset="55%" stopColor="#c68642" />
-            <stop offset="100%" stopColor="#9c6228" />
-          </linearGradient>
-        </defs>
-        {/* Scalloped waffle rim */}
-        <path
-          d="M44 18C62 28 86 22 110 26C134 22 158 28 176 18L116 178C113 185 107 185 104 178Z"
-          fill="url(#waffle-grad)"
-          stroke="#7d4918"
-          strokeWidth="2"
-        />
-        <ellipse
-          cx="110"
-          cy="18"
-          rx="66"
-          ry="11"
-          fill="#e7b97e"
-          stroke="#8a521d"
-          strokeWidth="1.8"
-        />
-        {/* Waffle lattice lines */}
-        <g stroke="#8a521d" strokeWidth="1.2" opacity="0.55">
-          <line x1="60" y1="26" x2="122" y2="148" />
-          <line x1="82" y1="27" x2="134" y2="120" />
-          <line x1="106" y1="28" x2="146" y2="94" />
-          <line x1="130" y1="27" x2="158" y2="68" />
-          <line x1="160" y1="26" x2="98" y2="148" />
-          <line x1="138" y1="27" x2="86" y2="120" />
-          <line x1="114" y1="28" x2="74" y2="94" />
-          <line x1="90" y1="27" x2="62" y2="68" />
-        </g>
-      </svg>
-    );
-  }
-
-  if (vesselId === 'casquinha-premium') {
-    return (
-      <svg
-        viewBox="0 0 220 190"
-        className="lab-chamber-vessel-svg"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="waffle-prem" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#dfaa6c" />
-            <stop offset="55%" stopColor="#c68642" />
-            <stop offset="100%" stopColor="#9c6228" />
-          </linearGradient>
-          <linearGradient id="choc-dip" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#4b2518" />
-            <stop offset="100%" stopColor="#2a1109" />
-          </linearGradient>
-        </defs>
-        {/* Cone body */}
-        <path
-          d="M44 18L116 178C113 185 107 185 104 178L176 18Z"
-          fill="url(#waffle-prem)"
-          stroke="#7d4918"
-          strokeWidth="2"
-        />
-        {/* Waffle lines on lower half */}
-        <g stroke="#8a521d" strokeWidth="1.2" opacity="0.55">
-          <line x1="72" y1="68" x2="120" y2="154" />
-          <line x1="92" y1="68" x2="132" y2="128" />
-          <line x1="148" y1="68" x2="100" y2="154" />
-          <line x1="128" y1="68" x2="88" y2="128" />
-        </g>
-        {/* Belgian chocolate dipped rim */}
-        <path
-          d="M44 18H176L156 72C146 66 138 78 128 70C118 62 112 78 100 70C88 62 80 76 66 68Z"
-          fill="url(#choc-dip)"
-          stroke="#230d06"
-          strokeWidth="1.5"
-        />
-        <ellipse
-          cx="110"
-          cy="18"
-          rx="66"
-          ry="11"
-          fill="#3b1b10"
-          stroke="#230d06"
-          strokeWidth="1.6"
-        />
-        {/* Roasted pistachio & hazelnut granella on the chocolate rim */}
-        <g fill="#9db876" opacity="0.95">
-          <circle cx="68" cy="36" r="3" />
-          <circle cx="84" cy="48" r="2.5" />
-          <circle cx="102" cy="34" r="3.2" />
-          <circle cx="118" cy="52" r="2.8" />
-          <circle cx="136" cy="38" r="3" />
-          <circle cx="150" cy="46" r="2.4" />
-        </g>
-        <g fill="#dfb57b" opacity="0.9">
-          <circle cx="76" cy="42" r="2.2" />
-          <circle cx="94" cy="44" r="2.6" />
-          <circle cx="112" cy="40" r="2.2" />
-          <circle cx="128" cy="46" r="2.5" />
-          <circle cx="144" cy="34" r="2.2" />
-        </g>
-      </svg>
-    );
-  }
-
-  if (vesselId === 'copinho-lab') {
-    return (
-      <svg
-        viewBox="0 0 220 155"
-        className="lab-chamber-vessel-svg lab-chamber-vessel-cup"
-        aria-hidden="true"
-      >
-        {/* Lab cup body */}
-        <path
-          d="M38 20H182L164 128C162 138 152 145 140 145H80C68 145 58 138 56 128Z"
-          fill="#f7efe3"
-          stroke="#b0553f"
-          strokeWidth="2"
-        />
-        {/* Terracotta double band */}
-        <path d="M44 54H176L173 72H47Z" fill="#b0553f" opacity="0.18" />
-        <ellipse
-          cx="110"
-          cy="20"
-          rx="74"
-          ry="10"
-          fill="#efe1ce"
-          stroke="#b0553f"
-          strokeWidth="2"
-        />
-        {/* CL monogram badge on cup */}
-        <circle
-          cx="110"
-          cy="86"
-          r="24"
-          fill="#fbf6ee"
-          stroke="#b0553f"
-          strokeWidth="1.4"
-        />
-        <text
-          x="110"
-          y="93"
-          textAnchor="middle"
-          fontFamily="var(--font-serif)"
-          fontSize="20"
-          fontWeight="600"
-          fill="#5c0a1e"
-        >
-          CL
-        </text>
-        {/* Graduated volume ticks on the side of the cup */}
-        <g stroke="#8a6d56" strokeWidth="1.2">
-          <line x1="152" y1="44" x2="164" y2="44" />
-          <line x1="150" y1="68" x2="160" y2="68" />
-          <line x1="148" y1="92" x2="158" y2="92" />
-          <line x1="146" y1="116" x2="154" y2="116" />
-        </g>
-      </svg>
-    );
-  }
-
-  return (
-    <svg
-      viewBox="0 0 220 165"
-      className="lab-chamber-vessel-svg lab-chamber-vessel-cup"
-      aria-hidden="true"
-    >
-      {/* Thermal capsule container */}
-      <path
-        d="M32 22H188L174 136C172 146 164 152 152 152H68C56 152 48 146 46 136Z"
-        fill="#5c0a1e"
-        stroke="#3a0612"
-        strokeWidth="2"
-      />
-      {/* Insulated cream label wrap */}
-      <path d="M39 58H181L176 112H44Z" fill="#f4ede4" />
-      <ellipse
-        cx="110"
-        cy="22"
-        rx="78"
-        ry="10"
-        fill="#e6d0b5"
-        stroke="#3a0612"
-        strokeWidth="2"
-      />
-      <text
-        x="110"
-        y="83"
-        textAnchor="middle"
-        fontFamily="var(--font-serif)"
-        fontSize="16"
-        fontWeight="600"
-        fill="#5c0a1e"
-      >
-        crema lab
-      </text>
-      <text
-        x="110"
-        y="99"
-        textAnchor="middle"
-        fontFamily="var(--font-sans)"
-        fontSize="7.5"
-        fontWeight="700"
-        letterSpacing="2"
-        fill="#b0553f"
-      >
-        CÁPSULA TÉRMICA · -14°C
-      </text>
-    </svg>
-  );
-}
-
 export function LabPage() {
   const [vesselId, setVesselId] = useState<VesselId>('casquinha-premium');
   const [selectedFlavorIds, setSelectedFlavorIds] = useState<string[]>([
@@ -961,14 +740,7 @@ export function LabPage() {
 
                         <div className="lab-element-visual">
                           <span className="lab-element-symbol">{meta.symbol}</span>
-                          {flavor.image && (
-                            <img
-                              src={flavor.image}
-                              alt=""
-                              loading="lazy"
-                              className="lab-element-scoop-img"
-                            />
-                          )}
+                          <MiniScoop flavorId={flavor.id} size="sm" />
                         </div>
 
                         <div className="lab-element-info">
@@ -1112,21 +884,20 @@ export function LabPage() {
                   </div>
                 </div>
 
-                {/* Visual Glass Chamber with Graduated Scale */}
-                <div className="lab-chamber-viewport">
-                  {/* Left graduated cylinder ruler */}
-                  <div className="lab-chamber-scale" aria-hidden="true">
-                    <span>250ml</span>
-                    <span>200ml</span>
-                    <span>150ml</span>
-                    <span>100ml</span>
-                    <span>50ml</span>
-                    <span>0ml</span>
-                  </div>
+                <div className="lab-chamber-pin">
+                  {/* Visual Glass Chamber with Graduated Scale */}
+                  <div className="lab-chamber-viewport">
+                    {/* Left graduated cylinder ruler */}
+                    <div className="lab-chamber-scale" aria-hidden="true">
+                      <span>250ml</span>
+                      <span>200ml</span>
+                      <span>150ml</span>
+                      <span>100ml</span>
+                      <span>50ml</span>
+                      <span>0ml</span>
+                    </div>
 
-                  {/* Center Live Stack: Catalyst + Real Scoops + Vessel */}
-                  <div className="lab-chamber-stage">
-                    {/* Catalyst particles floating on top */}
+                    {/* Catalyst chip floats above the 3D stage */}
                     {catalystId !== 'puro' && (
                       <div className="lab-chamber-catalyst-badge">
                         <span
@@ -1137,144 +908,113 @@ export function LabPage() {
                       </div>
                     )}
 
-                    <div className="lab-chamber-stack">
-                      {/* Stacked real gelato scoops (top to bottom) */}
-                      <div className="lab-chamber-scoops">
-                        {[...selectedFlavorItems].reverse().map((flavor, revIdx) => {
-                          const actualIndex = selectedFlavorItems.length - 1 - revIdx;
-                          const meta = getFlavorMeta(flavor.id);
-                          return (
-                            <div
-                              key={`${flavor.id}-${actualIndex}`}
-                              className={`lab-scoop-layer lab-scoop-pos-${actualIndex}`}
-                            >
-                              {flavor.image ? (
-                                <img
-                                  src={flavor.image}
-                                  alt={flavor.name}
-                                  className="lab-scoop-layer-img"
-                                />
-                              ) : (
-                                <div className="lab-scoop-fallback">{meta.symbol}</div>
-                              )}
-                              <div className="lab-scoop-callout">
-                                <span className="lab-scoop-callout-code">
-                                  [{meta.symbol}] C0{actualIndex + 1}
-                                </span>
-                                <span className="lab-scoop-callout-name">{flavor.name}</span>
-                                {selectedFlavorItems.length > 1 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleRemoveLayerAt(actualIndex)}
-                                    className="lab-scoop-remove-btn"
-                                    aria-label={`Remover camada ${flavor.name}`}
-                                  >
-                                    <Trash2 size={11} />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Vessel SVG directly underneath */}
-                      <ChamberVesselGraphic vesselId={vesselId} />
-                    </div>
+                    {/* Live 3D assembly: vessel, scoops dropping in, topping raining down */}
+                    <GelatoStage
+                      vesselId={vesselId}
+                      catalystId={catalystId}
+                      layers={selectedFlavorItems.map((f) => ({
+                        id: f.id,
+                        name: f.name,
+                        symbol: getFlavorMeta(f.id).symbol,
+                      }))}
+                      onRemoveLayer={handleRemoveLayerAt}
+                    />
                   </div>
                 </div>
 
-                {/* Sensory Telemetry Bars */}
-                <div className="lab-telemetry-box">
-                  <div className="lab-telemetry-header">
-                    <span>TELEMETRIA SENSORIAL DA AMOSTRA</span>
-                    <span>OVERRUN 22%</span>
+                <div className="lab-chamber-details">
+                  {/* Sensory Telemetry Bars */}
+                  <div className="lab-telemetry-box">
+                    <div className="lab-telemetry-header">
+                      <span>TELEMETRIA SENSORIAL DA AMOSTRA</span>
+                      <span>OVERRUN 22%</span>
+                    </div>
+
+                    <div className="lab-meter-list">
+                      <div className="lab-meter-row">
+                        <div className="lab-meter-labels">
+                          <span>Índice de Cremosidade (Emulsão)</span>
+                          <strong>{telemetry.cremosidade}%</strong>
+                        </div>
+                        <div className="lab-meter-track">
+                          <div
+                            className="lab-meter-fill lab-meter-fill-burgundy"
+                            style={{ width: `${telemetry.cremosidade}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="lab-meter-row">
+                        <div className="lab-meter-labels">
+                          <span>Equilíbrio de Dulçor (°Brix)</span>
+                          <strong>{telemetry.dulcor}%</strong>
+                        </div>
+                        <div className="lab-meter-track">
+                          <div
+                            className="lab-meter-fill lab-meter-fill-terracotta"
+                            style={{ width: `${telemetry.dulcor}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="lab-meter-row">
+                        <div className="lab-meter-labels">
+                          <span>Frescor Botânico & Acidez</span>
+                          <strong>{telemetry.frescor}%</strong>
+                        </div>
+                        <div className="lab-meter-track">
+                          <div
+                            className="lab-meter-fill lab-meter-fill-olive"
+                            style={{ width: `${telemetry.frescor}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="lab-meter-row">
+                        <div className="lab-meter-labels">
+                          <span>Contraste de Textura & Crocância</span>
+                          <strong>{telemetry.texturaContraste}%</strong>
+                        </div>
+                        <div className="lab-meter-track">
+                          <div
+                            className="lab-meter-fill lab-meter-fill-gold"
+                            style={{ width: `${telemetry.texturaContraste}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="lab-meter-list">
-                    <div className="lab-meter-row">
-                      <div className="lab-meter-labels">
-                        <span>Índice de Cremosidade (Emulsão)</span>
-                        <strong>{telemetry.cremosidade}%</strong>
-                      </div>
-                      <div className="lab-meter-track">
-                        <div
-                          className="lab-meter-fill lab-meter-fill-burgundy"
-                          style={{ width: `${telemetry.cremosidade}%` }}
-                        />
-                      </div>
+                  {/* Chef's Technical Analysis Card */}
+                  <div className="lab-chef-report">
+                    <div className="lab-chef-report-header">
+                      <span className="lab-chef-report-tag">LAUDO TÉCNICO · CHEF HARLEN</span>
+                      {telemetry.isPlantBased && (
+                        <span className="lab-Report-vegan-pill">100% PLANT-BASED</span>
+                      )}
                     </div>
-
-                    <div className="lab-meter-row">
-                      <div className="lab-meter-labels">
-                        <span>Equilíbrio de Dulçor (°Brix)</span>
-                        <strong>{telemetry.dulcor}%</strong>
-                      </div>
-                      <div className="lab-meter-track">
-                        <div
-                          className="lab-meter-fill lab-meter-fill-terracotta"
-                          style={{ width: `${telemetry.dulcor}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="lab-meter-row">
-                      <div className="lab-meter-labels">
-                        <span>Frescor Botânico & Acidez</span>
-                        <strong>{telemetry.frescor}%</strong>
-                      </div>
-                      <div className="lab-meter-track">
-                        <div
-                          className="lab-meter-fill lab-meter-fill-olive"
-                          style={{ width: `${telemetry.frescor}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="lab-meter-row">
-                      <div className="lab-meter-labels">
-                        <span>Contraste de Textura & Crocância</span>
-                        <strong>{telemetry.texturaContraste}%</strong>
-                      </div>
-                      <div className="lab-meter-track">
-                        <div
-                          className="lab-meter-fill lab-meter-fill-gold"
-                          style={{ width: `${telemetry.texturaContraste}%` }}
-                        />
-                      </div>
-                    </div>
+                    <p className="lab-chef-report-text">{telemetry.chefNote}</p>
                   </div>
-                </div>
 
-                {/* Chef's Technical Analysis Card */}
-                <div className="lab-chef-report">
-                  <div className="lab-chef-report-header">
-                    <span className="lab-chef-report-tag">LAUDO TÉCNICO · CHEF HARLEN</span>
-                    {telemetry.isPlantBased && (
-                      <span className="lab-Report-vegan-pill">100% PLANT-BASED</span>
-                    )}
+                  {/* Action Buttons */}
+                  <div className="lab-chamber-actions">
+                    <SafeExternalLink
+                      href={whatsappHref}
+                      className="btn-coral lab-whatsapp-cta"
+                    >
+                      <span>PEDIR ESTA FÓRMULA NO WHATSAPP</span>
+                      <ArrowRight size={15} />
+                    </SafeExternalLink>
+
+                    <button
+                      type="button"
+                      onClick={() => setTicketModalOpen(true)}
+                      className="lab-ticket-btn"
+                    >
+                      <FileText size={14} />
+                      <span>EMITIR LAUDO DE BALCÃO (RECEITUÁRIO)</span>
+                    </button>
                   </div>
-                  <p className="lab-chef-report-text">{telemetry.chefNote}</p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="lab-chamber-actions">
-                  <SafeExternalLink
-                    href={whatsappHref}
-                    className="btn-coral lab-whatsapp-cta"
-                  >
-                    <span>PEDIR ESTA FÓRMULA NO WHATSAPP</span>
-                    <ArrowRight size={15} />
-                  </SafeExternalLink>
-
-                  <button
-                    type="button"
-                    onClick={() => setTicketModalOpen(true)}
-                    className="lab-ticket-btn"
-                  >
-                    <FileText size={14} />
-                    <span>EMITIR LAUDO DE BALCÃO (RECEITUÁRIO)</span>
-                  </button>
                 </div>
               </div>
             </aside>

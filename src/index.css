@@ -3176,6 +3176,7 @@ textarea {
 
   .home-hero-copy {
     width: 58%;
+    max-width: none; /* the desktop rule caps it at 50% */
     background: rgba(244, 237, 227, 0.82);
     backdrop-filter: blur(6px);
     padding: 1.125rem 1.25rem;
@@ -3194,6 +3195,13 @@ textarea {
   .home-about-section {
     aspect-ratio: auto;
     padding: 2.75rem 0;
+  }
+
+  /* aspect-ratio + min-height turns the min-height into a min-width (858px wide on a phone) */
+  .contact-events-wave-section {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 3.5rem 0;
   }
 
   .home-about-inner,
@@ -3283,6 +3291,25 @@ textarea {
 }
 
 @media (max-width: 640px) {
+  /* compact header: one-line logo, one-line CTA */
+  .brand-logo-sub {
+    display: none;
+  }
+
+  .brand-logo-main {
+    font-size: 1.6rem;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    gap: 0.45rem;
+  }
+
+  .btn-header-cta {
+    white-space: nowrap;
+    padding: 0.5rem 0.9rem;
+  }
+
   .home-hero {
     padding-top: 6rem;
     flex-direction: column;
@@ -3308,6 +3335,42 @@ textarea {
   .seasonal-banner-inner {
     flex-direction: column;
     text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Instagram stays reachable from the footer; the header has no room for it on small phones */
+  .header-ig-link {
+    display: none;
+  }
+
+  .site-header .site-container {
+    padding: 0 1rem;
+  }
+
+  .header-inner {
+    gap: 0.75rem;
+  }
+
+  .brand-logo-link {
+    gap: 0.5rem;
+  }
+
+  .header-logo-badge {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .brand-logo-main {
+    font-size: 1.4rem;
+  }
+
+  .btn-header-cta {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .btn-header-cta svg {
+    display: none;
   }
 }
 
@@ -3929,12 +3992,62 @@ textarea {
   color: #5c0a1e;
 }
 
-.lab-element-scoop-img {
-  width: 2.9rem;
-  height: 2.9rem;
-  object-fit: contain;
-  filter: drop-shadow(0 5px 8px rgba(42, 18, 10, 0.22));
+/* Mini scoops: same palette as the 3D scene (see features/lab/scene/flavorLook.ts) */
+.mini-scoop {
+  --s: 2.9rem;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: var(--s);
+  height: var(--s);
+  filter: drop-shadow(0 5px 6px rgba(42, 18, 10, 0.22));
 }
+
+.mini-scoop-lg {
+  --s: 5.8rem;
+}
+
+.mini-scoop-dome {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 3%;
+  height: 76%;
+  overflow: hidden;
+  border-radius: 50% 50% 44% 44%;
+  background: radial-gradient(
+    circle at 34% 26%,
+    var(--scoop-light) 0 12%,
+    var(--scoop-base) 50%,
+    var(--scoop-dark) 100%
+  );
+}
+
+.mini-scoop-skirt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6%;
+  height: 36%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 28%, var(--scoop-base), var(--scoop-dark));
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.mini-scoop-bit {
+  position: absolute;
+  width: 8%;
+  height: 5.5%;
+  border-radius: 50%;
+  background: var(--scoop-bit-a);
+  opacity: 0.85;
+}
+
+.mini-scoop-bit-1 { left: 20%; top: 38%; transform: rotate(24deg); }
+.mini-scoop-bit-2 { left: 43%; top: 18%; background: var(--scoop-bit-b); transform: rotate(-30deg); }
+.mini-scoop-bit-3 { left: 66%; top: 27%; transform: rotate(60deg); }
+.mini-scoop-bit-4 { left: 71%; top: 52%; background: var(--scoop-bit-b); transform: rotate(-12deg); }
+.mini-scoop-bit-5 { left: 36%; top: 58%; transform: rotate(40deg); }
 
 .lab-element-info {
   display: flex;
@@ -4125,14 +4238,71 @@ textarea {
 .lab-chamber-col {
   position: sticky;
   top: 5.25rem;
+  transition: top 0.35s ease;
 }
 
+/* The site header slides away while scrolling down: give the chamber the freed room. */
+html:has(.site-header.is-hidden) .lab-chamber-col {
+  top: 1rem;
+}
+
+/*
+ * The chamber is a "second scroll": the column stays pinned, the 3D viewport stays pinned at
+ * the top of the panel, and the report (telemetry, chef note, buttons) scrolls underneath it.
+ */
 .lab-chamber-panel {
   background: #fcf8f2;
   border: 1.5px solid rgba(130, 96, 72, 0.34);
   border-radius: 1.35rem;
-  padding: 1.4rem;
   box-shadow: 0 20px 45px rgba(45, 18, 12, 0.12);
+  max-height: calc(100vh - 6.5rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 100, 78, 0.45) transparent;
+  transition: max-height 0.35s ease;
+}
+
+html:has(.site-header.is-hidden) .lab-chamber-panel {
+  max-height: calc(100vh - 2rem);
+}
+
+.lab-chamber-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lab-chamber-panel::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0.9rem 0;
+}
+
+.lab-chamber-panel::-webkit-scrollbar-thumb {
+  background: rgba(140, 100, 78, 0.4);
+  border-radius: 999px;
+  border: 2px solid #fcf8f2;
+}
+
+.lab-chamber-pin {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  padding: 1rem 1.4rem 0;
+  background: #fcf8f2;
+}
+
+/* soft edge so the report slides under the pinned viewport instead of being cut */
+.lab-chamber-pin::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0.9rem;
+  background: linear-gradient(#fcf8f2, rgba(252, 248, 242, 0));
+  pointer-events: none;
+}
+
+.lab-chamber-details {
+  padding: 0 1.4rem 1.4rem;
 }
 
 .lab-chamber-topbar {
@@ -4140,6 +4310,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  margin: 1.4rem 1.4rem 0;
   padding-bottom: 0.85rem;
   border-bottom: 1px dashed rgba(140, 105, 80, 0.3);
 }
@@ -4183,20 +4354,16 @@ textarea {
 /* Chamber Glass Viewport */
 .lab-chamber-viewport {
   position: relative;
-  margin-top: 1rem;
-  padding: 1.25rem 1rem 0.9rem 3.2rem;
-  min-height: 21.5rem;
+  height: clamp(17rem, calc(100vh - 25rem), 31rem);
+  overflow: hidden;
   border-radius: 1.1rem;
   background:
-    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.92), rgba(241, 229, 212, 0.78)),
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.95), rgba(241, 229, 212, 0.8)),
     linear-gradient(to right, rgba(165, 132, 102, 0.14) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(165, 132, 102, 0.14) 1px, transparent 1px);
   background-size: auto, 20px 20px, 20px 20px;
   border: 1px solid rgba(155, 122, 94, 0.35);
   box-shadow: inset 0 2px 14px rgba(62, 28, 14, 0.07);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
 }
 
 .lab-chamber-scale {
@@ -4204,6 +4371,8 @@ textarea {
   left: 0.65rem;
   top: 1rem;
   bottom: 1rem;
+  z-index: 4;
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -4214,14 +4383,185 @@ textarea {
   padding-right: 0.35rem;
 }
 
-.lab-chamber-stage {
+/* 3D stage */
+.lab-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.lab-stage-canvas {
+  display: block;
   width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+  outline: none;
+}
+
+.lab-stage-canvas:active {
+  cursor: grabbing;
+}
+
+.lab-stage-loader {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8c6d53;
+  pointer-events: none;
+}
+
+.lab-stage-loader-ring {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  border: 2px dashed rgba(176, 85, 63, 0.5);
+  animation: lab-stage-spin 2.4s linear infinite;
+}
+
+@keyframes lab-stage-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lab-stage-callouts {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.lab-stage-callout {
+  position: absolute;
+  z-index: 3;
+  transform: translateY(-50%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 0.4rem;
+  row-gap: 0.05rem;
+  margin-left: 0.8rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 0.45rem;
+  white-space: nowrap;
+  background: rgba(255, 252, 247, 0.95);
+  border: 1px solid rgba(145, 110, 82, 0.32);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  pointer-events: auto;
+  transition:
+    top 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    left 0.3s ease;
+  animation: lab-callout-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 1.2s both;
+}
+
+/* after a ball is taken out, wait for the upper balls to sink before moving the labels */
+.lab-stage-callouts.is-sinking .lab-stage-callout {
+  transition-delay: 1.15s, 0s;
+}
+
+.lab-stage-callout .lab-scoop-remove-btn {
+  grid-area: 1 / 2;
+}
+
+.lab-stage-callout .lab-scoop-callout-name {
+  grid-area: 2 / 1 / 3 / 3;
+  max-width: 7.4rem;
+}
+
+.lab-stage-callout::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 0.8rem;
+  height: 1px;
+  background: rgba(145, 110, 82, 0.6);
+}
+
+@keyframes lab-callout-in {
+  from {
+    opacity: 0;
+    transform: translate(-8px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+.lab-stage-hint {
+  position: absolute;
+  white-space: nowrap;
+  left: 50%;
+  bottom: 0.65rem;
+  z-index: 3;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 252, 247, 0.85);
+  border: 1px solid rgba(145, 110, 82, 0.25);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8c6d53;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.lab-stage-hint.is-hidden {
+  opacity: 0;
+}
+
+.lab-stage-flat {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 3rem 6.2rem 2.4rem 3.2rem;
+}
+
+.lab-stage-flat .lab-chamber-stack {
+  width: 9.6rem;
+}
+
+.lab-stage-flat .lab-scoop-callout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 0.4rem;
+  row-gap: 0.05rem;
+  align-items: center;
+}
+
+.lab-stage-flat .lab-scoop-callout .lab-scoop-remove-btn {
+  grid-area: 1 / 2;
+}
+
+.lab-stage-flat .lab-scoop-callout .lab-scoop-callout-name {
+  grid-area: 2 / 1 / 3 / 3;
+  max-width: 7.4rem;
 }
 
 .lab-chamber-catalyst-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  max-width: calc(100% - 4.5rem);
   display: inline-flex;
   align-items: center;
   gap: 0.38rem;
@@ -4232,7 +4572,9 @@ textarea {
   font-size: 0.62rem;
   font-weight: 700;
   color: #5c0a1e;
-  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: 0 4px 10px rgba(42, 16, 10, 0.08);
 }
 
@@ -4270,25 +4612,7 @@ textarea {
   margin-top: 0;
 }
 
-.lab-scoop-layer-img {
-  width: 5.8rem;
-  height: 5.8rem;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 14px rgba(38, 14, 8, 0.28));
-}
 
-.lab-scoop-fallback {
-  width: 4.8rem;
-  height: 4.8rem;
-  border-radius: 50%;
-  background: #b0553f;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-}
 
 .lab-scoop-callout {
   position: absolute;
@@ -4612,6 +4936,24 @@ textarea {
     display: none;
   }
 
+  .lab-chamber-panel,
+  html:has(.site-header.is-hidden) .lab-chamber-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .lab-chamber-pin {
+    position: static;
+  }
+
+  .lab-chamber-pin::after {
+    display: none;
+  }
+
+  .lab-chamber-viewport {
+    height: clamp(26rem, 78vw, 31rem);
+  }
+
   .lab-workbench-grid {
     grid-template-columns: 1fr;
   }
@@ -4626,6 +4968,10 @@ textarea {
 }
 
 @media (max-width: 640px) {
+  .lab-stage-callout .lab-scoop-callout-name {
+    display: none;
+  }
+
   .lab-vessel-grid,
   .lab-periodic-grid,
   .lab-catalyst-grid,
@@ -4669,4 +5015,69 @@ textarea {
     translate: none;
     transition: none;
   }
+}
+
+/* Route lazy fallback & ErrorBoundary fallback */
+.page-route-fallback {
+  min-height: 45vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+.page-route-fallback-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+  background: var(--accent-coral);
+  opacity: 0.75;
+}
+
+.error-boundary-fallback {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f6efe6;
+  color: #1e1615;
+}
+
+.error-boundary-kicker {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #a14d3a;
+  margin-bottom: 0.5rem;
+}
+
+.error-boundary-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.error-boundary-desc {
+  max-width: 28rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #5a4a44;
+  margin-bottom: 1.5rem;
+}
+
+.order-unit-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.order-unit-sub {
+  font-size: 0.6875rem;
+  opacity: 0.75;
 }
