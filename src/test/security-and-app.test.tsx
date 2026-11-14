@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import {
+  sanitizeLiveInput,
   sanitizePlainText,
   createSafeRecord,
 } from '@/security/sanitizer';
@@ -55,6 +56,16 @@ describe('Crema Lab — Security Hardening Suite', () => {
     expect(isSafeExternalUrl('https://www.instagram.com/cremalabgelato')).toBe(true);
     expect(isSafeExternalUrl('https://wa.me/5541999887766?text=Ola')).toBe(true);
     expect(isSafeExternalUrl('mailto:e-mail@cremalab.com')).toBe(true);
+    expect(isSafeExternalUrl('tel:+5541999887766')).toBe(true);
+
+    expect(isSafeExternalUrl('https://user:pass@www.instagram.com/cremalab')).toBe(false);
+    expect(isSafeExternalUrl('https://www.instagram.com:8443/cremalab')).toBe(false);
+    expect(isSafeExternalUrl('mailto:e-mail@cremalab.com?bcc=evil@attacker.com')).toBe(false);
+    expect(isSafeExternalUrl('mailto:e-mail@cremalab.com%0ABcc:evil@attacker.com')).toBe(false);
+    expect(isSafeExternalUrl('tel:javascript:alert(1)')).toBe(false);
+
+    expect(sanitizeLiveInput('Gelato <3 Pistacchio')).toBe('Gelato 3 Pistacchio');
+    expect(sanitizeLiveInput('Oi <script>alert(1)</script> Mundo')).toBe('Oi alert(1) Mundo');
 
     const waUrl = buildSafeWhatsAppUrl('Olá <script>evil</script> Pistacchio');
     expect(waUrl).toContain('https://wa.me/5541999887766?text=');
@@ -111,7 +122,7 @@ describe('Crema Lab — Security Hardening Suite', () => {
 });
 
 describe('Crema Lab — Multi-Page Application Integration', () => {
-  it('renders Home page and navigates across Sabores, Unidades, and Contato', () => {
+  it('renders Home page and navigates across Sabores, Unidades, and Contato', async () => {
     render(<App initialRoute="/" />);
 
     // Home Hero
@@ -127,7 +138,7 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     fireEvent.click(saboresLinks[0]!);
 
     expect(
-      screen.getByRole('heading', { name: /Nossos Sabores/i })
+      await screen.findByRole('heading', { name: /Nossos Sabores/i })
     ).toBeInTheDocument();
     expect(screen.getByText('PISTACCHIO')).toBeInTheDocument();
     expect(screen.getByText('CAFFÈ DELLA CASA')).toBeInTheDocument();
@@ -142,7 +153,7 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     const unidadesLinks = screen.getAllByRole('link', { name: /^unidades$/i });
     fireEvent.click(unidadesLinks[0]!);
     expect(
-      screen.getByRole('heading', { name: /Nossas Unidades/i })
+      await screen.findByRole('heading', { name: /Nossas Unidades/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Unidade Batel' })
@@ -158,7 +169,7 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     const contatoLinks = screen.getAllByRole('link', { name: /^contato$/i });
     fireEvent.click(contatoLinks[0]!);
     expect(
-      screen.getByRole('heading', { name: /Fale Conosco/i })
+      await screen.findByRole('heading', { name: /Fale Conosco/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
@@ -167,10 +178,10 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens FlavorModal on flavor card interaction and opens OrderDrawerModal from Header CTA', () => {
+  it('opens FlavorModal on flavor card interaction and opens OrderDrawerModal from Header CTA', async () => {
     render(<App initialRoute="/sabores" />);
 
-    const pistacchioBtn = screen.getByRole('button', {
+    const pistacchioBtn = await screen.findByRole('button', {
       name: /Ver detalhes de PISTACCHIO/i,
     });
     fireEvent.click(pistacchioBtn);
@@ -189,11 +200,11 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the interactive Laboratório Crema (/lab) workbench and issues a prescription ticket', () => {
+  it('renders the interactive Laboratório Crema (/lab) workbench and issues a prescription ticket', async () => {
     render(<App initialRoute="/lab" />);
 
     expect(
-      screen.getByRole('heading', { name: /Laboratório Crema/i })
+      await screen.findByRole('heading', { name: /Laboratório Crema/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /Escolha a Base da Fórmula/i })
@@ -217,5 +228,25 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     expect(
       screen.getByText(/CREMA LAB · LABORATÓRIO DE GELATO/i)
     ).toBeInTheDocument();
+  });
+
+  it('falls back to the flat chamber when WebGL is unavailable and still lets layers be removed', async () => {
+    // jsdom has no WebGL, so the lazy 3D scene is never loaded.
+    render(<App initialRoute="/lab" />);
+
+    const removePistachio = await screen.findByRole('button', { name: /Remover camada PISTACCHIO/i });
+    expect(
+      screen.getByRole('button', { name: /Remover camada FRUTAS VERMELHAS/i })
+    ).toBeInTheDocument();
+
+    fireEvent.click(removePistachio);
+
+    expect(
+      screen.queryByRole('button', { name: /Remover camada PISTACCHIO/i })
+    ).not.toBeInTheDocument();
+    // The last remaining layer can never be removed.
+    expect(
+      screen.queryByRole('button', { name: /Remover camada FRUTAS VERMELHAS/i })
+    ).not.toBeInTheDocument();
   });
 });

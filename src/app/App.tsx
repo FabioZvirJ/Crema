@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { RouterProvider, useRouter, type AppRoute } from './router';
 import { Header } from '@/components/layout/Header';
@@ -6,12 +6,23 @@ import { Footer } from '@/components/layout/Footer';
 import { FlavorModal } from '@/components/ui/FlavorModal';
 import { OrderDrawerModal } from '@/components/ui/OrderDrawerModal';
 import { HomePage } from '@/features/home/HomePage';
-import { FlavorsPage } from '@/features/flavors/FlavorsPage';
-import { LabPage } from '@/features/lab/LabPage';
-import { LocationsPage } from '@/features/locations/LocationsPage';
-import { ContactPage } from '@/features/contact/ContactPage';
-import { AboutPage } from '@/features/about/AboutAndBlogPage';
 import type { FlavorItem } from '@/domain/types';
+
+const FlavorsPage = lazy(() =>
+  import('@/features/flavors/FlavorsPage').then((m) => ({ default: m.FlavorsPage }))
+);
+const LabPage = lazy(() =>
+  import('@/features/lab/LabPage').then((m) => ({ default: m.LabPage }))
+);
+const LocationsPage = lazy(() =>
+  import('@/features/locations/LocationsPage').then((m) => ({ default: m.LocationsPage }))
+);
+const ContactPage = lazy(() =>
+  import('@/features/contact/ContactPage').then((m) => ({ default: m.ContactPage }))
+);
+const AboutPage = lazy(() =>
+  import('@/features/about/AboutAndBlogPage').then((m) => ({ default: m.AboutPage }))
+);
 
 /** Blocks that softly fade up once they scroll into view. */
 const REVEAL_SELECTORS = [
@@ -34,8 +45,18 @@ const REVEAL_SELECTORS = [
   '.contact-faq-card',
 ].join(',');
 
+function getSiblingIndex(el: Element): number {
+  let index = 0;
+  let prev = el.previousElementSibling;
+  while (prev) {
+    index += 1;
+    prev = prev.previousElementSibling;
+  }
+  return index;
+}
+
 function useScrollReveal(routeKey: string) {
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (
       typeof IntersectionObserver === 'undefined' ||
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -57,7 +78,7 @@ function useScrollReveal(routeKey: string) {
     );
 
     for (const el of elements) {
-      const index = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0;
+      const index = getSiblingIndex(el);
       el.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 90}ms`);
       el.classList.add('reveal');
       observer.observe(el);
@@ -71,6 +92,15 @@ function useScrollReveal(routeKey: string) {
       }
     };
   }, [routeKey]);
+}
+
+function PageRouteFallback() {
+  return (
+    <div className="page-route-fallback" role="status" aria-live="polite">
+      <span className="page-route-fallback-dot" aria-hidden="true" />
+      <span>Carregando…</span>
+    </div>
+  );
 }
 
 function AppRoutes({
@@ -105,7 +135,7 @@ function AppRoutes({
 
   return (
     <div key={currentRoute} className="page-fade">
-      {page}
+      <Suspense fallback={<PageRouteFallback />}>{page}</Suspense>
     </div>
   );
 }

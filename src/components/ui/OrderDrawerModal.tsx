@@ -95,8 +95,8 @@ export function OrderDrawerModal({ isOpen, onClose }: OrderDrawerModalProps) {
                 >
                   <MapPin size={14} />
                   <div>
-                    <div className="font-semibold text-xs">{unit.name}</div>
-                    <div className="text-[11px] opacity-75">{unit.headerLabel}</div>
+                    <div className="order-unit-name">{unit.name}</div>
+                    <div className="order-unit-sub">{unit.headerLabel}</div>
                   </div>
                 </button>
               );

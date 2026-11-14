@@ -40,18 +40,14 @@ export class ErrorBoundary extends React.Component<
   public override render(): React.ReactNode {
     if (this.state.hasError) {
       return (
-        <div
-          role="alert"
-          className="min-h-screen flex flex-col items-center justify-center p-8 text-center"
-          style={{ backgroundColor: '#F6EFE6', color: '#1E1615' }}
-        >
-          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: '#A14D3A' }}>
+        <div role="alert" className="error-boundary-fallback">
+          <p className="error-boundary-kicker">
             CREMA LAB • GELATO ARTESANAL
           </p>
-          <h1 className="font-serif text-4xl mb-4">
+          <h1 className="error-boundary-title">
             Uma pequena pausa inesperada.
           </h1>
-          <p className="max-w-md text-sm mb-6" style={{ color: '#5A4A44' }}>
+          <p className="error-boundary-desc">
             Ocorreu um erro ao carregar esta seção. Por favor, retorne ao início para
             continuar navegando pelos nossos sabores e unidades.
           </p>
