@@ -27,6 +27,7 @@ export function FlavorPhoto({ flavor, className }: FlavorPhotoProps) {
         className={className}
         style={flavor.imagePosition ? { objectPosition: flavor.imagePosition } : undefined}
         loading="lazy"
+        decoding="async"
       />
     );
   }

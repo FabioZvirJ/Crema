@@ -437,10 +437,13 @@ export function ContactPage() {
         <div className="site-container contact-events-inner">
           <div className="contact-cart-arch">
             <img
-              src="/assets/images/real/carretino-eventos-3.jpg"
+              src="/assets/images/real/carretino-eventos-3.webp"
               alt="Carrinho de gelato artesanal da Crema Lab em frente à loja, usado em eventos"
+              width={801}
+              height={1200}
               className="contact-cart-img"
               loading="lazy"
+              decoding="async"
             />
           </div>
 

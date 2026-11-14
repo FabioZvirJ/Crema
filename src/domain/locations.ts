@@ -7,7 +7,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     name: 'Unidade Batel',
     address: 'Rua Deputado Antônio Baby, 18 - Batel, Curitiba - PR',
     hoursPrimary: 'Terça a Sábado das 11h às 22h |',
-    image: '/assets/images/real/fachada-batel-juan.png',
+    image: '/assets/images/real/fachada-batel-juan.webp',
     imagePosition: '50% 40%',
     tags: [
       { icon: 'store', label: 'Loja de Rua' },
@@ -26,7 +26,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     address: 'Rua Prof. Pedro Viriato Parigot de Souza, 600 - Mossunguê, Curitiba - PR',
     hoursPrimary: 'Segunda a Sábado das 10h às 22h |',
     hoursSecondary: 'Domingo das 12h às 20h',
-    image: '/assets/images/real/interna-mahani.png',
+    image: '/assets/images/real/interna-mahani.webp',
     imagePosition: '50% 65%',
     tags: [
       { icon: 'bag', label: 'Shopping L3' },
@@ -43,7 +43,7 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
     name: 'Shopping Mueller',
     address: 'Av. Cândido de Abreu, 127 - Centro Cívico (Piso L2), Curitiba - PR',
     hoursPrimary: 'Diariamente, das 10h às 22h',
-    image: '/assets/images/real/loja-mueller.jpg',
+    image: '/assets/images/real/loja-mueller.webp',
     imagePosition: '50% 50%',
     tags: [
       { icon: 'pin', label: 'Novo Endereço' },
@@ -60,19 +60,19 @@ export const CURITIBA_UNITS: ReadonlyArray<LocationUnit> = Object.freeze([
 export const EXPERIENCE_GALLERY = Object.freeze([
   {
     id: 'exp-1',
-    image: '/assets/images/real/salao-juan.png',
+    image: '/assets/images/real/salao-juan.webp',
     title: 'Arquitetura & Aconchego',
     alt: 'Ambiente interno acolhedor da Crema Lab com piso em mosaico e parede assinada pela chef Harlen Brandão',
   },
   {
     id: 'exp-2',
-    image: '/assets/images/real/interna-mahani.png',
+    image: '/assets/images/real/interna-mahani.webp',
     title: 'Fresco Todos os Dias',
     alt: 'Vitrine pozzetti italiana e arquitetura em arcos da Crema Lab em Curitiba',
   },
   {
     id: 'exp-3',
-    image: '/assets/images/real/cafe-juan.png',
+    image: '/assets/images/real/cafe-juan.webp',
     title: 'Cafeteria Especial',
     alt: 'Café especial servido na cerâmica artesanal da Crema Lab',
   },

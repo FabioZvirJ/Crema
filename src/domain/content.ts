@@ -78,31 +78,31 @@ export const VALUE_PROPOSITIONS: ReadonlyArray<ValueProposition> = Object.freeze
 export const INSTAGRAM_FEED: ReadonlyArray<InstagramItem> = Object.freeze([
   {
     id: 'ig-1',
-    image: '/assets/images/real/novos-sabores-1.png',
+    image: '/assets/images/real/novos-sabores-1.webp',
     alt: 'Colherada de gelato artesanal de chocolate com avelãs no laboratório da Crema Lab',
     caption: 'Bastidores do nosso laboratório: produção diária em pequenos lotes.',
   },
   {
     id: 'ig-2',
-    image: '/assets/images/real/salao-juan.png',
+    image: '/assets/images/real/salao-juan.webp',
     alt: 'Ambiente interno da Crema Lab em Curitiba com identidade visual na parede',
     caption: 'Gelato é pausa, é encontro, é vida.',
   },
   {
     id: 'ig-3',
-    image: '/assets/images/real/loja-mueller.jpg',
+    image: '/assets/images/real/loja-mueller.webp',
     alt: 'Fachada iluminada da Crema Lab com letreiro neon e azulejos de terracota',
     caption: 'Nossa arquitetura em tons de terracota esperando por você.',
   },
   {
     id: 'ig-4',
-    image: '/assets/images/real/fachada-batel-juan.png',
+    image: '/assets/images/real/fachada-batel-juan.webp',
     alt: 'Fachada da matriz Crema Lab no Batel em Curitiba fotografada por Juan Azevedo',
     caption: 'Três endereços em Curitiba: Batel, Barigui e Mueller.',
   },
   {
     id: 'ig-5',
-    image: '/assets/images/real/pistacchio-creminio.jpg',
+    image: '/assets/images/real/pistacchio-creminio.webp',
     alt: 'Casquinha artesanal Crema Lab de Pistacchio segurada na mão',
     caption: 'Pistacchio tostado autoral: o grande clássico do nosso laboratório.',
   },

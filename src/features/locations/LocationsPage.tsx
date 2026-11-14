@@ -75,12 +75,17 @@ export function LocationsPage() {
                       className="unit-arch-img"
                       style={unit.imagePosition ? { objectPosition: unit.imagePosition } : undefined}
                       loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div className="unit-arch-placeholder">
                       <img
                         src="/assets/images/real/logo-crema-preto.png"
                         alt="Crema Lab"
+                        width={200}
+                        height={200}
+                        loading="lazy"
+                        decoding="async"
                         className="unit-arch-placeholder-logo"
                       />
                     </div>
@@ -131,6 +136,7 @@ export function LocationsPage() {
                     alt={item.alt}
                     className="experience-photo-img"
                     loading="lazy"
+                    decoding="async"
                   />
                 </figure>
               ))}

@@ -69,8 +69,12 @@ export function AboutPage() {
             {/* Terrazzo backdrop card */}
             <div className="about-collage-terrazzo">
               <img
-                src="/assets/images/real/salao-juan.png"
+                src="/assets/images/real/salao-juan.webp"
                 alt=""
+                width={801}
+                height={1199}
+                loading="lazy"
+                decoding="async"
                 className="about-collage-terrazzo-img"
               />
             </div>
@@ -82,8 +86,12 @@ export function AboutPage() {
             {/* Chef Harlen in lab photo */}
             <div className="about-collage-photo">
               <img
-                src="/assets/images/chef-harlen.png"
+                src="/assets/images/chef-harlen.webp"
                 alt="Chef Harlen Brandão formulando gelato artesanal"
+                width={775}
+                height={775}
+                loading="lazy"
+                decoding="async"
                 className="about-collage-photo-img"
               />
             </div>
@@ -97,8 +105,12 @@ export function AboutPage() {
           <div className="about-brescia-visual">
             <div className="about-brescia-photo-frame">
               <img
-                src="/assets/images/chef-harlen.png"
+                src="/assets/images/chef-harlen.webp"
                 alt="Chef Harlen Brandão degustando gelato artesanal no laboratório"
+                width={775}
+                height={775}
+                loading="lazy"
+                decoding="async"
                 className="about-brescia-photo-img"
               />
             </div>
@@ -150,10 +162,13 @@ export function AboutPage() {
           <div className="about-curitiba-arch-wrap">
             <div className="about-curitiba-arch">
               <img
-                src="/assets/images/real/loja-mueller.jpg"
+                src="/assets/images/real/loja-mueller.webp"
                 alt="Loja da Crema Lab em Curitiba com vitrine italiana e arquitetura em arcos"
+                width={1200}
+                height={835}
                 className="about-curitiba-arch-img"
                 loading="lazy"
+                decoding="async"
               />
             </div>
             <ScallopSeal className="about-curitiba-seal" />

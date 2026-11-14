@@ -42,7 +42,7 @@ function ValuePropIcon({ icon }: { readonly icon: ValueProposition['icon'] }) {
 
 const HOME_FEATURED_PHOTOS = Object.freeze([
   {
-    image: '/assets/images/real/gelato-juan.png',
+    image: '/assets/images/real/gelato-juan.webp',
     alt: 'Copinho de gelato de Pistacchio com crocante de pistache',
     flavorId: 'pistacchio',
     motif: 'pistachio',
@@ -51,7 +51,7 @@ const HOME_FEATURED_PHOTOS = Object.freeze([
     position: '50% 58%',
   },
   {
-    image: '/assets/images/real/novos-sabores-1.png',
+    image: '/assets/images/real/novos-sabores-1.webp',
     alt: 'Colherada de gelato de avelã com pedaços crocantes',
     flavorId: 'nocciolotto',
     motif: 'cacao',
@@ -60,7 +60,7 @@ const HOME_FEATURED_PHOTOS = Object.freeze([
     position: '45% 40%',
   },
   {
-    image: '/assets/images/real/novos-sabores-2.png',
+    image: '/assets/images/real/novos-sabores-2.webp',
     alt: 'Copinho de gelato cremoso com farofinha crocante',
     flavorId: 'cuca-doce-de-leite',
     motif: 'amarena',
@@ -69,7 +69,7 @@ const HOME_FEATURED_PHOTOS = Object.freeze([
     position: '50% 50%',
   },
   {
-    image: '/assets/images/real/pistacchio-creminio.jpg',
+    image: '/assets/images/real/pistacchio-creminio.webp',
     alt: 'Casquinha artesanal de Pistacchio segurada na mão',
     motif: 'pistachio',
     left: '84%',
@@ -92,8 +92,12 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
       <section className="home-hero" aria-label="Destaque Principal">
         <HeroBackdrop className="home-hero-backdrop" />
         <img
-          src="/assets/images/real/pistacchio-creminio.jpg"
+          src="/assets/images/real/pistacchio-creminio.webp"
           alt="Casquinha artesanal Crema Lab de Pistacchio segurada na mão"
+          width={801}
+          height={1200}
+          fetchPriority="high"
+          decoding="async"
           className="home-hero-photo"
         />
         <p className="home-hero-script" aria-hidden="true">
@@ -161,15 +165,22 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
         <div className="site-container home-about-inner">
           <div className="home-about-photos">
             <img
-              src="/assets/images/chef-harlen.png"
+              src="/assets/images/chef-harlen.webp"
               alt="Chef e economista Harlen Brandão degustando gelato artesanal no laboratório da Crema Lab"
+              width={775}
+              height={775}
+              loading="lazy"
+              decoding="async"
               className="home-about-chef-img"
             />
             <img
-              src="/assets/images/real/fachada-batel-juan.png"
+              src="/assets/images/real/fachada-batel-juan.webp"
               alt="Fachada da Crema Lab no Batel, em Curitiba"
+              width={800}
+              height={1199}
               className="home-about-inset-img"
               loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -238,6 +249,7 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
                     className="home-scoop-photo"
                     style={{ objectPosition: photo.position }}
                     loading="lazy"
+                    decoding="async"
                   />
                   <span className="home-scoop-plus" aria-hidden="true">
                     <Plus size={12} strokeWidth={2.2} />
@@ -302,6 +314,7 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
                   alt={post.alt}
                   className="instagram-card-img"
                   loading="lazy"
+                  decoding="async"
                 />
                 <span className="instagram-multi-badge" aria-hidden="true">
                   <Copy size={11} />

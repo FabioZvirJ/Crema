@@ -106,8 +106,12 @@ export function SubpageHero({
         <LeafSprig className="sobre-hero-sprig" />
         <div className="sobre-hero-portrait-wrap" aria-hidden="true">
           <img
-            src="/assets/images/chef-harlen.png"
+            src="/assets/images/chef-harlen.webp"
             alt=""
+            width={775}
+            height={775}
+            fetchPriority="high"
+            decoding="async"
             className="sobre-hero-portrait-img"
           />
           <OvalSeal className="sobre-hero-seal" />
@@ -139,8 +143,12 @@ export function SubpageHero({
         <BotanicalSprigLeft className="subpage-seal-sprig-left" />
         <div className="contato-hero-arch" aria-hidden="true">
           <img
-            src="/assets/images/real/salao-juan.png"
+            src="/assets/images/real/salao-juan.webp"
             alt=""
+            width={801}
+            height={1199}
+            fetchPriority="high"
+            decoding="async"
             className="contato-hero-arch-img"
           />
         </div>
@@ -172,8 +180,12 @@ export function SubpageHero({
       <BotanicalSprigLeft className="subpage-seal-sprig-left" />
       <div className="subpage-seal-photo-arch" aria-hidden="true">
         <img
-          src="/assets/images/real/cafe-juan.png"
+          src="/assets/images/real/cafe-juan.webp"
           alt=""
+          width={799}
+          height={1199}
+          fetchPriority="high"
+          decoding="async"
           className="subpage-seal-photo-arch-img"
         />
       </div>
