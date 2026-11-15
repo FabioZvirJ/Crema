@@ -4,6 +4,7 @@ import { AppLink, useRouter, type AppRoute } from '@/app/router';
 import { BRAND_CONFIG } from '@/config/brand';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import { InstagramIcon } from '@/components/visuals/BotanicalVectors';
+import { CremaMonogramBadge, CremaWordmark } from '@/components/visuals/BrandLogo';
 
 interface HeaderProps {
   readonly onOpenOrderModal: () => void;
@@ -70,50 +71,10 @@ export function Header({ onOpenOrderModal }: HeaderProps) {
           onClick={() => setMobileMenuOpen(false)}
         >
           <span className="header-logo-badge" aria-hidden="true">
-            <svg viewBox="0 0 44 44" className="header-logo-badge-svg">
-              <circle
-                cx="22"
-                cy="22"
-                r="20"
-                fill="#f6ecdd"
-                stroke="#cfb18c"
-                strokeWidth="1"
-              />
-              <circle
-                cx="22"
-                cy="22"
-                r="17"
-                fill="none"
-                stroke="#b0553f"
-                strokeWidth="0.7"
-                strokeDasharray="1.5 2.2"
-              />
-              <text
-                x="19.5"
-                y="26"
-                textAnchor="middle"
-                fontFamily="var(--font-serif)"
-                fontSize="16"
-                fontWeight="600"
-                fill="#5c0a1e"
-              >
-                C
-              </text>
-              <text
-                x="25.5"
-                y="30"
-                textAnchor="middle"
-                fontFamily="var(--font-serif)"
-                fontSize="16"
-                fontWeight="600"
-                fill="#3b462b"
-              >
-                L
-              </text>
-            </svg>
+            <CremaMonogramBadge className="header-logo-badge-svg" />
           </span>
           <span className="brand-logo-text">
-            <span className="brand-logo-main">{BRAND_CONFIG.name}</span>
+            <CremaWordmark className="brand-logo-wordmark" />
             <span className="brand-logo-sub">{BRAND_CONFIG.tagline}</span>
           </span>
         </AppLink>

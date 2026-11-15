@@ -8,6 +8,7 @@ import { isValidEmail } from '@/security/validation';
 import { rateLimiter } from '@/security/rateLimiter';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import { InstagramIcon, TikTokIcon } from '@/components/visuals/BotanicalVectors';
+import { CremaWordmark } from '@/components/visuals/BrandLogo';
 
 export function Footer() {
   const [email, setEmail] = useState('');
@@ -42,8 +43,8 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-container footer-top">
         <div className="footer-brand">
-          <AppLink to="/" className="footer-logo-link">
-            <span className="footer-logo-main">{BRAND_CONFIG.name}</span>
+          <AppLink to="/" className="footer-logo-link" aria-label="Crema Lab — Página Inicial">
+            <CremaWordmark className="footer-logo-wordmark" />
             <span className="footer-logo-sub">{BRAND_CONFIG.tagline}</span>
           </AppLink>
         </div>

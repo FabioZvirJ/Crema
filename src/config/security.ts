@@ -23,6 +23,9 @@ export const ALLOWED_EXTERNAL_HOSTS: ReadonlySet<string> = new Set([
   'api.whatsapp.com',
   'maps.google.com',
   'www.google.com',
+  // Photo attributions on the Sabores page (licence terms require the links).
+  'commons.wikimedia.org',
+  'creativecommons.org',
 ]);
 
 export const ALLOWED_PROTOCOLS: ReadonlySet<string> = new Set([

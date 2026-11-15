@@ -66,15 +66,15 @@ export const EXPERIENCE_GALLERY = Object.freeze([
   },
   {
     id: 'exp-2',
-    image: '/assets/images/real/interna-mahani.webp',
-    title: 'Fresco Todos os Dias',
-    alt: 'Vitrine pozzetti italiana e arquitetura em arcos da Crema Lab em Curitiba',
+    image: '/assets/images/real/freezer-eventos-2.webp',
+    title: 'Edições 100g & Eventos',
+    alt: 'Potes individuais de 100g da Crema Lab com tampas identificadas por sabor',
   },
   {
     id: 'exp-3',
-    image: '/assets/images/real/cafe-juan.webp',
-    title: 'Cafeteria Especial',
-    alt: 'Café especial servido na cerâmica artesanal da Crema Lab',
+    image: '/assets/images/real/sobremesa-juan.webp',
+    title: 'Sobremesas Autorais',
+    alt: 'Sobremesa de gelato Crema Lab servida na mesa Cavalinho em Curitiba',
   },
 ] as const);
 

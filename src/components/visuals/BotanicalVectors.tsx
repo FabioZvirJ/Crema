@@ -1,4 +1,6 @@
+import { useId, type CSSProperties } from 'react';
 import type { BotanicalMotif } from '@/domain/types';
+import { CremaMonogramMark } from './BrandLogo';
 
 export function InstagramIcon({ size = 16 }: { readonly size?: number }) {
   return (
@@ -151,114 +153,123 @@ export function DiamondLatticePattern({ className = '' }: { readonly className?:
 export function FlavorMotifGarnish({ motif }: { readonly motif: BotanicalMotif }) {
   switch (motif) {
     case 'pistachio':
-    case 'lemon':
       return (
         <svg
-          viewBox="0 0 180 90"
+          viewBox="0 0 220 110"
           fill="none"
           aria-hidden="true"
           className="flavor-motif-svg"
         >
-          {/* Left leaves */}
-          <path
-            d="M36 52C22 44 16 30 22 20C32 25 38 38 36 52Z"
-            stroke="#9B866C"
-            strokeWidth="1.1"
-          />
-          <path
-            d="M32 58C18 58 10 50 12 40C22 42 30 48 32 58Z"
-            stroke="#9B866C"
-            strokeWidth="1.1"
-          />
-          {/* Right pistachio / lemon shells */}
-          <ellipse
-            cx="144"
-            cy="28"
-            rx="9"
-            ry="6"
-            transform="rotate(28 144 28)"
-            stroke="#9B866C"
-            strokeWidth="1.1"
-          />
-          <ellipse
-            cx="156"
-            cy="42"
-            rx="10"
-            ry="6.5"
-            transform="rotate(18 156 42)"
-            stroke="#9B866C"
-            strokeWidth="1.1"
-          />
+          {/* Left botanical leaves & stem */}
+          <g stroke="#8c7258" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M48 76C38 62 34 46 36 30" />
+            <path d="M40 58C26 52 18 40 22 29C32 33 40 44 40 58Z" />
+            <path d="M37 42C26 32 24 20 31 13C38 20 41 31 37 42Z" />
+            <path d="M43 68C52 60 60 56 64 59" opacity="0.65" />
+          </g>
+          {/* Right split pistachio shells */}
+          <g stroke="#8c7258" strokeWidth="1.15" strokeLinecap="round">
+            <ellipse cx="170" cy="36" rx="11" ry="7.5" transform="rotate(26 170 36)" />
+            <path d="M161 32C168 37 174 39 180 39" opacity="0.7" />
+            <ellipse cx="182" cy="54" rx="11.5" ry="7.5" transform="rotate(-14 182 54)" />
+            <path d="M172 56C179 52 186 51 192 52" opacity="0.7" />
+            <path d="M158 68C166 64 176 66 182 74C172 78 162 76 158 68Z" />
+          </g>
+        </svg>
+      );
+    case 'lemon':
+      return (
+        <svg
+          viewBox="0 0 220 110"
+          fill="none"
+          aria-hidden="true"
+          className="flavor-motif-svg"
+        >
+          {/* Left lemon leaves */}
+          <g stroke="#8c7258" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M44 74C32 58 26 42 28 24" />
+            <path d="M35 56C20 49 14 37 19 26C30 30 37 42 35 56Z" />
+            <path d="M30 40C40 31 50 28 56 32C50 41 40 44 30 40Z" />
+          </g>
+          {/* Right citrus slice & leaves */}
+          <g stroke="#8c7258" strokeWidth="1.15" strokeLinecap="round">
+            <circle cx="176" cy="40" r="14" />
+            <circle cx="176" cy="40" r="10.5" strokeDasharray="1.5 2" />
+            <path d="M176 30V50M166 40H186M169 33L183 47M183 33L169 47" opacity="0.65" />
+            <path d="M166 66C176 60 188 61 195 69C185 75 174 74 166 66Z" />
+          </g>
         </svg>
       );
     case 'cacao':
     case 'caramel':
       return (
         <svg
-          viewBox="0 0 180 90"
+          viewBox="0 0 220 110"
           fill="none"
           aria-hidden="true"
           className="flavor-motif-svg"
         >
-          {/* Left coffee/cacao beans */}
-          <ellipse
-            cx="26"
-            cy="24"
-            rx="5"
-            ry="3.5"
-            transform="rotate(-30 26 24)"
-            fill="#5C3A28"
-          />
-          <ellipse
-            cx="18"
-            cy="35"
-            rx="5"
-            ry="3.5"
-            transform="rotate(15 18 35)"
-            fill="#5C3A28"
-          />
-          <ellipse
-            cx="32"
-            cy="36"
-            rx="4.5"
-            ry="3"
-            transform="rotate(-15 32 36)"
-            fill="#5C3A28"
-          />
-          {/* Right botanical cacao leaves */}
-          <path
-            d="M142 36C146 22 156 14 164 18C160 28 152 35 142 36Z"
-            stroke="#4A2F23"
-            strokeWidth="1.2"
-          />
-          <path
-            d="M145 45C155 38 166 38 171 45C163 50 153 49 145 45Z"
-            stroke="#4A2F23"
-            strokeWidth="1.2"
-          />
+          {/* Left roasted cacao/coffee beans */}
+          <g>
+            <ellipse cx="34" cy="30" rx="6" ry="4" transform="rotate(-28 34 30)" fill="#5C3A28" />
+            <path d="M29 32C33 30 36 28 39 27" stroke="#f4ede4" strokeWidth="0.9" />
+            <ellipse cx="24" cy="46" rx="5.5" ry="3.8" transform="rotate(18 24 46)" fill="#6d4732" />
+            <path d="M19 45C23 46 26 47 29 47" stroke="#f4ede4" strokeWidth="0.9" />
+            <ellipse cx="38" cy="54" rx="5" ry="3.4" transform="rotate(-12 38 54)" fill="#4A2F23" />
+          </g>
+          {/* Right cacao leaves & twig */}
+          <g stroke="#5C3A28" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M166 64C172 48 178 34 188 22" />
+            <path d="M172 46C174 30 184 20 194 22C191 34 183 44 172 46Z" />
+            <path d="M170 56C182 48 195 48 202 56C192 63 180 62 170 56Z" />
+            <path d="M168 64C158 58 154 48 159 40C167 45 171 54 168 64Z" opacity="0.7" />
+          </g>
         </svg>
       );
     case 'berries':
     case 'amarena':
       return (
         <svg
-          viewBox="0 0 180 90"
+          viewBox="0 0 220 110"
           fill="none"
           aria-hidden="true"
           className="flavor-motif-svg"
         >
-          {/* Top-right berries / cherries */}
-          <circle cx="150" cy="20" r="4" fill="#460E18" />
-          <circle cx="160" cy="34" r="6" fill="#460E18" />
-          <path
-            d="M160 28C162 20 166 15 170 12"
-            stroke="#460E18"
-            strokeWidth="1.1"
-            strokeLinecap="round"
-          />
-          {/* Bottom-left berry cluster */}
-          <circle cx="28" cy="74" r="5.5" fill="#631624" />
-          <circle cx="19" cy="68" r="2.5" fill="#631624" />
+          {/* Left berry & cherry cluster */}
+          <g>
+            <circle cx="34" cy="64" r="6.2" fill="#5e1121" />
+            <circle cx="24" cy="54" r="3.2" fill="#7a1b30" />
+            <circle cx="38" cy="40" r="4.5" fill="#460E18" />
+            <path
+              d="M34 58C35 48 39 40 44 33"
+              stroke="#5e1121"
+              strokeWidth="1.1"
+              strokeLinecap="round"
+            />
+            <path
+              d="M28 74C18 68 14 58 18 50C26 53 31 63 28 74Z"
+              stroke="#6e4b3c"
+              strokeWidth="1"
+            />
+          </g>
+          {/* Right cherries with stem & leaf */}
+          <g>
+            <circle cx="176" cy="34" r="5" fill="#460E18" />
+            <circle cx="188" cy="48" r="7" fill="#5e1121" />
+            <circle cx="168" cy="58" r="3.2" fill="#7a1b30" />
+            <path
+              d="M176 29C180 20 186 15 194 12C191 22 189 32 188 41"
+              stroke="#460E18"
+              strokeWidth="1.15"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M194 12C202 12 208 18 206 26C198 25 193 19 194 12Z"
+              stroke="#6e4b3c"
+              strokeWidth="1"
+            />
+          </g>
         </svg>
       );
   }
@@ -415,17 +426,9 @@ export function BrandSeal({ className = '' }: { readonly className?: string }) {
       <text fontSize="10.5" letterSpacing="3.4" fill="currentColor" fontFamily="var(--font-sans)">
         <textPath href="#seal-ring">CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS · </textPath>
       </text>
-      <text
-        x="120"
-        y="150"
-        textAnchor="middle"
-        fontFamily="var(--font-serif)"
-        fontSize="92"
-        letterSpacing="-6"
-        style={{ fill: 'var(--seal-mono, #3f4a2e)' }}
-      >
-        CL
-      </text>
+      <g style={{ color: 'var(--seal-mono, #3f4a2e)' }}>
+        <CremaMonogramMark transform="translate(64, 62) scale(2.35)" />
+      </g>
     </svg>
   );
 }
@@ -472,12 +475,15 @@ export function SubpageBackdrop({
     return (
       <svg viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true" className={className}>
         <rect width="1000" height="380" fill="#f4ede4" />
-        <path d="M-20 58C150 82 290 84 440 66C590 48 720 42 850 58C925 68 975 76 1020 74V118C970 120 910 110 830 98C705 80 575 86 430 104C285 122 150 116 -20 90Z" fill="#e6d0b5" />
-        <path d="M-20 44C150 68 290 70 440 52C590 34 720 28 850 44C925 54 975 62 1020 60V88C975 90 920 82 840 70C710 52 580 58 435 76C290 94 150 88 -20 64Z" fill="#b0553f" />
-        <path d="M-20 62C150 86 290 88 435 70C580 52 710 46 840 64C920 76 975 84 1020 82V104C975 106 915 98 835 86C705 68 575 74 430 92C285 110 150 104 -20 80Z" fill="#5c0a1e" />
-        <path d="M-20 215C85 232 195 278 325 298C425 312 575 312 675 298C805 278 915 232 1020 215V334C915 350 805 360 685 364C575 368 425 368 315 364C195 360 85 350 -20 334Z" fill="#e6d0b5" />
-        <path d="M-20 245C85 262 195 298 325 314C425 326 575 326 675 314C805 298 915 262 1020 245V316C915 332 805 346 685 354C575 360 425 360 315 354C195 346 85 332 -20 316Z" fill="#b0553f" />
-        <path d="M-20 274C90 290 200 318 330 330C425 340 575 340 670 330C800 318 910 290 1020 274V304C910 322 800 342 680 356C575 366 425 366 320 356C200 342 90 322 -20 304Z" fill="#5c0a1e" />
+        {/* Soft upper corner cream contour lines */}
+        <path d="M-20 120C90 95 210 62 320 0H-20Z" fill="#efe4d5" opacity="0.7" />
+        <path d="M700 0C800 58 910 88 1020 104V0Z" fill="#efe4d5" opacity="0.55" />
+        {/* Flowing bottom wave cradle in sand, terracotta and deep burgundy */}
+        <path d="M-20 245C105 222 225 268 375 288C525 308 665 260 805 232C895 214 965 216 1020 228V380H-20Z" fill="#ead8c1" opacity="0.65" />
+        <path d="M-20 278C95 258 215 296 360 308C495 320 625 278 755 248C860 224 950 220 1020 236V352C925 362 800 364 665 360C500 356 260 364 -20 342Z" fill="#a84d38" />
+        <path d="M-20 294C115 274 235 308 380 318C520 328 655 294 790 278C890 266 965 274 1020 288V338C910 352 785 356 645 350C485 342 250 362 -20 330Z" fill="#5c0a1e" />
+        {/* Clean cream base along the bottom edge */}
+        <path d="M-20 324C140 348 310 342 480 330C660 318 840 336 1020 326V380H-20Z" fill="#f4ede4" />
       </svg>
     );
   }
@@ -550,36 +556,100 @@ export function ScallopSeal({ className = '' }: { readonly className?: string })
     <svg viewBox="0 0 100 100" aria-hidden="true" className={className}>
       <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="3.2" strokeDasharray="1.4 3.15" strokeLinecap="round" />
       <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" strokeWidth="0.8" />
-      <text x="50" y="64" textAnchor="middle" fontFamily="var(--font-serif)" fontSize="40" fontWeight="600" fill="currentColor">
-        CL
-      </text>
+      <CremaMonogramMark transform="translate(18, 17) scale(1.34)" />
     </svg>
   );
 }
 
-/** Elegant outlined leaf branch with midribs (hero decoration). */
+/** Leaves of the hero sprig: [leaf outline, midrib, attachment point on the stem]. */
+const LEAF_SPRIG_LEAVES: ReadonlyArray<readonly [string, string, string]> = [
+  ['M72.1 544.6Q133.7 540.6 170.4 490.9Q108.8 494.9 72.1 544.6Z', 'M72.1 544.6L158.6 497.4', '72.1px 544.6px'],
+  ['M81.7 485.7Q64.0 431.0 10.8 409.2Q28.5 463.9 81.7 485.7Z', 'M81.7 485.7L19.3 418.4', '81.7px 485.7px'],
+  ['M91.3 426.6Q144.4 423.2 176.1 380.3Q123.0 383.8 91.3 426.6Z', 'M91.3 426.6L165.9 385.9', '91.3px 426.6px'],
+  ['M101.3 367.4Q87.0 320.5 41.9 301.3Q56.3 348.2 101.3 367.4Z', 'M101.3 367.4L49.0 309.2', '101.3px 367.4px'],
+  ['M112.3 308.2Q157.0 306.5 184.7 271.3Q139.9 272.9 112.3 308.2Z', 'M112.3 308.2L176.0 275.8', '112.3px 308.2px'],
+  ['M124.5 248.9Q114.2 209.7 77.7 192.2Q87.9 231.4 124.5 248.9Z', 'M124.5 248.9L83.3 199.0', '124.5px 248.9px'],
+  ['M138.4 189.8Q174.7 190.5 198.6 163.3Q162.4 162.5 138.4 189.8Z', 'M138.4 189.8L191.4 166.4', '138.4px 189.8px'],
+  ['M154.4 130.7Q148.5 99.3 120.6 83.5Q126.6 114.9 154.4 130.7Z', 'M154.4 130.7L124.7 89.1', '154.4px 130.7px'],
+  ['M173.0 71.9Q200.7 74.7 220.7 55.4Q193.0 52.6 173.0 71.9Z', 'M173.0 71.9L214.9 57.4', '173.0px 71.9px'],
+];
+
+/**
+ * Elegant outlined leaf branch with midribs (hero decoration). The branch sways from
+ * its base and every leaf flutters around the point where it meets the stem.
+ */
 export function LeafSprig({ className = '' }: { readonly className?: string }) {
   return (
     <svg viewBox="0 0 300 620" fill="none" aria-hidden="true" className={className}>
-      <g stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M60 615C95 420 115 220 190 25" />
-        <path d="M72.1 544.6Q133.7 540.6 170.4 490.9Q108.8 494.9 72.1 544.6Z M81.7 485.7Q64.0 431.0 10.8 409.2Q28.5 463.9 81.7 485.7Z M91.3 426.6Q144.4 423.2 176.1 380.3Q123.0 383.8 91.3 426.6Z M101.3 367.4Q87.0 320.5 41.9 301.3Q56.3 348.2 101.3 367.4Z M112.3 308.2Q157.0 306.5 184.7 271.3Q139.9 272.9 112.3 308.2Z M124.5 248.9Q114.2 209.7 77.7 192.2Q87.9 231.4 124.5 248.9Z M138.4 189.8Q174.7 190.5 198.6 163.3Q162.4 162.5 138.4 189.8Z M154.4 130.7Q148.5 99.3 120.6 83.5Q126.6 114.9 154.4 130.7Z M173.0 71.9Q200.7 74.7 220.7 55.4Q193.0 52.6 173.0 71.9Z" />
+      <g
+        className="sprig-sway"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ transformOrigin: '60px 615px' }}
+      >
+        <path className="sprig-stem" pathLength={1} strokeWidth="2.2" d="M60 615C95 420 115 220 190 25" />
+        {LEAF_SPRIG_LEAVES.map(([leaf, vein, origin], i) => (
+          <g
+            key={origin}
+            className="sprig-leaf"
+            style={{ transformOrigin: origin, '--leaf': i } as CSSProperties}
+          >
+            <path className="sprig-leaves" pathLength={1} strokeWidth="2.2" d={leaf} />
+            <path className="sprig-veins" pathLength={1} strokeWidth="1.1" d={vein} />
+          </g>
+        ))}
       </g>
-      <path d="M72.1 544.6L158.6 497.4 M81.7 485.7L19.3 418.4 M91.3 426.6L165.9 385.9 M101.3 367.4L49.0 309.2 M112.3 308.2L176.0 275.8 M124.5 248.9L83.3 199.0 M138.4 189.8L191.4 166.4 M154.4 130.7L124.7 89.1 M173.0 71.9L214.9 57.4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
     </svg>
   );
 }
 
-/** Small branch with outlined berries (hero decoration). */
+/** Leaves of the berry sprig: [leaf outline, midrib, attachment point on the stem]. */
+const BERRY_SPRIG_LEAVES: ReadonlyArray<readonly [string, string, string]> = [
+  ['M46.8 231.0Q76.8 232.2 96.4 209.6Q66.5 208.3 46.8 231.0Z', 'M46.8 231.0L90.5 212.1', '46.8px 231.0px'],
+  ['M57.1 188.2Q51.0 163.0 27.6 152.1Q33.7 177.3 57.1 188.2Z', 'M57.1 188.2L31.1 156.5', '57.1px 188.2px'],
+  ['M67.3 142.1Q89.0 142.3 102.7 125.4Q81.0 125.2 67.3 142.1Z', 'M67.3 142.1L98.4 127.4', '67.3px 142.1px'],
+  ['M78.8 93.1Q75.2 75.9 59.4 68.1Q63.1 85.3 78.8 93.1Z', 'M78.8 93.1L61.7 71.1', '78.8px 93.1px'],
+  ['M93.2 41.4Q106.6 42.5 115.9 32.7Q102.4 31.6 93.2 41.4Z', 'M93.2 41.4L113.1 33.8', '93.2px 41.4px'],
+];
+
+const BERRY_SPRIG_BERRIES: ReadonlyArray<readonly [number, number, number]> = [[110, 24, 8], [124, 58, 7], [84, 70, 6], [112, 98, 6]];
+
+/** Small branch with outlined berries (hero decoration); sways, leaves flutter, berries bob. */
 export function BerrySprig({ className = '' }: { readonly className?: string }) {
   return (
     <svg viewBox="0 0 140 260" fill="none" aria-hidden="true" className={className}>
-      <g stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M40 255C60 190 70 110 100 20" />
-        <path d="M46.8 231.0Q76.8 232.2 96.4 209.6Q66.5 208.3 46.8 231.0Z M57.1 188.2Q51.0 163.0 27.6 152.1Q33.7 177.3 57.1 188.2Z M67.3 142.1Q89.0 142.3 102.7 125.4Q81.0 125.2 67.3 142.1Z M78.8 93.1Q75.2 75.9 59.4 68.1Q63.1 85.3 78.8 93.1Z M93.2 41.4Q106.6 42.5 115.9 32.7Q102.4 31.6 93.2 41.4Z" />
+      <g
+        className="sprig-sway"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ transformOrigin: '40px 255px' }}
+      >
+        <path className="sprig-stem" pathLength={1} strokeWidth="2" d="M40 255C60 190 70 110 100 20" />
+        {BERRY_SPRIG_LEAVES.map(([leaf, vein, origin], i) => (
+          <g
+            key={origin}
+            className="sprig-leaf"
+            style={{ transformOrigin: origin, '--leaf': i } as CSSProperties}
+          >
+            <path className="sprig-leaves" pathLength={1} strokeWidth="2" d={leaf} />
+            <path className="sprig-veins" pathLength={1} strokeWidth="1" d={vein} />
+          </g>
+        ))}
+        <g className="sprig-berries" strokeWidth="1.8">
+          {BERRY_SPRIG_BERRIES.map(([cx, cy, r], i) => (
+            <circle
+              key={`${cx}-${cy}`}
+              className="sprig-berry"
+              cx={cx}
+              cy={cy}
+              r={r}
+              style={{ '--leaf': i } as CSSProperties}
+            />
+          ))}
+        </g>
       </g>
-      <path d="M46.8 231.0L90.5 212.1 M57.1 188.2L31.1 156.5 M67.3 142.1L98.4 127.4 M78.8 93.1L61.7 71.1 M93.2 41.4L113.1 33.8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-      <g stroke="currentColor" strokeWidth="1.8"><circle cx="110" cy="24" r="8" /><circle cx="124" cy="58" r="7" /><circle cx="84" cy="70" r="6" /><circle cx="112" cy="98" r="6" /></g>
     </svg>
   );
 }
@@ -599,9 +669,8 @@ export function OvalSeal({ className = '' }: { readonly className?: string }) {
           CREMA LAB · GELATO · CAFÉ · EXPERIÊNCIAS ·
         </textPath>
       </text>
-      <g fontFamily="var(--font-serif)" fill="#3b462b" textAnchor="middle">
-        <text x="56" y="88" fontSize="54" fontWeight="500">C</text>
-        <text x="72" y="104" fontSize="54" fontWeight="500">L</text>
+      <g color="#3b462b">
+        <CremaMonogramMark transform="translate(18, 30) scale(1.92)" />
       </g>
     </svg>
   );
@@ -676,38 +745,53 @@ export function MosaicTileIllustration({ className = '' }: { readonly className?
 
 /** Fine-line laboratory glassware & botanical extraction vector for the Lab hero. */
 export function LabGlasswareIllustration({ className = '' }: { readonly className?: string }) {
+  const clipId = `flask-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   return (
     <svg viewBox="0 0 220 240" fill="none" aria-hidden="true" className={className}>
+      <defs>
+        <clipPath id={clipId}>
+          <path d="M99 102L63 178C58 188 65 199 76 199H144C155 199 162 188 157 178L121 102Z" />
+        </clipPath>
+      </defs>
       {/* Molecular hexagon ring */}
-      <g stroke="currentColor" strokeWidth="1.2" opacity="0.65">
+      <g className="lab-glass-molecule" style={{ transformOrigin: '68px 50px' }} stroke="currentColor" strokeWidth="1.2" opacity="0.65">
         <polygon points="48,38 68,26 88,38 88,62 68,74 48,62" />
-        <polygon points="54,41 68,33 82,41 82,59 68,67 54,59" strokeDasharray="2 2" />
+        <polygon className="lab-glass-ring" points="54,41 68,33 82,41 82,59 68,67 54,59" strokeDasharray="2 2" />
         <line x1="88" y1="38" x2="106" y2="28" />
-        <circle cx="110" cy="26" r="4" />
+        <circle className="lab-glass-atom" cx="110" cy="26" r="4" />
         <line x1="48" y1="62" x2="32" y2="72" />
-        <circle cx="28" cy="74" r="3.5" />
+        <circle className="lab-glass-atom lab-glass-atom--late" cx="28" cy="74" r="3.5" />
       </g>
       {/* Erlenmeyer conical flask */}
-      <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <g className="lab-glass-flask" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ transformOrigin: '110px 200px' }}>
         <path d="M92 66H128" />
         <path d="M98 66V102L62 178C57 188 64 200 76 200H144C156 200 163 188 158 178L122 102V66" />
-        {/* Liquid meniscus wave inside flask */}
-        <path
-          d="M74 156C88 150 102 162 114 156C126 150 136 154 146 156L156 177C159 184 154 193 144 193H76C66 193 61 184 64 177Z"
-          fill="currentColor"
-          fillOpacity="0.12"
-        />
+        {/* Liquid inside the flask: two wave layers flowing in opposite directions */}
+        <g clipPath={`url(#${clipId})`} stroke="none">
+          <path
+            className="lab-glass-wave lab-glass-wave--back"
+            d="M20 158c10-6 20-6 30 0s20 6 30 0 20-6 30 0 20 6 30 0 20-6 30 0 20 6 30 0 20-6 30 0V205H20Z"
+            fill="currentColor"
+            fillOpacity="0.1"
+          />
+          <path
+            className="lab-glass-wave"
+            d="M20 156c10 5 20 5 30 0s20-5 30 0 20 5 30 0 20-5 30 0 20 5 30 0 20-5 30 0 20 5 30 0V205H20Z"
+            fill="currentColor"
+            fillOpacity="0.16"
+          />
+        </g>
         {/* Measurement graduation ticks */}
         <line x1="126" y1="130" x2="134" y2="130" />
         <line x1="132" y1="145" x2="142" y2="145" />
         <line x1="138" y1="160" x2="148" y2="160" />
         <line x1="144" y1="175" x2="152" y2="175" />
         {/* Floating bubbles & botanical leaf inside flask */}
-        <circle cx="96" cy="172" r="3.5" />
-        <circle cx="112" cy="164" r="2.5" />
-        <circle cx="106" cy="140" r="2" />
-        <circle cx="114" cy="84" r="2.2" />
-        <circle cx="106" cy="52" r="3" />
+        <circle className="lab-glass-bubble" cx="96" cy="172" r="3.5" />
+        <circle className="lab-glass-bubble lab-glass-bubble--2" cx="112" cy="164" r="2.5" />
+        <circle className="lab-glass-bubble lab-glass-bubble--3" cx="106" cy="140" r="2" />
+        <circle className="lab-glass-vapor" cx="114" cy="84" r="2.2" />
+        <circle className="lab-glass-vapor lab-glass-vapor--2" cx="106" cy="52" r="3" />
       </g>
     </svg>
   );

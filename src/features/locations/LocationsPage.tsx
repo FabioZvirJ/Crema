@@ -13,6 +13,7 @@ import { AppLink } from '@/app/router';
 import { CURITIBA_UNITS, EXPERIENCE_GALLERY } from '@/domain/locations';
 import type { UnitFeatureTag } from '@/domain/types';
 import { SubpageHero } from '@/components/layout/SubpageHero';
+import { CremaWordmark } from '@/components/visuals/BrandLogo';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import {
   LeafSprig,
@@ -79,15 +80,7 @@ export function LocationsPage() {
                     />
                   ) : (
                     <div className="unit-arch-placeholder">
-                      <img
-                        src="/assets/images/real/logo-crema-preto.png"
-                        alt="Crema Lab"
-                        width={200}
-                        height={200}
-                        loading="lazy"
-                        decoding="async"
-                        className="unit-arch-placeholder-logo"
-                      />
+                      <CremaWordmark className="unit-arch-placeholder-logo" />
                     </div>
                   )}
                 </div>

@@ -83,13 +83,13 @@ export function AboutPage() {
             <LeafSprig className="about-collage-sprig" />
             <MosaicTileIllustration className="about-collage-tile" />
 
-            {/* Chef Harlen in lab photo */}
+            {/* Featured gelato in lab photo */}
             <div className="about-collage-photo">
               <img
-                src="/assets/images/chef-harlen.webp"
-                alt="Chef Harlen Brandão formulando gelato artesanal"
-                width={775}
-                height={775}
+                src="/assets/images/real/gelato-juan.webp"
+                alt="Copinho artesanal de gelato de Pistacchio da Crema Lab"
+                width={800}
+                height={1199}
                 loading="lazy"
                 decoding="async"
                 className="about-collage-photo-img"
@@ -105,10 +105,10 @@ export function AboutPage() {
           <div className="about-brescia-visual">
             <div className="about-brescia-photo-frame">
               <img
-                src="/assets/images/chef-harlen.webp"
-                alt="Chef Harlen Brandão degustando gelato artesanal no laboratório"
-                width={775}
-                height={775}
+                src="/assets/images/real/carreto-eventos-1.webp"
+                alt="Carretino e mobiliário assinados pelo Furf Design Studio diante da fachada em micélio da Crema Lab"
+                width={1536}
+                height={1024}
                 loading="lazy"
                 decoding="async"
                 className="about-brescia-photo-img"
@@ -162,10 +162,10 @@ export function AboutPage() {
           <div className="about-curitiba-arch-wrap">
             <div className="about-curitiba-arch">
               <img
-                src="/assets/images/real/loja-mueller.webp"
-                alt="Loja da Crema Lab em Curitiba com vitrine italiana e arquitetura em arcos"
-                width={1200}
-                height={835}
+                src="/assets/images/real/fachada-batel-juan.webp"
+                alt="Fachada em terracota da matriz Crema Lab no Batel em Curitiba"
+                width={800}
+                height={1199}
                 className="about-curitiba-arch-img"
                 loading="lazy"
                 decoding="async"

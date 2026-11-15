@@ -78,9 +78,9 @@ export const VALUE_PROPOSITIONS: ReadonlyArray<ValueProposition> = Object.freeze
 export const INSTAGRAM_FEED: ReadonlyArray<InstagramItem> = Object.freeze([
   {
     id: 'ig-1',
-    image: '/assets/images/real/novos-sabores-1.webp',
-    alt: 'Colherada de gelato artesanal de chocolate com avelãs no laboratório da Crema Lab',
-    caption: 'Bastidores do nosso laboratório: produção diária em pequenos lotes.',
+    image: '/assets/images/real/carreto-eventos-1.webp',
+    alt: 'Carretino Crema Lab e fachada em micélio desenvolvidos com o Furf Design Studio',
+    caption: 'Carretino e arquitetura em micélio no Batel: design e gelato artesanal.',
   },
   {
     id: 'ig-2',
@@ -90,21 +90,21 @@ export const INSTAGRAM_FEED: ReadonlyArray<InstagramItem> = Object.freeze([
   },
   {
     id: 'ig-3',
-    image: '/assets/images/real/loja-mueller.webp',
-    alt: 'Fachada iluminada da Crema Lab com letreiro neon e azulejos de terracota',
-    caption: 'Nossa arquitetura em tons de terracota esperando por você.',
+    image: '/assets/images/real/cremalab-outubro.webp',
+    alt: 'Copinho artesanal Crema Lab com gelato sazonal de Zucca Caramellata',
+    caption: 'Edições sazonais em pequenos lotes no nosso laboratório.',
   },
   {
     id: 'ig-4',
-    image: '/assets/images/real/fachada-batel-juan.webp',
-    alt: 'Fachada da matriz Crema Lab no Batel em Curitiba fotografada por Juan Azevedo',
+    image: '/assets/images/real/interna-mahani.webp',
+    alt: 'Ambiente interno e vitrine de pozzetti italianos da Crema Lab em Curitiba',
     caption: 'Três endereços em Curitiba: Batel, Barigui e Mueller.',
   },
   {
     id: 'ig-5',
-    image: '/assets/images/real/pistacchio-creminio.webp',
-    alt: 'Casquinha artesanal Crema Lab de Pistacchio segurada na mão',
-    caption: 'Pistacchio tostado autoral: o grande clássico do nosso laboratório.',
+    image: '/assets/images/real/cafe-juan.webp',
+    alt: 'Café especial com arte na espuma servido na Crema Lab em Curitiba',
+    caption: 'Gelato artesanal, cafés especiais e experiências no coração de Curitiba.',
   },
 ]);
 
