@@ -72,8 +72,8 @@ export function FlavorModal({ flavor, onClose }: FlavorModalProps) {
         <div className="modal-flavor-body">
           {!flavor.onMenu && (
             <p className="modal-past-note">
-              Este sabor já passou pela vitrine. Os sabores sazonais voltam de
-              tempos em tempos, então vale perguntar se ele está disponível.
+              Este sabor está indisponível no momento. Vale perguntar pelo
+              WhatsApp quando ele volta.
             </p>
           )}
 

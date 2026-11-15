@@ -21,7 +21,7 @@ function chunk<T>(items: ReadonlyArray<T>, size: number): T[][] {
 
 function slideLabel(page: ReadonlyArray<FlavorItem>): string {
   if (page.every((f) => f.onMenu)) return 'Na vitrine agora';
-  if (page.every((f) => !f.onMenu)) return 'Já passaram pela vitrine';
+  if (page.every((f) => !f.onMenu)) return 'Indisponíveis no momento';
   return 'Sabores da casa';
 }
 

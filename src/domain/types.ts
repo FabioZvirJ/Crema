@@ -13,6 +13,14 @@ export type BotanicalMotif =
   | 'caramel'
   | 'amarena';
 
+export interface PhotoCredit {
+  readonly title: string;
+  readonly author: string;
+  readonly license: string;
+  readonly licenseUrl?: string;
+  readonly sourceUrl: string;
+}
+
 export interface FlavorItem {
   readonly id: string;
   readonly name: string;
@@ -22,9 +30,13 @@ export interface FlavorItem {
   readonly secondaryCategories?: ReadonlyArray<Exclude<FlavorCategory, 'todos'>>;
   readonly image?: string;
   readonly imagePosition?: string;
+  /** Transparent cut-out of a whole scoop, shown on the Sabores cards. */
+  readonly scoopImage?: string;
+  /** Attribution for a third-party scoop photo (licence terms require it). */
+  readonly scoopCredit?: PhotoCredit;
   readonly placeholderTone?: readonly [string, string];
   readonly motif: BotanicalMotif;
-  /** True when the flavor is in the vitrine right now (per recent press). */
+  /** True when the flavor can be ordered right now (false: listed but unavailable). */
   readonly onMenu: boolean;
   readonly featuredOnHome?: boolean;
   readonly dietaryBadges: ReadonlyArray<string>;

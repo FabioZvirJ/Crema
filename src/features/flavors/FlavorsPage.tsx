@@ -18,7 +18,7 @@ interface FlavorsPageProps {
 export function FlavorsPage({ onSelectFlavor }: FlavorsPageProps) {
   const [selectedCategory, setSelectedCategory] = useState<FlavorCategory>('todos');
 
-  // Current flavors first, then the ones that already left the vitrine.
+  // Flavors available now first, then the ones unavailable at the moment.
   const orderedFlavors = useMemo(
     () => [
       ...FLAVORS_CATALOG.filter((flavor) => flavor.onMenu),
@@ -50,7 +50,11 @@ export function FlavorsPage({ onSelectFlavor }: FlavorsPageProps) {
         subtitle="Gelato artesanal, fresco e autoral feito todos os dias em pequenos lotes."
       />
 
-      <section className="flavors-catalog-section" aria-label="Catálogo de Sabores">
+      <section
+        id="sabores-catalogo"
+        className="flavors-catalog-section"
+        aria-label="Catálogo de Sabores"
+      >
         <DiamondLatticePattern className="flavors-lattice-right" />
         <DiamondLatticePattern className="flavors-lattice-left" />
 
@@ -83,7 +87,6 @@ export function FlavorsPage({ onSelectFlavor }: FlavorsPageProps) {
 
           {/* Six flavors per slide; a carousel when there are more */}
           <FlavorsCarousel flavors={filteredFlavors} onSelectFlavor={onSelectFlavor} />
-
         </div>
       </section>
 

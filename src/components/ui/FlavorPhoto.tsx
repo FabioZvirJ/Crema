@@ -32,6 +32,20 @@ export function FlavorPhoto({ flavor, className }: FlavorPhotoProps) {
     );
   }
 
+  // No product photo yet: show the transparent scoop cut-out whole.
+  if (flavor.scoopImage) {
+    return (
+      <img
+        src={flavor.scoopImage}
+        alt={flavor.name}
+        className={className}
+        style={{ objectFit: 'contain' }}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
   const [light, dark] = flavor.placeholderTone ?? MOTIF_TONES[flavor.motif];
   return (
     <div

@@ -5,7 +5,6 @@ import {
   Check,
   FileText,
   FlaskConical,
-  MapPin,
   Plus,
   RotateCcw,
   Sparkles,
@@ -15,10 +14,8 @@ import {
 import { SubpageHero } from '@/components/layout/SubpageHero';
 import { SafeExternalLink } from '@/components/ui/SafeExternalLink';
 import { FLAVORS_CATALOG } from '@/domain/flavors';
-import { CURITIBA_UNITS } from '@/domain/locations';
 import type { FlavorCategory, FlavorItem } from '@/domain/types';
-import { SECURITY_LIMITS } from '@/config/security';
-import { sanitizeLiveInput, sanitizePlainText } from '@/security/sanitizer';
+import { sanitizePlainText } from '@/security/sanitizer';
 import { buildSafeWhatsAppUrl } from '@/security/safeUrl';
 import { GelatoStage } from './GelatoStage';
 import { MiniScoop } from './MiniScoop';
@@ -100,79 +97,8 @@ export type CatalystId =
   | 'flor-de-sal'
   | 'puro';
 
-export interface LabCatalystOption {
-  readonly id: CatalystId;
-  readonly symbol: string;
-  readonly name: string;
-  readonly description: string;
-  readonly color: string;
-  readonly isVegan: boolean;
-  readonly crunchBoost: number;
-  readonly sweetnessBoost: number;
-}
-
-export const LAB_CATALYSTS: ReadonlyArray<LabCatalystOption> = Object.freeze([
-  {
-    id: 'farofinha-pistache',
-    symbol: '+Cr[Pi]',
-    name: 'Farofinha de Pistache Tostado',
-    description: 'Grãos de pistache levemente tostados que ampliam as notas amanteigadas.',
-    color: '#8ba870',
-    isVegan: true,
-    crunchBoost: 24,
-    sweetnessBoost: 6,
-  },
-  {
-    id: 'gianduia-quente',
-    symbol: '+Gi[70]',
-    name: 'Infusão de Gianduia Belga',
-    description: 'Fio aveludado de cacau e pasta pura de avelã que cristaliza em contato com o gelato.',
-    color: '#4e2a1e',
-    isVegan: false,
-    crunchBoost: 14,
-    sweetnessBoost: 18,
-  },
-  {
-    id: 'reducao-amarena',
-    symbol: '+Am[It]',
-    name: 'Redução de Amarena Silvestre',
-    description: 'Calda densa de cerejas italianas com acidez vibrante e perfume amendoado.',
-    color: '#7a1228',
-    isVegan: true,
-    crunchBoost: 8,
-    sweetnessBoost: 14,
-  },
-  {
-    id: 'crumble-speculoos',
-    symbol: '+Sp[Cr]',
-    name: 'Crocante de Speculoos',
-    description: 'Fragmentos de biscoito caramelizado com canela, noz-moscada e cravo.',
-    color: '#b8733e',
-    isVegan: true,
-    crunchBoost: 26,
-    sweetnessBoost: 12,
-  },
-  {
-    id: 'flor-de-sal',
-    symbol: '+NaCl',
-    name: 'Cristais de Flor de Sal',
-    description: 'Microcristais marinhos que ativam os receptores de cacau, caramelo e frutas.',
-    color: '#d8cfc2',
-    isVegan: true,
-    crunchBoost: 12,
-    sweetnessBoost: -6,
-  },
-  {
-    id: 'puro',
-    symbol: 'H₂O·0',
-    name: 'Extração Pura (Sem Catalisador)',
-    description: 'Apenas o gelato em estado puro, como sai da produtora vertical.',
-    color: '#9c8b7a',
-    isVegan: true,
-    crunchBoost: 0,
-    sweetnessBoost: 0,
-  },
-]);
+/** The Lab no longer offers toppings: every formula is served pure. */
+const LAB_TOPPING: CatalystId = 'puro';
 
 interface FlavorLabMeta {
   readonly symbol: string;
@@ -212,15 +138,6 @@ const FLAVOR_LAB_META: Readonly<Record<string, FlavorLabMeta>> = Object.freeze({
     brix: '19°Bx',
     ph: '3.8',
   },
-  avocado: {
-    symbol: 'Av',
-    atomicNum: '04',
-    cremosidade: 92,
-    dulcor: 58,
-    frescor: 70,
-    brix: '18°Bx',
-    ph: '6.5',
-  },
   nocciolotto: {
     symbol: 'No',
     atomicNum: '05',
@@ -239,105 +156,6 @@ const FLAVOR_LAB_META: Readonly<Record<string, FlavorLabMeta>> = Object.freeze({
     brix: '26°Bx',
     ph: '6.4',
   },
-  'fior-di-menta-cioccolato': {
-    symbol: 'Fm',
-    atomicNum: '07',
-    cremosidade: 84,
-    dulcor: 68,
-    frescor: 88,
-    brix: '21°Bx',
-    ph: '6.3',
-  },
-  mandarino: {
-    symbol: 'Ma',
-    atomicNum: '08',
-    cremosidade: 58,
-    dulcor: 52,
-    frescor: 96,
-    brix: '16°Bx',
-    ph: '3.9',
-  },
-  'manha-viva': {
-    symbol: 'Mv',
-    atomicNum: '09',
-    cremosidade: 68,
-    dulcor: 56,
-    frescor: 92,
-    brix: '17°Bx',
-    ph: '4.4',
-  },
-  limonello: {
-    symbol: 'Li',
-    atomicNum: '10',
-    cremosidade: 56,
-    dulcor: 62,
-    frescor: 98,
-    brix: '20°Bx',
-    ph: '3.5',
-  },
-  'batidinha-maracuja': {
-    symbol: 'Bm',
-    atomicNum: '11',
-    cremosidade: 76,
-    dulcor: 74,
-    frescor: 86,
-    brix: '22°Bx',
-    ph: '4.2',
-  },
-  'uva-terci': {
-    symbol: 'Ut',
-    atomicNum: '12',
-    cremosidade: 60,
-    dulcor: 70,
-    frescor: 89,
-    brix: '20°Bx',
-    ph: '3.9',
-  },
-  'mango-lab': {
-    symbol: 'Mg',
-    atomicNum: '13',
-    cremosidade: 72,
-    dulcor: 68,
-    frescor: 90,
-    brix: '19°Bx',
-    ph: '4.5',
-  },
-  'acerola-lemongrass': {
-    symbol: 'Ac',
-    atomicNum: '14',
-    cremosidade: 58,
-    dulcor: 54,
-    frescor: 97,
-    brix: '17°Bx',
-    ph: '3.6',
-  },
-  'caffe-della-casa': {
-    symbol: 'Cf',
-    atomicNum: '15',
-    cremosidade: 85,
-    dulcor: 70,
-    frescor: 48,
-    brix: '22°Bx',
-    ph: '5.8',
-  },
-  'zucca-caramellata': {
-    symbol: 'Zc',
-    atomicNum: '16',
-    cremosidade: 89,
-    dulcor: 80,
-    frescor: 42,
-    brix: '24°Bx',
-    ph: '6.1',
-  },
-  'foresta-nera': {
-    symbol: 'Fn',
-    atomicNum: '17',
-    cremosidade: 90,
-    dulcor: 82,
-    frescor: 60,
-    brix: '25°Bx',
-    ph: '5.9',
-  },
 });
 
 interface CuratedFormulaPreset {
@@ -347,36 +165,32 @@ interface CuratedFormulaPreset {
   readonly subtitle: string;
   readonly vesselId: VesselId;
   readonly flavorIds: ReadonlyArray<string>;
-  readonly catalystId: CatalystId;
 }
 
 const CURATED_PRESETS: ReadonlyArray<CuratedFormulaPreset> = Object.freeze([
   {
     id: 'triade-siciliana',
     code: 'EXP-01',
-    title: 'Dueto Siciliano & Pistache',
-    subtitle: 'Casquinha Premium + Pistacchio + Mandarino + Farofinha',
+    title: 'Dueto Pistache & Avelã',
+    subtitle: 'Casquinha Premium + Pistacchio + Nocciolotto',
     vesselId: 'casquinha-premium',
-    flavorIds: ['pistacchio', 'mandarino'],
-    catalystId: 'farofinha-pistache',
+    flavorIds: ['pistacchio', 'nocciolotto'],
   },
   {
     id: 'contraste-rubi',
     code: 'EXP-02',
     title: 'Contraste Cacau & Rubi',
-    subtitle: 'Casquinha Artesanal + Cioccolato + Frutas Vermelhas + Gianduia',
+    subtitle: 'Casquinha Artesanal + Cioccolatudo + Rosso Frapone',
     vesselId: 'casquinha-artesanal',
     flavorIds: ['cioccolato', 'frutas-vermelhas'],
-    catalystId: 'gianduia-quente',
   },
   {
     id: 'botanica-vegana',
     code: 'EXP-03',
-    title: 'Tríade Botânica (100% Plant-Based)',
-    subtitle: 'Copinho de Ensaio + Pistacchio + Acerola + Manhã Viva + Flor de Sal',
+    title: 'Dueto Botânico (100% Plant-Based)',
+    subtitle: 'Copinho de Ensaio + Pistacchio + Rosso Frapone',
     vesselId: 'copinho-lab',
-    flavorIds: ['pistacchio', 'acerola-lemongrass', 'manha-viva'],
-    catalystId: 'flor-de-sal',
+    flavorIds: ['pistacchio', 'frutas-vermelhas'],
   },
 ]);
 
@@ -400,25 +214,13 @@ export function LabPage() {
     'pistacchio',
     'frutas-vermelhas',
   ]);
-  const [catalystId, setCatalystId] = useState<CatalystId>('farofinha-pistache');
   const [categoryFilter, setCategoryFilter] = useState<FlavorCategory>('todos');
-  const [selectedUnitId, setSelectedUnitId] = useState<string>('batel');
   const [formulaCustomName, setFormulaCustomName] = useState<string>('');
   const [ticketModalOpen, setTicketModalOpen] = useState<boolean>(false);
 
   const currentVessel = useMemo(
     () => LAB_VESSELS.find((v) => v.id === vesselId) ?? LAB_VESSELS[0]!,
     [vesselId]
-  );
-
-  const currentCatalyst = useMemo(
-    () => LAB_CATALYSTS.find((c) => c.id === catalystId) ?? LAB_CATALYSTS[0]!,
-    [catalystId]
-  );
-
-  const selectedUnit = useMemo(
-    () => CURITIBA_UNITS.find((u) => u.id === selectedUnitId) ?? CURITIBA_UNITS[0]!,
-    [selectedUnitId]
   );
 
   const selectedFlavorItems = useMemo(
@@ -469,7 +271,6 @@ export function LabPage() {
   const handleApplyPreset = (preset: CuratedFormulaPreset) => {
     setVesselId(preset.vesselId);
     setSelectedFlavorIds([...preset.flavorIds]);
-    setCatalystId(preset.catalystId);
     setFormulaCustomName(preset.title);
   };
 
@@ -480,20 +281,15 @@ export function LabPage() {
     const pickedFlavors = shuffledFlavors
       .slice(0, randomVessel.maxScoops)
       .map((f) => f.id);
-    const randomCatalyst =
-      LAB_CATALYSTS[Math.floor(Math.random() * LAB_CATALYSTS.length)] ??
-      LAB_CATALYSTS[0]!;
 
     setVesselId(randomVessel.id);
     setSelectedFlavorIds(pickedFlavors);
-    setCatalystId(randomCatalyst.id);
     setFormulaCustomName('Alquimia Surpresa da Chef');
   };
 
   const handleResetWorkbench = () => {
     setVesselId('casquinha-premium');
     setSelectedFlavorIds(['pistacchio', 'frutas-vermelhas']);
-    setCatalystId('farofinha-pistache');
     setFormulaCustomName('');
   };
 
@@ -506,8 +302,7 @@ export function LabPage() {
       metas.reduce((acc, m) => acc + m.cremosidade, 0) / count
     );
     const rawDulcor =
-      Math.round(metas.reduce((acc, m) => acc + m.dulcor, 0) / count) +
-      Math.round(currentCatalyst.sweetnessBoost * 0.4);
+      Math.round(metas.reduce((acc, m) => acc + m.dulcor, 0) / count);
     const avgDulcor = Math.max(25, Math.min(98, rawDulcor));
     const avgFrescor = Math.round(
       metas.reduce((acc, m) => acc + m.frescor, 0) / count
@@ -518,7 +313,7 @@ export function LabPage() {
         : vesselId === 'casquinha-artesanal'
           ? 74
           : 42;
-    const texturaContraste = Math.min(98, baseCrunch + currentCatalyst.crunchBoost);
+    const texturaContraste = Math.min(98, baseCrunch);
 
     const symbolsChain = metas.map((m) => m.symbol).join('·');
     const numericHash =
@@ -528,9 +323,7 @@ export function LabPage() {
 
     const allSorbets = selectedFlavorItems.every((f) => f.category === 'sorbets');
     const isPlantBased =
-      allSorbets &&
-      currentCatalyst.isVegan &&
-      vesselId !== 'casquinha-premium';
+      allSorbets && vesselId !== 'casquinha-premium';
 
     let chefNote = '';
     if (selectedFlavorItems.length === 1) {
@@ -556,7 +349,7 @@ export function LabPage() {
       isPlantBased,
       chefNote,
     };
-  }, [selectedFlavorItems, currentCatalyst, vesselId, currentVessel.maxScoops]);
+  }, [selectedFlavorItems, vesselId, currentVessel.maxScoops]);
 
   const cleanFormulaTitle =
     sanitizePlainText(formulaCustomName, { maxLength: 60 }) ||
@@ -568,8 +361,6 @@ export function LabPage() {
     `• Nome da Criação: ${cleanFormulaTitle}`,
     `• Recipiente: ${currentVessel.name} (${currentVessel.code})`,
     `• Extrações (${selectedFlavorItems.length}/${currentVessel.maxScoops}): ${selectedFlavorItems.map((f) => f.name).join(' + ')}`,
-    `• Catalisador / Finalização: ${currentCatalyst.name}`,
-    `• Unidade escolhida: ${selectedUnit.name}`,
   ].join('\n');
 
   const whatsappHref = buildSafeWhatsAppUrl(whatsappMessage);
@@ -767,106 +558,6 @@ export function LabPage() {
                 </div>
               </article>
 
-              {/* STATION 03: CATALYSTS & TOPPINGS */}
-              <article className="lab-station-card">
-                <header className="lab-station-header">
-                  <div>
-                    <span className="lab-station-step">
-                      ESTAÇÃO 03 · CATALISADORES SENSORIAIS (FINALIZAÇÃO)
-                    </span>
-                    <h2 className="lab-station-title">Adicione um Catalisador de Textura</h2>
-                  </div>
-                  <span className="lab-station-spec">{currentCatalyst.symbol}</span>
-                </header>
-
-                <div className="lab-catalyst-grid">
-                  {LAB_CATALYSTS.map((catalyst) => {
-                    const isSelected = catalyst.id === catalystId;
-                    return (
-                      <button
-                        key={catalyst.id}
-                        type="button"
-                        onClick={() => setCatalystId(catalyst.id)}
-                        className={`lab-catalyst-card ${isSelected ? 'is-active' : ''}`}
-                        aria-pressed={isSelected}
-                      >
-                        <div className="lab-catalyst-top">
-                          <span
-                            className="lab-catalyst-swatch"
-                            style={{ backgroundColor: catalyst.color }}
-                          />
-                          <span className="lab-catalyst-symbol">{catalyst.symbol}</span>
-                          {catalyst.isVegan && (
-                            <span className="lab-catalyst-vegan">VEGAN</span>
-                          )}
-                        </div>
-                        <h3 className="lab-catalyst-name">{catalyst.name}</h3>
-                        <p className="lab-catalyst-desc">{catalyst.description}</p>
-                      </button>
-                    );
-                  })}
-                </div>
-              </article>
-
-              {/* STATION 04: BATCH IDENTIFICATION & UNIT */}
-              <article className="lab-station-card">
-                <header className="lab-station-header">
-                  <div>
-                    <span className="lab-station-step">
-                      ESTAÇÃO 04 · REGISTRO DE LOTE & UNIDADE DE EXPEDIÇÃO
-                    </span>
-                    <h2 className="lab-station-title">Assine sua Fórmula</h2>
-                  </div>
-                </header>
-
-                <div className="lab-batch-form">
-                  <div className="lab-batch-field">
-                    <label htmlFor="lab-formula-name" className="lab-batch-label">
-                      NOME DA SUA CRIAÇÃO AUTORAL (OPCIONAL)
-                    </label>
-                    <input
-                      id="lab-formula-name"
-                      type="text"
-                      placeholder="Ex.: Alquimia de Outono no Batel"
-                      value={formulaCustomName}
-                      maxLength={60}
-                      onChange={(e) =>
-                        setFormulaCustomName(
-                          sanitizeLiveInput(e.target.value, {
-                            maxLength: Math.min(60, SECURITY_LIMITS.MAX_NAME_LENGTH),
-                          })
-                        )
-                      }
-                      className="lab-batch-input"
-                    />
-                  </div>
-
-                  <div className="lab-batch-field">
-                    <span className="lab-batch-label">
-                      UNIDADE PARA EXPERIÊNCIA NA LOJA OU RETIRADA
-                    </span>
-                    <div className="lab-unit-selector">
-                      {CURITIBA_UNITS.map((unit) => {
-                        const active = unit.id === selectedUnitId;
-                        return (
-                          <button
-                            key={unit.id}
-                            type="button"
-                            onClick={() => setSelectedUnitId(unit.id)}
-                            className={`lab-unit-btn ${active ? 'is-active' : ''}`}
-                          >
-                            <MapPin size={14} />
-                            <div>
-                              <div className="lab-unit-btn-name">{unit.name}</div>
-                              <div className="lab-unit-btn-sub">{unit.headerLabel}</div>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </article>
             </div>
 
             {/* RIGHT COLUMN (STICKY): CRYOGENIC CHAMBER & TELEMETRY REPORT */}
@@ -897,21 +588,10 @@ export function LabPage() {
                       <span>0ml</span>
                     </div>
 
-                    {/* Catalyst chip floats above the 3D stage */}
-                    {catalystId !== 'puro' && (
-                      <div className="lab-chamber-catalyst-badge">
-                        <span
-                          className="lab-chamber-catalyst-dot"
-                          style={{ backgroundColor: currentCatalyst.color }}
-                        />
-                        <span>{currentCatalyst.symbol} · {currentCatalyst.name}</span>
-                      </div>
-                    )}
-
-                    {/* Live 3D assembly: vessel, scoops dropping in, topping raining down */}
+                    {/* Live 3D assembly: vessel and scoops dropping in */}
                     <GelatoStage
                       vesselId={vesselId}
-                      catalystId={catalystId}
+                      catalystId={LAB_TOPPING}
                       layers={selectedFlavorItems.map((f) => ({
                         id: f.id,
                         name: f.name,
@@ -1073,28 +753,18 @@ export function LabPage() {
                   </dd>
                 </div>
                 <div className="lab-ticket-row">
-                  <dt>CATALISADOR / TOPPING</dt>
-                  <dd>
-                    {currentCatalyst.name} ({currentCatalyst.symbol})
-                  </dd>
-                </div>
-                <div className="lab-ticket-row">
                   <dt>TELEMETRIA</dt>
                   <dd>
                     Cremosidade {telemetry.cremosidade}% · Dulçor {telemetry.dulcor}% · Frescor{' '}
                     {telemetry.frescor}%
                   </dd>
                 </div>
-                <div className="lab-ticket-row">
-                  <dt>UNIDADE DE EXPEDIÇÃO</dt>
-                  <dd>{selectedUnit.name} — Curitiba/PR</dd>
-                </div>
               </dl>
 
               <div className="lab-ticket-divider" />
 
               <p className="lab-ticket-note">
-                Apresente este receituário no balcão da unidade {selectedUnit.name} ou envie
+                Apresente este receituário no balcão de uma das nossas unidades ou envie
                 diretamente pelo WhatsApp para consultar disponibilidade das extrações do dia.
               </p>
 
