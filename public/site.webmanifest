@@ -1,0 +1,30 @@
+{
+  "name": "crema lab — Gelato Artesanal & Café",
+  "short_name": "crema lab",
+  "description": "Gelateria artesanal em Curitiba com tradição italiana e alma brasileira. Batel, ParkShoppingBarigui e Shopping Mueller.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#3B0D14",
+  "background_color": "#fbf7f0",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 import { defineConfig } from 'vitest/config';
 import type { Connect, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
+import { DEFAULT_SITE_URL, ROUTE_SEO, type RouteSeoMetadata, type SeoAppRoute } from './src/config/routeSeoData.ts';
 
 /**
  * Staff-level HTTP Security Headers plugin for Vite dev and preview servers.
@@ -54,8 +57,112 @@ function securityHeadersPlugin(): Plugin {
   };
 }
 
+function resolveBuildSiteUrl(): string {
+  const explicit = process.env.VITE_SITE_URL?.trim().replace(/\/+$/, '');
+  if (explicit && /^https?:\/\//i.test(explicit)) {
+    return explicit;
+  }
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim().replace(/\/+$/, '');
+  if (vercelProd) {
+    return vercelProd.startsWith('http') ? vercelProd : `https://${vercelProd}`;
+  }
+  const vercelPreview = process.env.VERCEL_URL?.trim().replace(/\/+$/, '');
+  if (vercelPreview) {
+    return vercelPreview.startsWith('http') ? vercelPreview : `https://${vercelPreview}`;
+  }
+  return DEFAULT_SITE_URL;
+}
+
+function escapeHtmlAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function replaceMetaContent(html: string, attrKey: 'name' | 'property', attrVal: string, content: string): string {
+  const escaped = escapeHtmlAttr(content);
+  const pattern = new RegExp(
+    `(<meta\\s+[^>]*${attrKey}="${attrVal}"[^>]*\\bcontent=")[^"]*("[^>]*>)`,
+    'is'
+  );
+  if (pattern.test(html)) {
+    return html.replace(pattern, `$1${escaped}$2`);
+  }
+  const reversedPattern = new RegExp(
+    `(<meta\\s+[^>]*\\bcontent=")[^"]*("[^>]*${attrKey}="${attrVal}"[^>]*>)`,
+    'is'
+  );
+  return html.replace(reversedPattern, `$1${escaped}$2`);
+}
+
+function injectRouteMetadata(
+  html: string,
+  route: SeoAppRoute,
+  meta: RouteSeoMetadata,
+  siteUrl: string
+): string {
+  const canonicalUrl = route === '/' ? `${siteUrl}/` : `${siteUrl}${route}`;
+  let out = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtmlAttr(meta.title)}</title>`);
+  out = out.replace(
+    /(<link\s+[^>]*rel="canonical"[^>]*\bhref=")[^"]*("[^>]*>)/i,
+    `$1${escapeHtmlAttr(canonicalUrl)}$2`
+  );
+  out = replaceMetaContent(out, 'name', 'description', meta.description);
+  out = replaceMetaContent(out, 'name', 'keywords', meta.keywords);
+  out = replaceMetaContent(out, 'property', 'og:title', meta.ogTitle);
+  out = replaceMetaContent(out, 'property', 'og:description', meta.ogDescription);
+  out = replaceMetaContent(out, 'property', 'og:url', canonicalUrl);
+  out = replaceMetaContent(out, 'name', 'twitter:title', meta.ogTitle);
+  out = replaceMetaContent(out, 'name', 'twitter:description', meta.ogDescription);
+  return out;
+}
+
+/**
+ * Resolves production domain URL across index.html, robots.txt, sitemap.xml,
+ * and emits per-route static HTML entrypoints so non-JS crawlers see route-specific metadata.
+ */
+function seoBuildPlugin(): Plugin {
+  const siteUrl = resolveBuildSiteUrl();
+  let outDir = 'dist';
+
+  return {
+    name: 'crema-seo-build',
+    configResolved(resolved) {
+      outDir = resolved.build.outDir;
+    },
+    transformIndexHtml(html) {
+      return siteUrl === DEFAULT_SITE_URL ? html : html.split(DEFAULT_SITE_URL).join(siteUrl);
+    },
+    closeBundle() {
+      const distRoot = join(dirname(fileURLToPath(import.meta.url)), outDir);
+      const indexHtmlPath = join(distRoot, 'index.html');
+      if (!existsSync(indexHtmlPath)) return;
+
+      if (siteUrl !== DEFAULT_SITE_URL) {
+        for (const staticFile of ['robots.txt', 'sitemap.xml']) {
+          const filePath = join(distRoot, staticFile);
+          if (existsSync(filePath)) {
+            const content = readFileSync(filePath, 'utf8');
+            writeFileSync(filePath, content.split(DEFAULT_SITE_URL).join(siteUrl), 'utf8');
+          }
+        }
+      }
+
+      const baseHtml = readFileSync(indexHtmlPath, 'utf8');
+      for (const [route, meta] of Object.entries(ROUTE_SEO) as [SeoAppRoute, RouteSeoMetadata][]) {
+        if (route === '/') continue;
+        const routeDir = join(distRoot, route.slice(1));
+        mkdirSync(routeDir, { recursive: true });
+        writeFileSync(join(routeDir, 'index.html'), injectRouteMetadata(baseHtml, route, meta, siteUrl), 'utf8');
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), securityHeadersPlugin()],
+  plugins: [react(), securityHeadersPlugin(), seoBuildPlugin()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

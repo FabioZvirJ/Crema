@@ -6,6 +6,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { flushSync } from 'react-dom';
+import { applyRouteSeo } from '@/config/seo';
 
 export type AppRoute = '/' | '/sabores' | '/lab' | '/unidades' | '/contato' | '/sobre';
 
@@ -17,15 +19,6 @@ const ALLOWED_ROUTES: ReadonlySet<AppRoute> = new Set<AppRoute>([
   '/contato',
   '/sobre',
 ]);
-
-const ROUTE_TITLES: Readonly<Record<AppRoute, string>> = Object.freeze({
-  '/': 'crema lab | Gelato • Café • Experiências — Curitiba',
-  '/sabores': 'Nossos Sabores | crema lab — Gelato Artesanal',
-  '/lab': 'Laboratório de Criação | crema lab — Alquimia do Gelato',
-  '/unidades': 'Nossas Unidades em Curitiba | crema lab',
-  '/contato': 'Fale Conosco & Eventos | crema lab',
-  '/sobre': 'Sobre a Crema Lab | Uma história de paixão, arte e sabor',
-});
 
 /**
  * Security-hardened route normalizer.
@@ -69,21 +62,47 @@ export function RouterProvider({
   }, []);
 
   useEffect(() => {
-    document.title = ROUTE_TITLES[currentRoute];
+    applyRouteSeo(currentRoute);
   }, [currentRoute]);
 
   const navigate = useCallback((to: AppRoute) => {
     const safeTarget = normalizeSafeRoute(to);
-    setCurrentRoute((prev) => {
-      if (prev !== safeTarget && typeof window !== 'undefined') {
-        try {
-          window.history.pushState(null, '', safeTarget);
-        } catch {
-          // Ignore pushState restrictions in sandboxed/test environments
+    const applyNavigation = () => {
+      setCurrentRoute((prev) => {
+        if (prev !== safeTarget && typeof window !== 'undefined') {
+          try {
+            window.history.pushState(null, '', safeTarget);
+          } catch {
+            // Ignore pushState restrictions in sandboxed/test environments
+          }
         }
+        return safeTarget;
+      });
+    };
+
+    const docWithTransition =
+      typeof document !== 'undefined'
+        ? (document as Document & {
+            startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+          })
+        : null;
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (docWithTransition?.startViewTransition && !prefersReducedMotion) {
+      try {
+        docWithTransition.startViewTransition(() => {
+          flushSync(applyNavigation);
+        });
+      } catch {
+        applyNavigation();
       }
-      return safeTarget;
-    });
+    } else {
+      applyNavigation();
+    }
+
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       try {
         window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -140,14 +140,14 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     expect(
       await screen.findByRole('heading', { name: /Nossos Sabores/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('PISTACCHIO')).toBeInTheDocument();
-    expect(screen.getByText('CAFFÈ DELLA CASA')).toBeInTheDocument();
+    expect(screen.getByText("PISTACCHIO L'ARTI")).toBeInTheDocument();
+    expect(screen.getByText('NOCCIOLOTTO')).toBeInTheDocument();
 
     // Filter by SORBETS
     const sorbetsTab = screen.getByRole('tab', { name: /SORBETS/i });
     fireEvent.click(sorbetsTab);
-    expect(screen.getByText('ACEROLA AL LEMONGRASS')).toBeInTheDocument();
-    expect(screen.getByText('FRUTAS VERMELHAS')).toBeInTheDocument();
+    expect(screen.getByText('ROSSO FRAPONE')).toBeInTheDocument();
+    expect(screen.queryByText('CUCA DE DOCE DE LEITE')).not.toBeInTheDocument();
 
     // Navigate to Unidades
     const unidadesLinks = screen.getAllByRole('link', { name: /^unidades$/i });
@@ -236,7 +236,7 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
 
     const removePistachio = await screen.findByRole('button', { name: /Remover camada PISTACCHIO/i });
     expect(
-      screen.getByRole('button', { name: /Remover camada FRUTAS VERMELHAS/i })
+      screen.getByRole('button', { name: /Remover camada ROSSO FRAPONE/i })
     ).toBeInTheDocument();
 
     fireEvent.click(removePistachio);
@@ -246,7 +246,31 @@ describe('Crema Lab — Multi-Page Application Integration', () => {
     ).not.toBeInTheDocument();
     // The last remaining layer can never be removed.
     expect(
-      screen.queryByRole('button', { name: /Remover camada FRUTAS VERMELHAS/i })
+      screen.queryByRole('button', { name: /Remover camada ROSSO FRAPONE/i })
     ).not.toBeInTheDocument();
+  });
+
+  it('synchronizes document title, meta description, Open Graph, and canonical URL across routes', async () => {
+    render(<App initialRoute="/" />);
+
+    expect(document.title).toContain('crema lab');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+      'https://cremalab.com/'
+    );
+
+    const saboresLinks = screen.getAllByRole('link', { name: /^sabores$/i });
+    fireEvent.click(saboresLinks[0]!);
+
+    await screen.findByRole('heading', { name: /Nossos Sabores/i });
+    expect(document.title).toContain('Nossos Sabores');
+    expect(
+      document.head.querySelector('meta[name="description"]')?.getAttribute('content')
+    ).toContain('sabores autorais da Crema Lab');
+    expect(
+      document.head.querySelector('meta[property="og:url"]')?.getAttribute('content')
+    ).toBe('https://cremalab.com/sabores');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+      'https://cremalab.com/sabores'
+    );
   });
 });
