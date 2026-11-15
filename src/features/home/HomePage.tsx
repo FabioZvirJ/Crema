@@ -69,12 +69,12 @@ const HOME_FEATURED_PHOTOS = Object.freeze([
     position: '50% 50%',
   },
   {
-    image: '/assets/images/real/pistacchio-creminio.webp',
-    alt: 'Casquinha artesanal de Pistacchio segurada na mão',
-    motif: 'pistachio',
+    image: '/assets/images/real/sobremesa-juan.webp',
+    alt: 'Taça de sobremesa artesanal Crema Lab servida na mesa Cavalinho',
+    motif: 'amarena',
     left: '84%',
     top: '36%',
-    position: '50% 40%',
+    position: '50% 45%',
   },
 ] as const);
 
@@ -112,19 +112,21 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
 
         <div className="site-container home-hero-inner">
           <div className="home-hero-copy">
-            <span className="eyebrow-tag">{activeSlide.eyebrow}</span>
-            <h1 className="home-hero-title">
-              {activeSlide.titleLine1}
-              <br />
-              {activeSlide.titleLine2}
-            </h1>
-            <p className="home-hero-description">{activeSlide.description}</p>
+            <div key={slideIndex} className="home-hero-slide-content">
+              <span className="eyebrow-tag">{activeSlide.eyebrow}</span>
+              <h1 className="home-hero-title">
+                {activeSlide.titleLine1}
+                <br />
+                {activeSlide.titleLine2}
+              </h1>
+              <p className="home-hero-description">{activeSlide.description}</p>
 
-            <div className="home-hero-cta-wrap">
-              <AppLink to={activeSlide.ctaRoute} className="btn-coral">
-                <span>{activeSlide.ctaLabel}</span>
-                <ArrowRight size={13} />
-              </AppLink>
+              <div className="home-hero-cta-wrap">
+                <AppLink to={activeSlide.ctaRoute} className="btn-coral">
+                  <span>{activeSlide.ctaLabel}</span>
+                  <ArrowRight size={13} />
+                </AppLink>
+              </div>
             </div>
 
             <div className="home-hero-slider-bar">
@@ -164,24 +166,28 @@ export function HomePage({ onSelectFlavor }: HomePageProps) {
 
         <div className="site-container home-about-inner">
           <div className="home-about-photos">
-            <img
-              src="/assets/images/chef-harlen.webp"
-              alt="Chef e economista Harlen Brandão degustando gelato artesanal no laboratório da Crema Lab"
-              width={775}
-              height={775}
-              loading="lazy"
-              decoding="async"
-              className="home-about-chef-img"
-            />
-            <img
-              src="/assets/images/real/fachada-batel-juan.webp"
-              alt="Fachada da Crema Lab no Batel, em Curitiba"
-              width={800}
-              height={1199}
-              className="home-about-inset-img"
-              loading="lazy"
-              decoding="async"
-            />
+            <div className="home-about-arch-frame">
+              <img
+                src="/assets/images/real/interna-mahani.webp"
+                alt="Interior da Crema Lab, com o arco de vidro e a vitrine de gelatos"
+                width={801}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+                className="home-about-chef-img"
+              />
+            </div>
+            <div className="home-about-inset-frame">
+              <img
+                src="/assets/images/real/fachada-batel-juan.webp"
+                alt="Fachada da Crema Lab no Batel, em Curitiba"
+                width={800}
+                height={1199}
+                className="home-about-inset-img"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
 
           <div className="home-about-copy-col">

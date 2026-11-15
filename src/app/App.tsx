@@ -79,7 +79,7 @@ function useScrollReveal(routeKey: string) {
 
     for (const el of elements) {
       const index = getSiblingIndex(el);
-      el.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 90}ms`);
+      el.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 65}ms`);
       el.classList.add('reveal');
       observer.observe(el);
     }
